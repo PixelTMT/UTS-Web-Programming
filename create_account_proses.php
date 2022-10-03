@@ -1,5 +1,5 @@
 <?php
-require("security.php");
+require_once("security.php");
 if (
     !empty($_POST["username"]) && !empty($_POST["email"]) &&
     !empty($_POST["password"]) && !empty($_FILES["img"])
