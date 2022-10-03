@@ -16,6 +16,7 @@ if (
     //check if database is empty
 
     if (check_img_type($img)) {
+        // 0 = user, 1 = admin
         $id = GetID(0);
         move_uploaded_file($img_temp, "user_img/{$img}");
         insert_to_database($id, $username, $email, $user_key, $encrypted_password, $img);
