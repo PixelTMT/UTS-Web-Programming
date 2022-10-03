@@ -61,7 +61,7 @@ function check_img_type($img_name)
     }
 }
 
-function GetID()
+function GetID($type)
 {
     $id = 0;
     $dsn = "mysql:host=localhost;dbname=uts_forum";
