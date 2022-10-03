@@ -13,7 +13,6 @@ if (
     $user_key = $encrypted['key'];
     $encrypted_password = $encrypted['encoded'];
 
-
     //check if database is empty
 
     if (check_img_type($img)) {
@@ -21,7 +20,7 @@ if (
         move_uploaded_file($img_temp, "user_img/{$img}");
         insert_to_database($id, $username, $email, $user_key, $encrypted_password, $img);
     }
-} else{
+} else {
     echo "proses failed";
 }
 
@@ -61,13 +60,14 @@ function check_img_type($img_name)
     }
 }
 
-function GetID(){
-    $id=0;
+function GetID()
+{
+    $id = 0;
     $dsn = "mysql:host=localhost;dbname=uts_forum";
     $kunci = new PDO($dsn, "root", "");
     $sql = "SELECT * FROM user";
     $hasil = $kunci->query($sql);
-    while($row = $hasil->fetch(PDO::FETCH_ASSOC)){
+    while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
         $id = intval($row['id']);
     }
     // 0 for user
