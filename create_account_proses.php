@@ -16,7 +16,8 @@ if (
     //check if database is empty
 
     if (check_img_type($img)) {
-        $id = GetID();
+        // 0 = user, 1 = admin
+        $id = GetID(0);
         move_uploaded_file($img_temp, "user_img/{$img}");
         insert_to_database($id, $username, $email, $user_key, $encrypted_password, $img);
     }
@@ -60,7 +61,7 @@ function check_img_type($img_name)
     }
 }
 
-function GetID()
+function GetID($type)
 {
     $id = 0;
     $dsn = "mysql:host=localhost;dbname=uts_forum";
@@ -70,6 +71,7 @@ function GetID()
     while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
         $id = intval($row['id']);
     }
-    // 0 for user
-    return str_pad($id + 1, 5, '0', STR_PAD_LEFT);
+    $re = strval($type);
+    $re .= str_pad(strval($id + 1), 4, '0', STR_PAD_LEFT);
+    return $re;
 }
