@@ -71,7 +71,7 @@ function GetID()
     while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
         $id = intval($row['id']);
     }
-    $re = strval($type);
-    $re .= str_pad(strval($id + 1), 4, '0', STR_PAD_LEFT);
-    return $re;
+    // $re = strval($type);
+    //$re .= str_pad(strval($id + 1), 4, '0', STR_PAD_LEFT);
+    //return $re;
 }
