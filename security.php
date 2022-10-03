@@ -45,7 +45,6 @@ function Encode($text , $key = null){
 function CheckEncode($text, $key, $encoded) {
     global $AlpStr;
     $re = Encode($text, $key);
-    //console.log("re " + re[0] + ": en "+ encoded);
     if($re["encoded"] == $encoded) return "true";
     return "false";
 };
@@ -61,7 +60,6 @@ function Random_String($RMax){
 }
 
 function ReCircle($input, $Max){
-    //console.log(input + " " + Max);
     if($input >= $Max){
         $input -= $Max;
         return ReCircle($input, $Max);
