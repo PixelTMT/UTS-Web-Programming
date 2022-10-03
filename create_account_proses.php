@@ -1,9 +1,5 @@
 <?php
 require("security.php");
-var_dump($_POST["username"]);
-var_dump($_POST["email"]);
-var_dump($_POST["password"]);
-var_dump($_FILES["img"]["name"]);
 if (
     !empty($_POST["username"]) && !empty($_POST["email"]) &&
     !empty($_POST["password"]) && !empty($_FILES["img"])
