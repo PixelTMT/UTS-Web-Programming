@@ -7,6 +7,6 @@
     <title>Profile</title>
 </head>
 <body>
-    <h1>Categories bruhhh</h1>
+    <h1>Profile bruhhh</h1>
 </body>
 </html>

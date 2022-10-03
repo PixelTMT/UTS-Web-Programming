@@ -16,22 +16,29 @@
   --secondary02: #a4b3b6;
   --accent01: #e63946;
 }
-
-.navbar {
-  background-color: #2a1b3d;
+.footer {
   font-family: "Poppins";
-}
-.navbar .navbar-nav .nav-link {
-  color: #fff;
-}
-.navbar .navbar-nav .nav-link:hover {
-  color: #fbc531;
+  background-color: #2a1b3d;
+  color: var(--secondary);
 }
 
-.navbar .navbar-brand:hover {
-  opacity: 0.75;
+.card-body {
+  background-color: #2a1b3d;
 }
 
-.navbar .navbar-nav .active > .nav-link {
-  color: #fbc531;
+.card-title {
+  border-bottom: 1px solid var(--secondary02);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+footer a.text-light:hover {
+  color: #fed136 !important;
+  text-decoration: none;
+}
+
+.footer-menu,
+.footer-contact {
+  text-decoration: none;
+  font-size: 1.25rem;
 }
