@@ -1,14 +1,24 @@
 <?php
+// hidupkan sebelum di kumpul
+//error_reporting(0);
+
+$blacklist = array('&', ';', '`', '‘', 
+                "\"", '“', '|', '*', '?', 
+                '~', '<', '>', '^', '(', ')', 
+                '[', ']', '{', '}', '$', '\n', 
+                '\r');
+$dsn = "mysql:host=localhost;dbname=uts_forum";
+$kunci = new PDO($dsn, "root", "");
+
 $AlpStr = array(
 	'8', '5', 'i', 'n', 'k', 'I', 'F', 'K', 
 	'3', 'o', 'D', '4', 'x', 'W', 'y', 'O', 
 	'd', 'C', 'z', 'c', 'P', 'b', '6', '7', 
-	'%', 'L', 'e', '0', 'U', 'j', '@', 'V', 
-	'q', '9', '1', 'E', 'v', '2', 's', 'a', 
-	'h', 'B', 'A', 'f', 'w', '!', 'N', 'r', 
-	'l', 'H', 'J', 'm', 'Y', 'G', 'M', 'Z', 
-	'Q', 'u', 'X', 'g', 'S', '$', '#', 'T', 
-	'R', 'p', 't');
+    'L', 'e', '0', 'U', 'j', 'V', 'q', '9', 
+    '1', 'E', 'v', '2', 's', 'a', 'h', 'B', 
+    'A', 'f', 'w', '!', 'N', 'r', 'l', 'H', 
+    'J', 'm', 'Y', 'G', 'M', 'Z', 'Q', 'u', 
+    'X', 'g', 'S', 'T','R', 'p', 't');
 
 function Encode($text , $key = null){
     global $AlpStr;
@@ -69,4 +79,8 @@ function ReCircle($input, $Max){
         return ReCircle($input, $Max);
     }
     return $input;
+}
+function CheckValidString($string){
+    global $blacklist;
+    return  ($string != str_ireplace($blacklist,"XX",$string))? true: false;
 }
