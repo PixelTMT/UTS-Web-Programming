@@ -36,7 +36,7 @@ if (
         // 0 = user, 1 = admin
         $id = GetID(0);
         move_uploaded_file($img_temp, "user_img/{$id}.{$file_ext}");
-        insert_to_database($id, $username, $email, $user_key, $encrypted_password, "{$img}.{$file_ext}");
+        insert_to_database($id, $username, $email, $user_key, $encrypted_password, "{$id}.{$file_ext}");
     }
 } else {
     echo "proses failed";
