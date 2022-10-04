@@ -1,14 +1,16 @@
 <?php
+//session_start();
 // hidupkan sebelum di kumpul
 //error_reporting(0);
+
+$dsn = "mysql:host=localhost;dbname=uts_forum";
+$kunci = new PDO($dsn, "root", "");
 
 $blacklist = array('&', ';', '`', '‘', 
                 "\"", '“', '|', '*', '?', 
                 '~', '<', '>', '^', '(', ')', 
                 '[', ']', '{', '}', '$', '\n', 
                 '\r');
-$dsn = "mysql:host=localhost;dbname=uts_forum";
-$kunci = new PDO($dsn, "root", "");
 
 $AlpStr = array(
 	'8', '5', 'i', 'n', 'k', 'I', 'F', 'K', 
@@ -52,6 +54,33 @@ function Encode($text , $key = null){
     return $re;
 }
 
+function CheckAccount($username, $password){
+    global $kunci;
+    $sql = "SELECT * FROM user
+        where username = ?";
+    $stmt = $kunci->prepare($sql);
+    $stmt->execute([$username]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($row){
+        //account exist
+        if(Encode($password, $row['user_key'])['encoded'] == $row['encrypted_password']){
+            //login success
+            $_SESSION['ERROR'] = "";
+            $_SESSION['id'] = $row['id'];
+            header('location: dashboard.php');
+        }
+        else{
+            //login failed
+            $_SESSION['ERROR'] = "Password is wrong, try again.";
+            header('location: login_form.php');
+        }
+    }
+    else{
+        $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
+        header('location: login_form.php');
+    }
+}
+
 function CheckEncode($text, $key, $encoded) {
     global $AlpStr;
     $re = Encode($text, $key);
@@ -81,6 +110,7 @@ function ReCircle($input, $Max){
     return $input;
 }
 function CheckValidString($string){
+    //false = Valid
     global $blacklist;
     return  ($string != str_ireplace($blacklist,"XX",$string))? true: false;
 }
