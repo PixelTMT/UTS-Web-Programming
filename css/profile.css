@@ -1,0 +1,23 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Contrail+One&family=Dancing+Script&family=Noto+Sans+Mono:wght@700&family=Poppins:wght@200;400;700&display=swap");
+
+:root {
+  --font-size: 1rem;
+
+  --primary01: #d83f87;
+  --primary02: #2a1b3d;
+  --primary03: #44318d;
+  --secondary01: #e98074;
+  --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
+  --accent01: #e63946;
+  --accent02: #fbc531;
+}
+
+.edit-profile {
+  max-width: 25%;
+}
+
+.profile-container {
+  box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+}

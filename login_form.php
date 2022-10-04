@@ -13,11 +13,11 @@
 <body>
     <div class="main container d-flex flex-column justify-content-center align-items-center">
         <div class="text-center mt-4 header mx-auto">
-            <img src="img/LOGO.svg" class="logo mt-2 mb-4" alt="...">
+            <img src="img/SPACELY.svg" class="logo mt-2 mb-4" alt="...">
             <header>
-                <p class="h3" style="font-weight:100;">Login to Rocket</p>
+                <p class="h3" style="font-weight:100;">Login to Spacely</p>
                 <span class="text-muted">
-                    <p> The newest PHP Forum on the web </p>
+                    <p>Forum pemrograman terbaik di Indonesia</p>
                 </span>
             </header>
         </div>
@@ -30,17 +30,18 @@
                             <input type="text" class="form-control" id="username" name="username" />
                             <label for="password" class="form-label mt-2 mb-2"> Password </label>
                             <input type="password" class="form-control" id="password" name="password" />
+                            <a href="#" class="text-info" style="font-size: 12px;">Forgot your Password?</a>
 
                             <div class="button-container mt-3 mb-4 text-center">
-                                <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login">login</button>
+                                <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login">Login</button>
                             </div>
                         </div>
                     </div>
                 </form>
         </div>
         <div class="footer mt-4 d-flex text-center justify-content-center">
-            <p> Dont have an Account yet? &nbsp;</p>
-            <a href="create_account_form.php"> Sign Up here </a>
+            <p>Don't have an Account yet? &nbsp;</p>
+            <a href="create_account_form.php"> Sign up here</a>
         </div>
 
         <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">

@@ -29,28 +29,28 @@
 	<!-- navbar -->
 	<nav class="navbar navbar-expand-lg sticky-top">
 		<div class="container">
-			<a class="navbar-brand" href="#">
-				<img src="img/LOGO.svg" width="45" height="45" alt="">
+			<a class="navbar-brand" href="dashboard.php">
+				<img src="img/SPACELY.svg" width="45" height="45" alt="">
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nvbCollapse" aria-controls="nvbCollapse">
+			<button class="navbar-toggler navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#nvbCollapse" aria-controls="nvbCollapse">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="nvbCollapse">
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item mx-1">
+			<div class="collapse navbar-collapse text-center" id="nvbCollapse">
+				<ul class="navbar-nav nav ms-auto">
+					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="dashboard.php">Dashboard</a>
 					</li>
-					<li class="nav-item mx-1">
+					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
-					<li class="nav-item mx-1">
-						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user border border-white rounded-circle p-1"></i></a>
+					<li class="nav-item mx-2 my-1">
+						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user fa-lg"></i></a>
 					</li>
-					<li class="nav-item mx-3 align-middle">
-						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
+					<li class="nav-item mx-2 align-middle">
+						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3 my-1">Login</button></a>
 					</li>
-					<li class="nav-item align-middle">
-						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2">Register</button></a>
+					<li class="nav-item mx-2 align-middle">
+						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2 my-1">Register</button></a>
 					</li>
 				</ul>
 			</div>
@@ -58,9 +58,9 @@
 	</nav>
 
 	<!-- hero -->
-	<main class="jumbotron jumbotron-fluid">
+	<main class="jumbotron jumbotron-fluid ">
 		<div class="jumboDesc">
-			<h1>Selamat datang di <b>Rocket</b></h1>
+			<h1>Selamat datang di <span>Spacely</span></h1>
 			<h2>Tempat Belajar dan Berdiskusi Bahasa</h2>
 			<span id="typed" class="mt-3"></span>
 
@@ -74,14 +74,24 @@
 	</main>
 
 	<article>
+		<div class="container tabs-container mt-4">
+			<div class="tabs-wrap">
+				<ul>
+					<li class="tabs-trends active" data-tabs="trends">Trending</li>
+					<li class="tabs-likes" data-tabs="likes">Most Liked</li>
+					<li class="tabs-latest" data-tabs="latest">Latest Post</li>
+				</ul>
+  			</div>
+		</div>
+
 		<div class="container my-4 col-lg-8">
-			<div class="card-group vgr-cards">
+			<div class="card-group vgr-cards ">
 				<div class="card">
 					<div class="card-body mx-3">
-						<div class="user-container d-flex align-items-center mb-2">
-							<img src="img/LOGO.svg" alt="Tes Foto User" class="post-header rounded-circle">
+						<div class="user-container d-flex align-items-center mb-2 text-nowrap">
+							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
 							<span class="post-username mx-2">NiceTryKemosabe</span>
-							<span class="post-date">1h</span>
+							<span class="post-date">24h ago</span>
 							<div class="w-100 d-flex justify-content-end">
 								<button class="category-button" role="button">PHP</button>
 							</div>
@@ -99,11 +109,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="card-group vgr-cards mt-3">
+			<div class="card-group vgr-cards mt-3 ">
 				<div class="card">
 					<div class="card-body mx-3">
 						<div class="user-container d-flex align-items-center mb-2">
-							<img src="img/LOGO.svg" alt="Tes Foto User" class="post-header rounded-circle">
+							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
 							<span class="post-username mx-2">NiceTryKemosabe</span>
 							<span class="post-date">1h</span>
 							<div class="w-100 d-flex justify-content-end">
@@ -127,14 +137,14 @@
 	</article>
 
 	<footer>
-		<div class="footer p-4">
+		<div class="footer p-4 ">
 			<div class="container">
 				<div class="row">
 					<div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
 						<div class="card border-0">
 							<div class="footer-body card-body text-center">
 								<h5 class="footer-title card-title display-4" style="font-size:30px">About</h5>
-								<p class="d-inline lead text-white">Rocket adalah forum website diskusi seputar pemrograman
+								<p class="d-inline lead text-white">Spacely adalah forum website diskusi seputar pemrograman
 									bertujuan menjadi sarana bagi para developer di Indonesia untuk belajar dan
 									berdiskusi bareng.
 								</p><br>
@@ -148,7 +158,7 @@
 							<div class="footer-body card-body text-center">
 								<h5 class="footer-title card-title display-4" style="font-size:30px">Contact</h5>
 								<a class="footer-contact text-light d-block lead" style="margin-left: -20px" href="#"><i class="fa fa-phone mx-2"></i>+62 8123456789</a>
-								<a class="footer-contact text-light d-block lead" href="#"><i class="fa fa-envelope mx-2"></i>admin@rocket.com</a>
+								<a class="footer-contact text-light d-block lead" href="#"><i class="fa fa-envelope mx-2"></i>admin@spacely.com</a>
 							</div>
 						</div>
 					</div>
@@ -172,13 +182,29 @@
 		</div>
 	</footer>
 	<script>
-		new Typed('#typed', {
-			strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL', 'Swift', 'Kotlin'],
-			typeSpeed: 200,
-			delaySpeed: 50,
-			loop: true
-		});
-	</script>
+// typed js
+new Typed('#typed', {
+	strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL', 'Swift', 'Kotlin'],
+	typeSpeed: 175,
+	delaySpeed: 50,
+	loop: true
+});
+
+// tabs for sorting
+var tabs = document.querySelectorAll(".tabs-wrap ul li");
+
+tabs.forEach((tab)=>{
+  tab.addEventListener("click", ()=>{
+    tabs.forEach((tab)=>{
+      tab.classList.remove("active");
+    })
+    tab.classList.add("active");
+  })
+})
+
+
+	
+</script>
 </body>
 
 </html>
