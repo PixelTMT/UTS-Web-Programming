@@ -24,25 +24,25 @@
 			<a class="navbar-brand" href="dashboard.php">
 				<img src="img/SPACELY.svg" width="45" height="45" alt="">
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nvbCollapse" aria-controls="nvbCollapse">
+			<button class="navbar-toggler navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#nvbCollapse" aria-controls="nvbCollapse">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="nvbCollapse">
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item mx-2">
+			<div class="collapse navbar-collapse text-center" id="nvbCollapse">
+				<ul class="navbar-nav nav ms-auto">
+					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="dashboard.php">Dashboard</a>
 					</li>
-					<li class="nav-item mx-2">
+					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
-					<li class="nav-item mx-2">
+					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user fa-lg"></i></a>
 					</li>
 					<li class="nav-item mx-2 align-middle">
-						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
+						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3 my-1">Login</button></a>
 					</li>
 					<li class="nav-item mx-2 align-middle">
-						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2">Register</button></a>
+						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2 my-1">Register</button></a>
 					</li>
 				</ul>
 			</div>
