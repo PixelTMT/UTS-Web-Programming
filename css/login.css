@@ -16,13 +16,13 @@
 }
 
 body {
-  background-color: var(--primary1);
+  background-color: var(--primary02);
   color: var(--secondary);
   font-size: var(--font-size);
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent01);
 }
 
 img {
@@ -41,8 +41,8 @@ img {
 }
 
 .login {
-  border: 2px double var(--secondary);
-  background-color: var(--primary2);
+  border: 2px double var(--secondary02);
+  background-color: var(--primary03);
   width: inherit;
 }
 
@@ -58,5 +58,4 @@ img {
 
 .footer {
   width: inherit;
-  background-color: var(--primary1);
 }
