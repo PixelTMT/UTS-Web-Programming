@@ -2,12 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@200;400;700&display=swap");
 
 :root {
-  --primary1: #293241;
-  --primary2: #3d5a80;
-  --primary3: #98c1d9;
-  --secondary: #e0fbfc;
-  --accent: #e63946;
-
   --font-size: 1rem;
 
   --primary01: #d83f87;
@@ -15,14 +9,16 @@
   --primary03: #44318d;
   --secondary01: #e98074;
   --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
   --accent01: #e63946;
+  --accent02: #fbc531;
 }
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  background-color: var(--primary01);
 }
 
 html {
@@ -32,7 +28,7 @@ html {
 /* jumbotron */
 .jumbotron {
   height: 550px;
-  background-color: #000000;
+  background-color: var(--primary02);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%23000000' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%23230046' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%232f0052' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%233b075e' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%2348156a' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23552277' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
   background-size: cover;
@@ -45,20 +41,20 @@ html {
 }
 
 .jumbotron .jumboDesc h1 {
-  color: #ffffff;
+  color: white;
   font-size: 3.2em;
   font-family: "Poppins";
   padding-top: 3rem;
 }
 
 .jumbotron .jumboDesc h2 {
-  color: #ffffff;
+  color: white;
   font-size: 1.6em;
   font-family: "Poppins";
 }
 
 .jumbotron-search {
-  border: 2px solid var(--primary01);
+  border: 2px solid var(--accent01);
   border-radius: 24px;
 }
 

@@ -1,10 +1,4 @@
 :root {
-  --primary1: #293241;
-  --primary2: #3d5a80;
-  --primary3: #98c1d9;
-  --secondary: #e0fbfc;
-  --accent: #e63946;
-
   --font-size: 1rem;
 
   --primary01: #d83f87;
@@ -12,17 +6,19 @@
   --primary03: #44318d;
   --secondary01: #e98074;
   --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
   --accent01: #e63946;
+  --accent02: #fbc531;
 }
 
 body {
-  background-color: var(--primary1);
-  color: var(--secondary);
+  background-color: var(--primary02);
+  color: var(--secondary03);
   font-size: var(--font-size);
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent01);
 }
 
 img {
@@ -41,8 +37,8 @@ img {
 }
 
 .login {
-  border: 2px double var(--secondary);
-  background-color: var(--primary2);
+  border: 2px double var(--secondary02);
+  background-color: var(--primary03);
   width: inherit;
 }
 
@@ -58,5 +54,4 @@ img {
 
 .footer {
   width: inherit;
-  background-color: var(--primary1);
 }

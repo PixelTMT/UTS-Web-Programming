@@ -1,12 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@200;400;700&display=swap");
 
 :root {
-  --primary1: #293241;
-  --primary2: #3d5a80;
-  --primary3: #98c1d9;
-  --secondary: #e0fbfc;
-  --accent: #e63946;
-
   --font-size: 1rem;
 
   --primary01: #d83f87;
@@ -14,12 +8,15 @@
   --primary03: #44318d;
   --secondary01: #e98074;
   --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
   --accent01: #e63946;
+  --accent02: #fbc531;
 }
+
 .footer {
   font-family: "Poppins";
   background-color: #2a1b3d;
-  color: var(--secondary);
+  color: var(--secondary03);
 }
 
 .footer-body {
