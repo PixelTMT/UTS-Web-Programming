@@ -1,4 +1,5 @@
 <?php
+require_once("NeedLogin.php");
 // require_once('security.php');
 
 // $sql = "SELECT * FROM post";
