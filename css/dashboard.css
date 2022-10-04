@@ -70,3 +70,38 @@ html {
   font-size: 4rem;
   color: #ffffff;
 }
+
+/* POST */
+.user-container img {
+  width: 3rem;
+  height: auto;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 5px;
+}
+
+.post-username {
+  font-weight: bold;
+}
+
+.feedback-container button {
+  border: none;
+  border-radius: 12px;
+}
+
+.feedback-container button i {
+  font-size: 1.5rem;
+}
+
+.category-button {
+  background: var(--primary01);
+  border-radius: 999px;
+  box-shadow: var(--primary01) 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  padding: 8px 18px;
+  border: 0;
+}

@@ -1,5 +1,8 @@
 <?php
+// require_once('security.php');
 
+// $sql = "SELECT * FROM post";
+// $fetching = $kunci->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +44,7 @@
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
 					<li class="nav-item mx-1">
-						<a class="nav-link" href="profile.php">Profile</a>
+						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user border border-white rounded-circle p-1"></i></a>
 					</li>
                     <li class="nav-item mx-3 align-middle">
                         <a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
@@ -70,19 +73,68 @@
         </div>
     </main>
 
-	<article>
-
-	</article>
+<article>
+	<div class="container my-4 col-lg-8">
+		<div class="card-group vgr-cards">
+			<div class="card">
+				<div class="card-body mx-3">
+					<div class="user-container d-flex align-items-center mb-2">
+						<img src="img/LOGO.svg" alt="Tes Foto User" class="post-header rounded-circle">
+						<span class="post-username mx-2">NiceTryKemosabe</span>
+						<span class="post-date">1h</span>
+						<div class="w-100 d-flex justify-content-end">
+						<button class="category-button" role="button">PHP</button>	
+						</div>
+					</div>
+					<div class="content-container d-flex flex-column">
+						<h4 class="card-title">Judul</h4>
+						<p class="card-text">Lorem ipsum blalalalalalaaaalalalalalalaaa</p>
+					</div>
+					<div class="feedback-container d-flex flex-row my-2">
+						<button><i class="fa-solid fa-thumbs-up"></i></button>
+						<span class="mx-1">5 likes</span>
+						<button><i class="fa-solid fa-comment"></i></button>
+						<span class="mx-1">2 comments</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-group vgr-cards mt-3">
+			<div class="card">
+				<div class="card-body mx-3">
+					<div class="user-container d-flex align-items-center mb-2">
+						<img src="img/LOGO.svg" alt="Tes Foto User" class="post-header rounded-circle">
+						<span class="post-username mx-2">NiceTryKemosabe</span>
+						<span class="post-date">1h</span>
+						<div class="w-100 d-flex justify-content-end">
+						<button class="category-button" role="button">PHP</button>	
+						</div>
+					</div>
+					<div class="content-container d-flex flex-column">
+						<h4 class="card-title">Judul</h4>
+						<p class="card-text">Lorem ipsum blalalalalalaaaalalalalalalaaa</p>
+					</div>
+					<div class="feedback-container d-flex flex-row my-2">
+						<button><i class="fa-solid fa-thumbs-up"></i></button>
+						<span class="mx-1">5 likes</span>
+						<button><i class="fa-solid fa-comment"></i></button>
+						<span class="mx-1">2 comments</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</article>
 
 	<footer>
-		<div class="footer p-4 mt-5">
+		<div class="footer p-4">
 			<div class="container">
 				<div class="row">
 					<div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
 						<div class="card border-0">
-							<div class="card-body text-center">
-								<h5 class="card-title display-4" style="font-size:30px">About</h5>
-							<p class="d-inline lead">Rocket adalah forum website diskusi seputar pemrograman 
+							<div class="footer-body card-body text-center">
+								<h5 class="footer-title card-title display-4" style="font-size:30px">About</h5>
+							<p class="d-inline lead text-white">Rocket adalah forum website diskusi seputar pemrograman 
                                 bertujuan menjadi sarana bagi para developer di Indonesia untuk belajar dan
                                 berdiskusi bareng.
                             </p><br>
@@ -93,8 +145,8 @@
 					
 					<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
 						<div class="card border-0">
-							<div class="card-body text-center">
-								<h5 class="card-title display-4" style="font-size:30px">Contact</h5>
+							<div class="footer-body card-body text-center">
+								<h5 class="footer-title card-title display-4" style="font-size:30px">Contact</h5>
 								<a class="footer-contact text-light d-block lead" style="margin-left: -20px" href="#"><i class="fa fa-phone mx-2"></i>+62 8123456789</a>
 								<a class="footer-contact text-light d-block lead" href="#"><i class="fa fa-envelope mx-2"></i>admin@rocket.com</a>
 							</div>
@@ -103,8 +155,8 @@
 					
 					<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
 						<div class="card border-0">
-							<div class="card-body text-center d-flex flex-column">
-							<h5 class="card-title display-4" style="font-size:30px">Menus</h5>
+							<div class="footer-body card-body text-center d-flex flex-column">
+							<h5 class="footer-title card-title display-4" style="font-size:30px">Menus</h5>
 					
 									<a class="footer-menu text-light my-1" href="#"><i class="fa fa-home fa-fw mx-2"></i>Dashboard</a>
 								
@@ -121,7 +173,7 @@
 	</footer>
 	<script>
 		new Typed('#typed', {
-            strings: ['PHP', 'C', 'Javascript', 'Python', 'Java'],
+            strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL', 'Swift', 'Kotlin'],
             typeSpeed: 200,
             delaySpeed: 50,
             loop: true
