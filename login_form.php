@@ -37,21 +37,15 @@ if(isset($_SESSION['ERROR'])){
             <?php echo $alert_msg?>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
-
-            <form>
-                <form id="form_week6" action="create_account_proses.php" method="post" enctype="multipart/form-data">
-                    <div class="row form-group">
-                        <div class="col">
-                            <label for="username" class="form-label mt-4 mb-2"> Username </label>
-                            <input type="text" class="form-control" id="username" name="username" />
-                            <label for="password" class="form-label mt-2 mb-2"> Password </label>
-                            <input type="password" class="form-control" id="password" name="password" />
-                            <a href="#" class="text-info" style="font-size: 12px;">Forgot your Password?</a>
-
-                            <div class="button-container mt-3 mb-4 text-center">
-                                <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login">Login</button>
-                            </div>
-
+            <form id="form_week6" action="login_process.php" method="post" enctype="multipart/form-data">
+                <div class="row form-group">
+                    <div class="col">
+                        <label for="username" class="form-label mt-4 mb-2"> Username </label>
+                        <input type="text" class="form-control" id="username" name="username" require/>
+                        <label for="password" class="form-label mt-2 mb-2"> Password </label>
+                        <input type="password" class="form-control" id="password" name="password" require/>
+                        <div class="button-container mt-3 mb-4 text-center">
+                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" require>login</button>
                         </div>
                     </div>
                 </div>
