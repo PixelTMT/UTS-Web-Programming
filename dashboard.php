@@ -1,4 +1,5 @@
 <?php
+session_start();
 //Pakai NeedLogin jika perlu
 //require_once("NeedLogin.php");
 // require_once('security.php');
@@ -45,15 +46,24 @@
 					<li class="nav-item mx-1">
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
-					<li class="nav-item mx-1">
-						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user border border-white rounded-circle p-1"></i></a>
-					</li>
+				<?php
+				if(empty($_SESSION['id'])){
+				?>
 					<li class="nav-item mx-3 align-middle">
-						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
+					<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
 					</li>
 					<li class="nav-item align-middle">
 						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2">Register</button></a>
 					</li>
+				<?php
+				}else{
+				?>
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user border border-white rounded-circle p-1"></i></a>
+					</li>
+				<?php
+				}
+				?>
 				</ul>
 			</div>
 		</div>
