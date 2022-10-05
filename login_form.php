@@ -1,3 +1,16 @@
+<?php
+session_start();
+$incomplete_msg = "All fields are required. Please fill all required fields and submit again.";
+$alert_msg = $incomplete_msg;
+$style = "display:none;";
+if(isset($_SESSION['ERROR'])){
+    if($_SESSION['ERROR'] != ""){
+        $alert_msg = $_SESSION['ERROR'];
+        $style = "display:block;";
+        $_SESSION['ERROR'] = "";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,8 +33,11 @@
                     <p>Forum pemrograman terbaik di Indonesia</p>
                 </span>
             </header>
+            <h4 id="alert" style=<?php echo $style?>>
+            <?php echo $alert_msg?>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
+
             <form>
                 <form id="form_week6" action="create_account_proses.php" method="post" enctype="multipart/form-data">
                     <div class="row form-group">
@@ -35,9 +51,11 @@
                             <div class="button-container mt-3 mb-4 text-center">
                                 <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login">Login</button>
                             </div>
+
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
         </div>
         <div class="footer mt-4 d-flex text-center justify-content-center">
             <p>Don't have an Account yet? &nbsp;</p>

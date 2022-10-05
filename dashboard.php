@@ -1,4 +1,6 @@
 <?php
+//Pakai NeedLogin jika perlu
+//require_once("NeedLogin.php");
 // require_once('security.php');
 
 // $sql = "SELECT * FROM post";
@@ -184,7 +186,7 @@
 	<script>
 // typed js
 new Typed('#typed', {
-	strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL', 'Swift', 'Kotlin'],
+	strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL'],
 	typeSpeed: 175,
 	delaySpeed: 50,
 	loop: true

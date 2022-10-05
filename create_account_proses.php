@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("security.php");
 
 if (
@@ -6,16 +7,20 @@ if (
     !empty($_POST["password"]) && !empty($_FILES["img"])
 ) {
     if(CheckValidString($_POST["email"])){
-        echo "Email must not contains ".implode(' , ',$blacklist);
-        return;
+        $_SESSION['ERROR'] = "Invalid Email";
+        header('location: create_account_form.php');
     }
-    else if(CheckValidString($_POST["password"])){
-        echo "Password must not contains ".implode(' , ',$blacklist);
-        return;
+    if(CheckValidString($_POST["password"]) || CheckValidString($_POST['password2'])){
+        if(CheckValidString($_POST["password"]) != CheckValidString($_POST['password2'])){
+            $_SESSION['ERROR'] = "Password not match";
+            header('location: create_account_form.php');
+        }
+        $_SESSION['ERROR'] = "Password must be alphanumeric";
+        header('location: create_account_form.php');
     }
-    else if(CheckValidString($_POST["username"])){
-        echo "username must not contains ".implode(' , ',$blacklist);
-        return;
+    if(CheckValidString($_POST["username"])){
+        $_SESSION['ERROR'] = "username must be alphanumeric";
+        header('location: create_account_form.php');
     }
     $id = "U";
     $username = $_POST["username"];
@@ -36,9 +41,11 @@ if (
         $id = GetID(0);
         move_uploaded_file($img_temp, "user_img/{$id}.{$file_ext}");
         insert_to_database($id, $username, $email, $user_key, $encrypted_password, "{$id}.{$file_ext}");
+        header('location: login_form.php');
     }
 } else {
-    echo "proses failed";
+    $_SESSION['ERROR'] = "All fields are required. Please fill all required fields and submit again.";
+    header('location: create_account_form.php');
 }
 
 
