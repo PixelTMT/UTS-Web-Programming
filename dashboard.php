@@ -46,15 +46,6 @@ session_start();
 					<li class="nav-item mx-2 my-1">
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
-					<li class="nav-item mx-2 my-1">
-						<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user fa-lg"></i></a>
-					</li>
-					<li class="nav-item mx-2 align-middle">
-						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3 my-1">Login</button></a>
-					</li>
-					<li class="nav-item mx-2 align-middle">
-						<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2 my-1">Register</button></a>
-					</li>
 					<?php
 					if(empty($_SESSION['id'])){
 					?>
