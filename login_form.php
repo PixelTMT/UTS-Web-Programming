@@ -1,6 +1,6 @@
 <?php
 session_start();
-$incomplete_msg = "All fields are required. Please fill all required fields and submit again.";
+$incomplete_msg = "Please fill all required fields and submit again.";
 $alert_msg = $incomplete_msg;
 $style = "display:none;";
 if(isset($_SESSION['ERROR'])){
