@@ -4,7 +4,7 @@ require_once("security.php");
 
 if (
     !empty($_POST["username"]) && !empty($_POST["email"]) &&
-    !empty($_POST["password"]) && !empty($_FILES["img"])
+    !empty($_POST["password"]) && !isset($_FILES['img'])
 ) {
     if(CheckValidString($_POST["email"])){
         $_SESSION['ERROR'] = "Invalid Email";
@@ -75,7 +75,8 @@ function check_img_type($img_type)
             return true;
             break;
         default:
-            echo "ANDA HANYA BISA MELAKUKAN UPLOAD GAMBAR";
+            $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
+            header('location: create_account_form.php');
             return false;
     }
 }

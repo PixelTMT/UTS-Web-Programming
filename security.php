@@ -1,5 +1,5 @@
 <?php
-//session_start();
+
 // hidupkan sebelum di kumpul
 //error_reporting(0);
 
@@ -32,7 +32,7 @@ function Encode($text , $key = null){
     if($key == null) $re['key'] = Random_String(20);
     else $re['key'] = $key;
 
-    $tmp = str_split($re["key"]) + str_split($text);
+    $tmp = array_merge(str_split($re["key"]) , str_split($text));
     $keylen = strlen($re["key"]);
     $tmplen = count($tmp);
     for($i = $keylen; $i < $tmplen; $i++){
@@ -54,16 +54,17 @@ function Encode($text , $key = null){
     return $re;
 }
 
-function CheckAccount($username, $password){
+function CheckAccount($_username, $_password){
     global $kunci;
     $sql = "SELECT * FROM user
         where username = ?";
     $stmt = $kunci->prepare($sql);
-    $stmt->execute([$username]);
+    $stmt->execute([$_username]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $t = Encode($_password, $row['user_key']);
     if($row){
         //account exist
-        if(Encode($password, $row['user_key'])['encoded'] == $row['encrypted_password']){
+        if($t['encoded'] == $row['encrypted_password']){
             //login success
             $_SESSION['ERROR'] = "";
             $_SESSION['id'] = $row['id'];
