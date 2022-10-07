@@ -72,6 +72,14 @@
                 <h5>Judul Post 3</h5>
                 <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro doloremque ex ad, tenetur eos ut sapiente, maiores illo repudiandae quas quisquam quia excepturi unde, tempora accusamus doloribus minus nostrum facere!</span>
             </div>
+			<div class="profile-posts my-2">
+                <h5>Judul Post 4</h5>
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro doloremque ex ad, tenetur eos ut sapiente, maiores illo repudiandae quas quisquam quia excepturi unde, tempora accusamus doloribus minus nostrum facere!</span>
+            </div>
+			<div class="profile-posts my-2">
+                <h5>Judul Post 5</h5>
+                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro doloremque ex ad, tenetur eos ut sapiente, maiores illo repudiandae quas quisquam quia excepturi unde, tempora accusamus doloribus minus nostrum facere!</span>
+            </div>
         </div>
 
 
