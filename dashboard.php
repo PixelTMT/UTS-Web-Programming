@@ -1,9 +1,6 @@
 <?php
 session_start();
 //need login
-if (!isset($_SESSION["id"])) {
-	header("location: login.php");
-}
 ?>
 
 <!DOCTYPE html>

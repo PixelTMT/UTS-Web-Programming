@@ -78,7 +78,7 @@ function CheckAccount($_username, $_password)
             header('location: dashboard.php');
         } else {
             //login failed
-            $_SESSION['ERROR'] = "Password is wrong, try again.";
+            $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
             header('location: login_form.php');
         }
     } else {
