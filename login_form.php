@@ -3,8 +3,8 @@ session_start();
 $incomplete_msg = "Please fill all required fields and submit again.";
 $alert_msg = $incomplete_msg;
 $style = "display:none;";
-if(isset($_SESSION['ERROR'])){
-    if($_SESSION['ERROR'] != ""){
+if (isset($_SESSION['ERROR'])) {
+    if ($_SESSION['ERROR'] != "") {
         $alert_msg = $_SESSION['ERROR'];
         $style = "display:block;";
         $_SESSION['ERROR'] = "";
@@ -33,17 +33,17 @@ if(isset($_SESSION['ERROR'])){
                     <p>Forum pemrograman terbaik di Indonesia</p>
                 </span>
             </header>
-            <h4 id="alert" style=<?php echo $style?>>
-            <?php echo $alert_msg?>
+            <h4 id="alert" style=<?php echo $style ?>>
+                <?php echo $alert_msg ?>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
             <form id="form_week6" action="login_process.php" method="post" enctype="multipart/form-data">
                 <div class="row form-group">
                     <div class="col">
                         <label for="username" class="form-label mt-4 mb-2"> Username </label>
-                        <input type="text" class="form-control" id="username" name="username" require/>
+                        <input type="text" class="form-control" id="username" name="username" require />
                         <label for="password" class="form-label mt-2 mb-2"> Password </label>
-                        <input type="password" class="form-control" id="password" name="password" require/>
+                        <input type="password" class="form-control" id="password" name="password" require />
                         <div class="button-container mt-3 mb-4 text-center">
                             <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" require>login</button>
                         </div>
@@ -59,5 +59,4 @@ if(isset($_SESSION['ERROR'])){
         <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
         </script>
 </body>
-
 </html>

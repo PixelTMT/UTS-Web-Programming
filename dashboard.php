@@ -1,11 +1,6 @@
 <?php
 session_start();
-//Pakai NeedLogin jika perlu
-//require_once("NeedLogin.php");
-// require_once('security.php');
-
-// $sql = "SELECT * FROM post";
-// $fetching = $kunci->query($sql);
+//need login
 ?>
 
 <!DOCTYPE html>
@@ -40,26 +35,33 @@ session_start();
 			</button>
 			<div class="collapse navbar-collapse text-center" id="nvbCollapse">
 				<ul class="navbar-nav nav ms-auto">
-					<li class="nav-item mx-2 my-1">
+					<li class="nav-item mx-2 my-2">
 						<a class="nav-link" href="dashboard.php">Dashboard</a>
 					</li>
-					<li class="nav-item mx-2 my-1">
+					<li class="nav-item mx-2 my-2">
 						<a class="nav-link" href="category.php">Categories</a>
 					</li>
 					<?php
-					if(empty($_SESSION['id'])){
+					if (empty($_SESSION['id'])) {
 					?>
-						<li class="nav-item mx-3 align-middle">
-						<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
+						<li class="nav-item mx-2 align-middle">
+							<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
 						</li>
 						<li class="nav-item align-middle">
 							<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2">Register</button></a>
 						</li>
 					<?php
-					}else{
+					} else {
 					?>
-						<li class="nav-item mx-1">
-							<a class="nav-link" href="profile.php"><i class="fa-sharp fa-solid fa-user border border-white rounded-circle p-1"></i></a>
+						<li class="nav-item mx-2 my-1">
+							<a class="nav-link" href="profile.php">
+								<?= $_SESSION["username"]; ?>
+								<img src=<?= "user_img/" . $_SESSION["id"] . $_SESSION["img"] ?> alt="Tes Foto User" class="rounded-circle" style="width: 32px;">
+							</a>
+						</li>
+
+						<li class="nav-item mx-2 my-2">
+							<a href="logout.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Log Out</button></a>
 						</li>
 					<?php
 					}
@@ -68,8 +70,6 @@ session_start();
 			</div>
 		</div>
 	</nav>
-
-	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid ">
 		<div class="jumboDesc">
 			<h1>Selamat datang di <span>Spacely</span></h1>
@@ -93,7 +93,7 @@ session_start();
 					<li class="tabs-likes" data-tabs="likes">Most Liked</li>
 					<li class="tabs-latest" data-tabs="latest">Latest Post</li>
 				</ul>
-  			</div>
+			</div>
 		</div>
 
 		<div class="container my-4 col-lg-8">
@@ -194,29 +194,26 @@ session_start();
 		</div>
 	</footer>
 	<script>
-// typed js
-new Typed('#typed', {
-	strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL'],
-	typeSpeed: 175,
-	delaySpeed: 50,
-	loop: true
-});
+		// typed js
+		new Typed('#typed', {
+			strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL'],
+			typeSpeed: 175,
+			delaySpeed: 50,
+			loop: true
+		});
 
-// tabs for sorting
-var tabs = document.querySelectorAll(".tabs-wrap ul li");
+		// tabs for sorting
+		var tabs = document.querySelectorAll(".tabs-wrap ul li");
 
-tabs.forEach((tab)=>{
-  tab.addEventListener("click", ()=>{
-    tabs.forEach((tab)=>{
-      tab.classList.remove("active");
-    })
-    tab.classList.add("active");
-  })
-})
-
-
-	
-</script>
+		tabs.forEach((tab) => {
+			tab.addEventListener("click", () => {
+				tabs.forEach((tab) => {
+					tab.classList.remove("active");
+				})
+				tab.classList.add("active");
+			})
+		})
+	</script>
 </body>
 
 </html>
