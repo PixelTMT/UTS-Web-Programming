@@ -1,9 +1,9 @@
 <?php
 session_start();
 //need login
-if (!isset($_SESSION["id"])) {
-	header("location: login.php");
-}
+// if (!isset($_SESSION["id"])) {
+// 	header("location: login_forum.php");
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,6 +92,7 @@ if (!isset($_SESSION["id"])) {
 		</div>
 
 		<div class="container my-4 col-lg-8">
+			<?php ?>
 			<div class="card-group vgr-cards">
 				<div class="card">
 					<div class="card-body mx-3">
@@ -106,30 +107,6 @@ if (!isset($_SESSION["id"])) {
 						<div class="content-container d-flex flex-column">
 							<h4 class="card-title">Judul</h4>
 							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis ipsam ex et assumenda soluta, voluptatem accusantium tempore aspernatur dolorum nostrum quos, repudiandae culpa quaerat non expedita dolores eveniet illo quisquam repellendus voluptas deleniti! Illum quo molestias necessitatibus tempore quaerat placeat esse?.</p>
-						</div>
-						<div class="feedback-container d-flex flex-row my-2">
-							<button><i class="fa-solid fa-thumbs-up"></i></button>
-							<span class="mx-1">5 likes</span>
-							<button><i class="fa-solid fa-comment"></i></button>
-							<span class="mx-1">2 comments</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card-group vgr-cards mt-3">
-				<div class="card">
-					<div class="card-body mx-3">
-						<div class="user-container d-flex align-items-center mb-2">
-							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
-							<span class="post-username mx-2">NiceTryKemosabe</span>
-							<span class="post-date">1h</span>
-							<div class="w-100 d-flex justify-content-end">
-								<button class="category-button" role="button">PHP</button>
-							</div>
-						</div>
-						<div class="content-container d-flex flex-column">
-							<h4 class="card-title">Judul</h4>
-							<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque exercitationem dolore in beatae eius natus perspiciatis veniam laudantium? Iure praesentium nulla eligendi commodi maxime minima numquam repellat alias veritatis eaque? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere, laudantium ab accusantium eos animi quae sit quis itaque natus architecto quo sequi repellendus iusto consectetur culpa praesentium molestiae vel! Officia. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore consectetur commodi officiis magni consequatur, nemo molestias, ducimus facilis veniam, eaque suscipit a. Aut, ratione! Impedit aliquid distinctio tenetur. Quia, dignissimos? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum nobis, perferendis dicta quibusdam quasi distinctio nulla quis debitis architecto eos, iste quos, iusto cupiditate ut atque ipsum nostrum harum officiis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates eius eaque modi excepturi itaque eligendi vero accusantium deleniti ducimus delectus, hic at iusto nemo asperiores ipsa quaerat error velit expedita. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam alias facilis animi inventore. Illo veniam ipsum dolorum unde quas recusandae ex id atque architecto quidem? Ab voluptas perferendis perspiciatis vel? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vel rem quod ullam. Maiores, aliquam at, non excepturi nulla natus alias vitae sint maxime quas reprehenderit recusandae quae sit veritatis assumenda. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos illum natus possimus optio! Optio, ullam ipsam magnam consectetur excepturi in dicta debitis corrupti autem dolores soluta nostrum quae. Tempora, ducimus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic at maiores eum sapiente fugit, nulla tempora nihil animi obcaecati nemo dignissimos perspiciatis necessitatibus neque enim iure magni quo rem placeat?</p>
 						</div>
 						<div class="feedback-container d-flex flex-row my-2">
 							<button><i class="fa-solid fa-thumbs-up"></i></button>

@@ -3,7 +3,7 @@ include "security.php";
 date_default_timezone_set("Asia/Jakarta");
 session_start();
 if (isset($_POST["categories"]) && isset($_POST["title"]) && isset($_POST["body"])) {
-    $curr_date = date("d-m-y");
+    $curr_date = date("y-m-d");
     $curr_time = date("h");
     $post_id = Get_PostID();
     $user_id = $_SESSION["id"];
