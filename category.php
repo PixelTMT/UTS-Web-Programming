@@ -2,7 +2,7 @@
 session_start();
 //need login
 if (!isset($_SESSION["id"])) {
-	header("location: login.php");
+	header("location: login_form.php");
 }
 ?>
 <!DOCTYPE html>
@@ -56,10 +56,10 @@ if (!isset($_SESSION["id"])) {
 					<?php
 					} else {
 					?>
-						<li class="nav-item mx-2 my-1">
+						<li class="nav-item mx-2 my-2 align-middle">
 							<a class="nav-link" href="profile.php">
 								<?= $_SESSION["username"]; ?>
-								<img src=<?= "user_img/" . $_SESSION["id"] . $_SESSION["img"] ?> alt="Tes Foto User" class="rounded-circle" style="width: 32px;">
+								<img src=<?= "user_img/" . $_SESSION["id"] . $_SESSION["img"] ?> alt="You" class="rounded-circle " style="width: 25px; height:25px;">
 							</a>
 						</li>
 
