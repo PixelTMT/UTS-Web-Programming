@@ -4,21 +4,21 @@ require_once("security.php");
 
 if (
     !empty($_POST["username"]) && !empty($_POST["email"]) &&
-    !empty($_POST["password"]) && !isset($_FILES['img'])
+    !empty($_POST["password"]) && isset($_FILES['img'])
 ) {
-    if(CheckValidString($_POST["email"])){
+    if (CheckValidString($_POST["email"])) {
         $_SESSION['ERROR'] = "Invalid Email";
         header('location: create_account_form.php');
     }
-    if(CheckValidString($_POST["password"]) || CheckValidString($_POST['password2'])){
-        if(CheckValidString($_POST["password"]) != CheckValidString($_POST['password2'])){
+    if (CheckValidString($_POST["password"]) || CheckValidString($_POST['password2'])) {
+        if (CheckValidString($_POST["password"]) != CheckValidString($_POST['password2'])) {
             $_SESSION['ERROR'] = "Password not match";
             header('location: create_account_form.php');
         }
         $_SESSION['ERROR'] = "Password must be alphanumeric";
         header('location: create_account_form.php');
     }
-    if(CheckValidString($_POST["username"])){
+    if (CheckValidString($_POST["username"])) {
         $_SESSION['ERROR'] = "username must be alphanumeric";
         header('location: create_account_form.php');
     }
@@ -52,13 +52,13 @@ if (
 function insert_to_database($_id, $_username, $_email, $_user_key, $_encrypted_password, $_img)
 {
     global $blacklist;
-    $sql = "INSERT INTO user(id, username, email, user_key, encrypted_password, img)
-            VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO user(id, username, email, user_key, encrypted_password, img, roles)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
     global $kunci;
     $stmt = $kunci->prepare($sql);
     $_username = str_replace($blacklist, "", $_username);
     $_email = str_replace($blacklist, "", $_email);
-    $data = [$_id, $_username, $_email, $_user_key, $_encrypted_password, $_img];
+    $data = [$_id, $_username, $_email, $_user_key, $_encrypted_password, $_img, 0];
     $stmt->execute($data);
 }
 
