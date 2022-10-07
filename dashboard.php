@@ -61,7 +61,7 @@ session_start();
 						</li>
 
 						<li class="nav-item mx-2 my-2">
-							<a href="logout.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Log Out</button></a>
+							<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Log Out</button></a>
 						</li>
 					<?php
 					}
@@ -70,6 +70,8 @@ session_start();
 			</div>
 		</div>
 	</nav>
+
+	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid ">
 		<div class="jumboDesc">
 			<h1>Selamat datang di <span>Spacely</span></h1>

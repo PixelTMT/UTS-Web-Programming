@@ -1,5 +1,7 @@
 <?php
 session_start();
+session_destroy(); //destroy the old login session 
+session_start(); //start a new session
 $incomplete_msg = "Please fill all required fields and submit again.";
 $alert_msg = $incomplete_msg;
 $style = "display:none;";
@@ -59,4 +61,5 @@ if (isset($_SESSION['ERROR'])) {
         <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
         </script>
 </body>
+
 </html>

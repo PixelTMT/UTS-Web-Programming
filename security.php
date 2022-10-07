@@ -119,6 +119,7 @@ function ReCircle($input, $Max)
 }
 function CheckValidString($string)
 {
+    //false = Valid
     global $blacklist;
     return ($string != str_ireplace($blacklist, "XX", $string)) ? true : false;
 }
