@@ -1,6 +1,7 @@
 <?php
 session_start();
 //need login
+
 if (!isset($_SESSION["id"])) {
 	header("location: login_form.php");
 }
@@ -23,6 +24,7 @@ $sql = "SELECT *,
 FROM post";
 
 $hasil = $kunci->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -47,57 +49,13 @@ $hasil = $kunci->query($sql);
 
 <body>
 	<!-- navbar -->
-	<nav class="navbar navbar-expand-lg sticky-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard.php">
-				<img src="img/SPACELY.svg" width="45" height="45" alt="">
-			</a>
-			<button class="navbar-toggler navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#nvbCollapse" aria-controls="nvbCollapse">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse text-center" id="nvbCollapse">
-				<ul class="navbar-nav nav ms-auto">
-					<li class="nav-item mx-2 my-2">
-						<a class="nav-link" href="dashboard.php">Dashboard</a>
-					</li>
-					<li class="nav-item mx-2 my-2">
-						<a class="nav-link" href="category.php">Categories</a>
-					</li>
-					<?php
-					if (empty($_SESSION['id'])) {
-					?>
-						<li class="nav-item mx-2 align-middle">
-							<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Login</button></a>
-						</li>
-						<li class="nav-item align-middle">
-							<a href="create_account_form.php"><button type="button" class="btn btn-danger mr-2">Register</button></a>
-						</li>
-					<?php
-					} else {
-					?>
-						<li class="nav-item mx-2 my-2 align-middle">
-							<a class="nav-link" href="profile.php">
-								<?= $_SESSION["username"]; ?>
-								<img src=<?= "user_img/" . $_SESSION["id"] . $_SESSION["img"] ?> alt="You" class="rounded-circle " style="width: 25px; height:25px;">
-							</a>
-						</li>
-
-						<li class="nav-item mx-2 my-2">
-							<a href="login_form.php"><button type="button" class="btn btn-outline-danger mr-2 px-3">Log Out</button></a>
-						</li>
-					<?php
-					}
-					?>
-				</ul>
-			</div>
-		</div>
-	</nav>
+<?php include_once './components/navbar.php' ?>
 
 	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid ">
 		<div class="jumboDesc">
-			<h1>Selamat datang di <span>Spacely</span></h1>
-			<h2>Tempat Belajar dan Berdiskusi Bahasa</h2>
+			<h1>Welcome to <span>Spacely</span></h1>
+			<h2>Chill Place to Learn and Discuss</h2>
 			<span id="typed" class="mt-3"></span>
 
 			<form action="#" method="POST">
@@ -153,51 +111,8 @@ $hasil = $kunci->query($sql);
 		<?php } ?>
 	</article>
 
-	<footer>
-		<div class="footer p-4 ">
-			<div class="container">
-				<div class="row">
-					<div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-						<div class="card border-0">
-							<div class="footer-body card-body text-center">
-								<h5 class="footer-title card-title display-4" style="font-size:30px">About</h5>
-								<p class="d-inline lead text-white">Spacely adalah forum website diskusi seputar pemrograman
-									bertujuan menjadi sarana bagi para developer di Indonesia untuk belajar dan
-									berdiskusi bareng.
-								</p><br>
+<?php include_once './components/footer.php'; ?>
 
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-						<div class="card border-0">
-							<div class="footer-body card-body text-center">
-								<h5 class="footer-title card-title display-4" style="font-size:30px">Contact</h5>
-								<a class="footer-contact text-light d-block lead" style="margin-left: -20px" href="#"><i class="fa fa-phone mx-2"></i>+62 8123456789</a>
-								<a class="footer-contact text-light d-block lead" href="#"><i class="fa fa-envelope mx-2"></i>admin@spacely.com</a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-						<div class="card border-0">
-							<div class="footer-body card-body text-center d-flex flex-column">
-								<h5 class="footer-title card-title display-4" style="font-size:30px">Menus</h5>
-
-								<a class="footer-menu text-light my-1" href="#"><i class="fa fa-home fa-fw mx-2"></i>Dashboard</a>
-
-								<a class="footer-menu text-light my-1" href="#"><i class="fa fa-th-list fa-fw mx-2"></i>Categories</a>
-
-								<a class="footer-menu text-light my-1" href="#"><i class="fa fa-info-circle fa-fw mx-2"></i>Your Profile</a>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
 	<script>
 		// typed js
 		new Typed('#typed', {
