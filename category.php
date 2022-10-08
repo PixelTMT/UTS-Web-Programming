@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once 'NeedLogin.php';
 if (!isset($_SESSION["id"])) {
 	header("location: login_form.php");
 }
