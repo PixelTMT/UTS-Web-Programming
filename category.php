@@ -1,14 +1,9 @@
 <?php
 session_start();
-//need login
 
 if (!isset($_SESSION["id"])) {
 	header("location: login_form.php");
 }
-
-// if (!isset($_SESSION["id"])) {
-// 	header("location: login_forum.php");
-// }
 
 ?>
 <!DOCTYPE html>
