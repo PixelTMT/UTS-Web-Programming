@@ -74,7 +74,7 @@ if (!empty($_SESSION['ERROR'])) {
                                     <input type="file" class="form-control" id="img" name="img" accept="image/*"/>
                                     <div class="button-container mt-3 mb-4 d-flex justify-content-center">
                                         <a href="edit_profile_proses.php"><button class="edit-profile btn btn-success my-2 p-2 me-1" style="max-width: 8rem;">Save Profile</button></a>
-                                        <a href="profile.php"><button class="edit-profile btn btn-danger my-2 p-2 px-3 me-1" style="max-width: 8rem;">Back</button></a>
+                                        <a href="profile.php"><button class="edit-profile btn btn-danger my-2 p-2 px-3 me-1" style="max-width: 8rem;" name="back" value="GO_BACK">Back</button></a>
                                     </div>
                                 </div>
                             </div>

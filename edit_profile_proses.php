@@ -2,6 +2,12 @@
 session_start();
 require 'db.php';
 global $db;
+
+if(isset($_POST['back'])) {
+    header('location: profile.php');
+    return;
+}
+
 if (isset($_POST['username'])){
     $sql = "UPDATE user 
         SET username = ?
@@ -9,7 +15,7 @@ if (isset($_POST['username'])){
     $stmt = $db->prepare($sql);
     $data = [$_POST["username"], $_SESSION["id"]];
     $stmt->execute($data);
-    $_SESSION["email"] = $_POST["username"];
+    $_SESSION["username"] = $_POST["username"];
 }
 if (isset($_POST['email'])){
     $sql = "UPDATE user 
