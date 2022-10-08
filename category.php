@@ -1,16 +1,28 @@
 <?php
 session_start();
 //need login
+require_once 'Needlogin.php';
+require 'db.php';
+require_once("security.php");
 
-if (!isset($_SESSION["id"])) {
-	header("location: login_form.php");
-}
+$sql = "SELECT *,
+(
+    SELECT username from user
+    where id = user_id
+) AS 'username',
+(
+    SELECT img from user
+    where id = user_id
+) AS 'img',
+(
+    SELECT categories from forum
+    where id = forum_id
+) AS 'category'
+FROM post";
 
-// if (!isset($_SESSION["id"])) {
-// 	header("location: login_forum.php");
-// }
-
+$hasil = $db->query($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,79 +41,95 @@ if (!isset($_SESSION["id"])) {
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<link href="css/footer.css" rel="stylesheet">
-	<link href="css/category.css" rel="stylesheet">
-	<title>Profile</title>
 </head>
 
 <body>
 	<!-- navbar -->
 	<?php include_once './components/navbar.php' ?>
 
-	<article>
-		<div class='container tabbed round mt-4'>
-			<ul>
-				<li><img src="img/sql.svg"> SQL</li>
-				<li><img src="img/ruby.svg"> Ruby</li>
-				<li><img src="img/java.svg"> Java</li>
-				<li><img src="img/python.svg"> Python</li>
-				<li><img src="img/cpp.svg"> C++</li>
-				<li><img src="img/javascript.svg"> Javascript</li>
-				<li><img src="img/c.svg"> C</li>
-				<li class='active'><img src="img/php.svg"> PHP</li>
-			</ul>
+	<!-- hero -->
+	<main class="jumbotron jumbotron-fluid">
+		<div class="jumboDesc">
+			<h1>Welcome to <span>Spacely</span></h1>
+			<h2>Chill Place to Learn and Discuss</h2>
+			<span id="typed" class="mt-3"></span>
+
+			<form action="#" method="POST">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" type="submit" name="cari">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
+			</form>
 		</div>
-		<div class="container my-4 col-lg-8">
-			<?php ?>
-			<div class="card-group vgr-cards">
-				<div class="card">
-					<div class="card-body mx-3">
-						<div class="user-container d-flex align-items-center mb-2 text-nowrap">
-							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
-							<span class="post-username mx-2">
-								<p><?php echo $_SESSION['username'] ?></p>
-							</span>
-							<span class="post-date">24h ago</span>
-							<div class="w-100 d-flex justify-content-end">
-								<button class="category-button" role="button">PHP</button>
+	</main>
+
+	<article>
+		<div class="container tabs-container mt-4">
+			<div class="tabs-wrap">
+				<ul>
+					<li class="tabs-trends active" data-tabs="trends">Trending</li>
+					<li class="tabs-likes" data-tabs="likes">Most Liked</li>
+					<li class="tabs-latest" data-tabs="latest">Latest Post</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- posts -->
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
+			<div class="container my-4 col-lg-8">
+				<div class="card-group vgr-cards">
+					<div class="card border-0">
+						<div class="card-body mx-3">
+							<div class="user-container d-flex align-items-center mb-2 text-nowrap">
+								<?php if ($_SESSION['id']) { ?>
+									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
+								<?php } ?>
+								<span class="post-username mx-2"><?= $row['username'] ?></span>
+								<span class="post-date"><?= $row['date_created'] ?></span>
+								<div class="w-100 d-flex justify-content-end">
+									<button class="category-button" role="button"><?= $row['category'] ?></button>
+								</div>
 							</div>
-						</div>
-						<div class="content-container d-flex flex-column">
-							<h4 class="card-title">Judul</h4>
-							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis ipsam ex et assumenda soluta, voluptatem accusantium tempore aspernatur dolorum nostrum quos, repudiandae culpa quaerat non expedita dolores eveniet illo quisquam repellendus voluptas deleniti! Illum quo molestias necessitatibus tempore quaerat placeat esse?.</p>
-						</div>
-						<div class="feedback-container d-flex flex-row my-2">
-							<button><i class="fa-solid fa-thumbs-up"></i></button>
-							<span class="mx-1">5 likes</span>
-							<button><i class="fa-solid fa-comment"></i></button>
-							<span class="mx-1">2 comments</span>
+							<div class="content-container d-flex flex-column">
+								<h4 class="card-title"><?= $row['title'] ?></h4>
+								<p class="card-text"><?= $row['body'] ?></p>
+							</div>
+							<div class="feedback-container d-flex flex-row my-2">
+								<button><i class="fa-solid fa-thumbs-up"></i></button>
+								<span class="mx-1"><?= $row['like_ammount'] ?> likes</span>
+								<button><i class="fa-solid fa-comment"></i></button>
+								<span class="mx-1"><?= $row['comment_ammount'] ?> comments</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		<?php } ?>
 	</article>
 
-	<?php include_once './components/footer.php' ?>
+	<?php include_once './components/footer.php'; ?>
 
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			var tabs = document.querySelectorAll('.tabbed li');
-
-			for (var i = 0, len = tabs.length; i < len; i++) {
-				tabs[i].addEventListener("click", function() {
-					if (this.classList.contains('active'))
-						return;
-
-					var parent = this.parentNode,
-						innerTabs = parent.querySelectorAll('li');
-
-					for (var index = 0, iLen = innerTabs.length; index < iLen; index++) {
-						innerTabs[index].classList.remove('active');
-					}
-
-					this.classList.add('active');
-				});
-			}
+		// typed js
+		new Typed('#typed', {
+			strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL'],
+			typeSpeed: 175,
+			delaySpeed: 50,
+			loop: true
 		});
+
+		// tabs for sorting
+		var tabs = document.querySelectorAll(".tabs-wrap ul li");
+
+		tabs.forEach((tab) => {
+			tab.addEventListener("click", () => {
+				tabs.forEach((tab) => {
+					tab.classList.remove("active");
+				})
+				tab.classList.add("active");
+			})
+		})
 	</script>
 </body>
+
+</html>
