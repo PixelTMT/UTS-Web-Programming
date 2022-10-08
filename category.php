@@ -57,7 +57,9 @@ if (!isset($_SESSION["id"])) {
 					<div class="card-body mx-3">
 						<div class="user-container d-flex align-items-center mb-2 text-nowrap">
 							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
-							<span class="post-username mx-2">NiceTryKemosabe</span>
+							<span class="post-username mx-2">
+								<p><?php echo $_SESSION['username'] ?></p>
+							</span>
 							<span class="post-date">24h ago</span>
 							<div class="w-100 d-flex justify-content-end">
 								<button class="category-button" role="button">PHP</button>
