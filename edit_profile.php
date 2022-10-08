@@ -52,11 +52,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             <div class="row form-group">
                                 <div class="col">
                                     <label for="username" class="form-label mt-4 mb-2"> Username </label>
-                                    <input type="text" class="form-control" id="username" name="username" require />
+                                    <input type="text" class="form-control" id="username" name="username" />
                                     <label for="email" class="form-label mt-2 mb-2"> Email </label>
-                                    <input type="email" class="form-control" id="email" name="email" require />
+                                    <input type="email" class="form-control" id="email" name="email" />
                                     <label for="password" class="form-label mt-2 mb-2"> Upload Profile Picture </label>
-                                    <input type="file" class="form-control" id="img" name="img" require />
+                                    <input type="file" class="form-control" id="img" name="img" />
                                     <div class="button-container mt-3 mb-4 d-flex justify-content-center">
                                         <a href="edit_profile_proses.php"><button class="edit-profile btn btn-success my-2 p-2 me-1" style="max-width: 8rem;">Save Profile</button></a>
                                         <a href="profile.php"><button class="edit-profile btn btn-danger my-2 p-2 px-3 me-1" style="max-width: 8rem;">Back</button></a>

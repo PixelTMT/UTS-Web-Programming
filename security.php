@@ -129,3 +129,22 @@ function GetImgType($img)
     $file_ext = "." . $file_ext;
     return $file_ext;
 }
+
+function check_img_type($img_type)
+{
+    switch ($img_type) {
+        case 'jpg':
+        case 'png':
+        case 'jpeg':
+        case 'svg':
+        case 'webp':
+        case 'bmp':
+        case 'gif':
+            return true;
+            break;
+        default:
+            $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
+            header('location: create_account_form.php');
+            return false;
+    }
+}
