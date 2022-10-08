@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'NeedLogin.php';
 $incomplete_msg = "All fields are required. Please fill all required fields and submit again.";
 $alert_msg = $incomplete_msg;
 $style = "display:none;";
