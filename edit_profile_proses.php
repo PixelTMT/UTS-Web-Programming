@@ -60,7 +60,6 @@ function check_img_type($img_type)
             break;
         default:
             $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
-            header('location: edit_profile.php');
             return false;
     }
 }
