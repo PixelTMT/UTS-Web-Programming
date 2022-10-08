@@ -2,10 +2,7 @@
 
 // hidupkan sebelum di kumpul
 //error_reporting(0);
-
-$dsn = "mysql:host=localhost;dbname=uts_forum";
-$kunci = new PDO($dsn, "root", "");
-
+require_once "db.php";
 $blacklist = array(
     '&', ';', '`', '‘',
     "\"", '“', '|', '*', '?',
@@ -60,10 +57,10 @@ function Encode($text, $key = null)
 
 function CheckAccount($_username, $_password)
 {
-    global $kunci;
+    global $db;
     $sql = "SELECT * FROM user
         where username = ?";
-    $stmt = $kunci->prepare($sql);
+    $stmt = $db->prepare($sql);
     $stmt->execute([$_username]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $t = Encode($_password, $row['user_key']);
