@@ -1,8 +1,23 @@
+<script>
+	function List(category){
+		var url = new URL(location.href);
+    	url.searchParams.set('list', category);
+		window.location.href = url;
+	}
+</script>
 <?php
 session_start();
 //need login
 
 require_once("security.php");
+
+$tabs = array('trends','likes','latest');
+$current_tabs = 'trends';
+if(isset($_GET['list'])){
+	if(in_array($_GET['list'], $tabs)){
+		$current_tabs = strtolower($_GET['list']);
+	}
+}
 
 $sql = "SELECT *,
 (
@@ -17,9 +32,34 @@ $sql = "SELECT *,
     SELECT categories from forum
     where id = forum_id
 ) AS 'category'
-FROM post";
+FROM post ";
+
+switch($current_tabs){
+	case "trends":
+		$sql .= "ORDER BY comment_ammount";
+		break;
+	case "likes":
+		$sql .= "ORDER BY like_ammount";
+		break;
+	case "latest":
+		$sql .= "ORDER BY date_created DESC, time_created DESC";
+		break;
+}
 
 $hasil = $db->query($sql);
+
+function CheckActive($_category){
+	global $tabs;
+	if(isset($_GET['list'])){
+		if(in_array($_GET['list'], $tabs) && strtolower($_GET['list']) == $_category){
+			echo "active";
+		}
+	}else{
+		if($_category == 'trends'){
+			echo "active";
+		}
+	}
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,15 +106,15 @@ $hasil = $db->query($sql);
 		<div class="container tabs-container mt-4">
 			<div class="tabs-wrap">
 				<ul>
-					<li class="tabs-trends active" data-tabs="trends">Trending</li>
-					<li class="tabs-likes" data-tabs="likes">Most Liked</li>
-					<li class="tabs-latest" data-tabs="latest">Latest Post</li>
+					<li class="tabs-trends <?php CheckActive("trends");?>" onclick="List('trends')" data-tabs="trends">Trending</li>
+					<li class="tabs-likes <?php CheckActive("likes");?>" onclick="List('likes')" data-tabs="likes">Most Liked</li>
+					<li class="tabs-latest <?php CheckActive("latest");?>" onclick="List('latest')" data-tabs="latest">Latest Post</li>
 				</ul>
 			</div>
 		</div>
 
 		<!-- posts -->
-		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {?>
 			<div class="container my-4 col-lg-8">
 				<div class="card-group vgr-cards">
 					<div class="card border-0">
