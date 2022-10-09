@@ -1,10 +1,76 @@
+<script>
+	function List(category){
+		var url = new URL(location.href);
+    	url.searchParams.set('list', category);
+		window.location.href = url;
+	}
+</script>
 <?php
 session_start();
+$current_active_list = 'cpp';
+$C_list_A = array(
+	'sql',
+	'php',
+	'c',
+	'javascript',
+	'cpp',
+	'python',
+	'java',
+	'ruby'
+);
+$C_list_B = array(
+	'F0005' => 'sql', 
+	'F0006' => 'php', 
+	'F0007' => 'c', 
+	'F0008' => 'javascript', 
+	'F0001' => 'cpp', 
+	'F0002' => 'python', 
+	'F0003' => 'java', 
+	'F0004' => 'ruby',
+	'sql' => 'F0005',
+	'php' => 'F0006',
+	'c' => 'F0007',
+	'javascript' => 'F0008',
+	'cpp' => 'F0001',
+	'python' => 'F0002',
+	'java' => 'F0003',
+	'ruby' => 'F0004'
+);
+if(isset($_GET['list'])) {
+	if(in_array($_GET['list'], $C_list_A)){
+		$current_active_list = strtolower($_GET['list']);
+	}
+}
 
 require_once 'NeedLogin.php';
+require_once 'security.php';
+$sql = "SELECT *,
+(
+    SELECT username from user
+    where id = user_id
+) AS 'username',
+(
+    SELECT img from user
+    where id = user_id
+) AS 'img',
+(
+    SELECT categories from forum
+    where id = forum_id
+) AS 'category'
+FROM post";
 
-if (!isset($_SESSION["id"])) {
-	header("location: login_form.php");
+$hasil = $db->query($sql);
+function CheckActive($_category){
+	global $C_list_A;
+	if(isset($_GET['list'])){
+		if(in_array($_GET['list'], $C_list_A) && strtolower($_GET['list']) == $_category){
+			echo "class='active'";
+		}
+	}else{
+		if($_category == 'cpp'){
+			echo "class='active'";
+		}
+	}
 }
 
 ?>
@@ -37,47 +103,50 @@ if (!isset($_SESSION["id"])) {
 	<article>
 		<div class='container tabbed round mt-4'>
 			<ul>
-				<li><img src="img/sql.svg"> SQL</li>
-				<li><img src="img/ruby.svg"> Ruby</li>
-				<li><img src="img/java.svg"> Java</li>
-				<li><img src="img/python.svg"> Python</li>
-				<li><img src="img/cpp.svg"> C++</li>
-				<li><img src="img/javascript.svg"> Javascript</li>
-				<li><img src="img/c.svg"> C</li>
-				<li class='active'><img src="img/php.svg"> PHP</li>
+				<li <?php CheckActive("sql");?> onclick="List('sql')"><img src="img/sql.svg"> SQL</li>
+				<li	<?php CheckActive("ruby");?> onclick="List('ruby')"><img src="img/ruby.svg"> Ruby</li>
+				<li	<?php CheckActive("java");?> onclick="List('java')"><img src="img/java.svg"> Java</li>
+				<li	<?php CheckActive("python");?> onclick="List('python')"><img src="img/python.svg"> Python</li>
+				<li	<?php CheckActive("cpp");?> onclick="List('cpp')"><img src="img/cpp.svg"> C++</li>
+				<li	<?php CheckActive("javascript");?> onclick="List('javascript')"><img src="img/javascript.svg"> Javascript</li>
+				<li	<?php CheckActive("c");?> onclick="List('c')"><img src="img/c.svg"> C</li>
+				<li <?php CheckActive("php");?> onclick="List('php')"><img src="img/php.svg"> PHP</li>
 			</ul>
 		</div>
 		<div class="container temporary text-center d-flex align-items-center justify-content-center">
 			<a href="create_post_form.php"><button class="category-button" role="button">Add Form</button></a>
 		</div>
 
-		<div class="container my-4 col-lg-8">
-			<?php ?>
-			<div class="card-group vgr-cards">
-				<div class="card">
-					<div class="card-body mx-3">
-						<div class="user-container d-flex align-items-center mb-2 text-nowrap">
-							<img src="img/SPACELY.svg" alt="Tes Foto User" class="post-header rounded-circle">
-							<span class="post-username mx-2">NiceTryKemosabe</span>
-							<span class="post-date">24h ago</span>
-							<div class="w-100 d-flex justify-content-end">
-								<button class="category-button" role="button">PHP</button>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { if($row['forum_id'] == $C_list_B[$current_active_list]){?>
+			<div class="container my-4 col-lg-8">
+				<div class="card-group vgr-cards">
+					<div class="card border-0">
+						<div class="card-body mx-3">
+							<div class="user-container d-flex align-items-center mb-2 text-nowrap">
+								<?php if ($_SESSION['id']) { ?>
+									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
+								<?php } ?>
+								<span class="post-username mx-2"><?= $row['username'] ?></span>
+								<span class="post-date"><?= $row['date_created'] ?></span>
+								<div class="w-100 d-flex justify-content-end">
+									<button class="category-button" role="button"><?= $row['category'] ?></button>
+								</div>
 							</div>
-						</div>
-						<div class="content-container d-flex flex-column">
-							<h4 class="card-title">Judul</h4>
-							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis ipsam ex et assumenda soluta, voluptatem accusantium tempore aspernatur dolorum nostrum quos, repudiandae culpa quaerat non expedita dolores eveniet illo quisquam repellendus voluptas deleniti! Illum quo molestias necessitatibus tempore quaerat placeat esse?.</p>
-						</div>
-						<div class="feedback-container d-flex flex-row my-2">
-							<button><i class="fa-solid fa-thumbs-up"></i></button>
-							<span class="mx-1">5 likes</span>
-							<button><i class="fa-solid fa-comment"></i></button>
-							<span class="mx-1">2 comments</span>
+							<div class="content-container d-flex flex-column">
+								<h4 class="card-title"><?= $row['title'] ?></h4>
+								<p class="card-text"><?= $row['body'] ?></p>
+							</div>
+							<div class="feedback-container d-flex flex-row my-2">
+								<button><i class="fa-solid fa-thumbs-up"></i></button>
+								<span class="mx-1"><?= $row['like_ammount'] ?> likes</span>
+								<button><i class="fa-solid fa-comment"></i></button>
+								<span class="mx-1"><?= $row['comment_ammount'] ?> comments</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		<?php }} ?>
 	</article>
 
 	<?php include_once './components/footer.php' ?>
