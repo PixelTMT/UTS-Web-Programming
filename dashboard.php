@@ -76,33 +76,43 @@ $hasil = $db->query($sql);
 		<!-- posts -->
 		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
 			<div class="container my-4 col-lg-8">
-				<div class="card-group vgr-cards">
-					<div class="card border-0">
-						<div class="card-body mx-3">
-							<div class="user-container d-flex align-items-center mb-2 text-nowrap">
-								<?php if ($_SESSION['id']) { ?>
-									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
+			<div class="card-group vgr-cards">
+				<div class="card border-0">
+					<div class="card-body me-2 d-flex flex-row">
+
+						<div class="px-2 align-middle text-center justify-content-center align-items-center">
+							<div class="d-flex flex-column me-3 mt-1">
+								<button class="border-0 bg-transparent p-2" id="upvoteBtn"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+								<span class="mx-1" id="vote-count"><?= $row['like_ammount']?></span>
+								<button class="border-0 bg-transparent p-2" id="downvoteBtn"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+							</div>
+						</div>
+
+						<div class="d-flex flex-column w-100">
+							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+								<?php if ($_SESSION['id']) {?>
+								<img src=<?= "user_img/" . $row['img']?> alt="user img" class="post-header rounded-circle">
 								<?php } ?>
-								<span class="post-username mx-2"><?= $row['username'] ?></span>
-								<span class="post-date"><?= $row['date_created'] ?></span>
-								<div class="w-100 d-flex justify-content-end">
-									<button class="category-button" role="button"><?= $row['category'] ?></button>
+								<span class="post-username mx-2"><?= $row['username']?></span>
+								<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+								<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created']?></span>
+								<div class="w-100 d-flex flex-row justify-content-end">
+									<button class="category-button" role="button"><?= $row['category']?></button>
 								</div>
 							</div>
 							<div class="content-container d-flex flex-column">
-								<h4 class="card-title"><?= $row['title'] ?></h4>
-								<p class="card-text"><?= $row['body'] ?></p>
+								<h4 class="card-title"><?= $row['title']?></h4>
+								<p class="card-text"><?= $row['body']?></p>
 							</div>
 							<div class="feedback-container d-flex flex-row my-2">
-								<button><i class="fa-solid fa-thumbs-up"></i></button>
-								<span class="mx-1"><?= $row['like_ammount'] ?> likes</span>
-								<button><i class="fa-solid fa-comment"></i></button>
-								<span class="mx-1"><?= $row['comment_ammount'] ?> comments</span>
+								<button class="px-2 py-2"><i class="fa-solid fa-comment" style="color: grey;"></i>
+								<span class="mx-auto my-auto" style="font-weight: bold; color: #6B6B6B"><?= $row['comment_ammount']?> comments</span></button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		<?php } ?>
 	</article>
 
@@ -128,6 +138,35 @@ $hasil = $db->query($sql);
 				tab.classList.add("active");
 			})
 		})
+
+	var upvoteBtn = document.getElementById('upvoteBtn');
+	var upvoteIcon = document.getElementById('upvoteIcon');
+
+	upvoteBtn.addEventListener('click', function onClick(event) {
+		const color = upvoteIcon.style.color;
+
+		if(color === 'grey') {
+			upvoteIcon.style.color = '#3d5af1';
+		} else {
+			upvoteIcon.style.color = 'grey';
+		}
+
+		
+	})
+
+	var downvoteBtn = document.getElementById('downvoteBtn');
+	var downvoteIcon = document.getElementById('downvoteIcon');
+
+	downvoteBtn.addEventListener('click', function onClick(event) {
+		const color = downvoteIcon.style.color;
+
+		if(color === 'grey') {
+			downvoteIcon.style.color = '#e63946';
+		} else {
+			downvoteIcon.style.color = 'grey';
+		}
+	})
+
 	</script>
 </body>
 
