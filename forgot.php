@@ -1,16 +1,4 @@
-<!-- <?php
-        session_start();
-        $incomplete_msg = "Please fill all required fields and submit again.";
-        $alert_msg = $incomplete_msg;
-        $style = "display:none;";
-        if (isset($_SESSION['ERROR'])) {
-            if ($_SESSION['ERROR'] != "") {
-                $alert_msg = $_SESSION['ERROR'];
-                $style = "display:block;";
-                $_SESSION['ERROR'] = "";
-            }
-        }
-        ?> -->
+<?php include_once("controller.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="css/forget.css" rel="stylesheet">
-    <title>Forgot Password</title>
+    <title>User Forgot Password</title>
 </head>
 
 <body>
@@ -30,19 +18,26 @@
             <header>
                 <p class="h3" style="font-weight:100;">Forgot Your Password</p>
             </header>
-            <h4 id="alert" style=<?php echo $style ?>>
-                <?php echo $alert_msg ?>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
-            <form id="form_week6" action="login_process.php" method="post" enctype="multipart/form-data">
+            <form action="forgot.php" method="POST" autocomplete="off">
                 <div class="row form-group">
                     <div class="col">
                         <label for="email" class="form-label mt-4 mb-2"> Email </label>
                         <br />
                         <label style="opacity: 0.5;"> Enter registered email</label>
-                        <input type="email" class="form-control mt-1" id="email" name="email" require />
+                        <?php
+                        if ($errors > 0) {
+                            foreach ($errors as $displayErrors) {
+                        ?>
+                                <div id="alert"><?php echo $displayErrors; ?></div>
+                        <?php
+                            }
+                        }
+                        ?>
+                        <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Ex: Spacely@gmail.com" require />
                         <div class="button-container mt-3 mb-4 text-center">
-                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>Check</button>
+                            <input type="submit" class="mt-2 mb-2 btn btn-danger" name="forgot_password" value="Check">
                         </div>
                     </div>
                 </div>
