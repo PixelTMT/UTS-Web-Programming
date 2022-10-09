@@ -51,7 +51,10 @@ if (isset($_SESSION['ERROR'])) {
                 </div>
             </form>
         </div>
-        <div class="footer mt-4 d-flex text-center justify-content-center">
+        <div class="footer mt-1 text-left justify-content-center">
+            <a href="forgot.php">Forgot Your Password?</a>
+        </div>
+        <div class="footer mt-1 d-flex text-center">
             <p>Don't have an Account yet? &nbsp;</p>
             <a href="create_account_form.php"> Sign up here</a>
         </div>
@@ -59,5 +62,4 @@ if (isset($_SESSION['ERROR'])) {
         <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
         </script>
 </body>
-
 </html>

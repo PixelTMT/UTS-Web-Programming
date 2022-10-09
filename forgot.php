@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
         session_start();
         $incomplete_msg = "Please fill all required fields and submit again.";
         $alert_msg = $incomplete_msg;
@@ -10,8 +10,7 @@
                 $_SESSION['ERROR'] = "";
             }
         }
-?>
-
+        ?> -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,19 +19,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="css/login.css" rel="stylesheet">
+    <link href="css/forget.css" rel="stylesheet">
     <title>Forgot Password</title>
 </head>
 
 <body>
-    <div class="main container d-flex flex-column justify-content-center align-items-center">
+    <div class=" main container d-flex flex-column justify-content-center align-items-center mt-5">
         <div class="text-center mt-4 header mx-auto">
             <img src="img/SPACELY.svg" class="logo mt-2 mb-4" alt="...">
             <header>
                 <p class="h3" style="font-weight:100;">Forgot Your Password</p>
-                <span class="text-muted">
-                    <p>Forum pemrograman terbaik di Indonesia</p>
-                </span>
             </header>
             <h4 id="alert" style=<?php echo $style ?>>
                 <?php echo $alert_msg ?>
@@ -43,8 +39,8 @@
                     <div class="col">
                         <label for="email" class="form-label mt-4 mb-2"> Email </label>
                         <br />
-                        <a style="opacity: 0.5;"> Enter registered email</a>
-                        <input type="email" class="form-control" id="email" name="email" require />
+                        <label style="opacity: 0.5;"> Enter registered email</label>
+                        <input type="email" class="form-control mt-1" id="email" name="email" require />
                         <div class="button-container mt-3 mb-4 text-center">
                             <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>Check</button>
                         </div>
