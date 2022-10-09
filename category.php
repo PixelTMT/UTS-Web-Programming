@@ -101,7 +101,7 @@ function CheckActive($_category){
 	<?php include_once './components/navbar.php' ?>
 
 	<article>
-		<div class='container tabbed round mt-4'>
+		<div class='container tabbed round mt-4 mb-3'>
 			<ul>
 				<li <?php CheckActive("sql");?> onclick="List('sql')"><img src="img/sql.svg"> SQL</li>
 				<li	<?php CheckActive("ruby");?> onclick="List('ruby')"><img src="img/ruby.svg"> Ruby</li>
@@ -114,38 +114,51 @@ function CheckActive($_category){
 			</ul>
 		</div>
 		<div class="container temporary text-center d-flex align-items-center justify-content-center">
-			<a href="create_post_form.php"><button class="category-button" role="button">Add Form</button></a>
+			<a href="create_post_form.php"><button class="category-button mb-3" role="button">Add Post</button></a>
 		</div>
 
 		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { if($row['forum_id'] == $C_list_B[$current_active_list]){?>
 			<div class="container my-4 col-lg-8">
-				<div class="card-group vgr-cards">
-					<div class="card border-0">
-						<div class="card-body mx-3">
-							<div class="user-container d-flex align-items-center mb-2 text-nowrap">
-								<?php if ($_SESSION['id']) { ?>
-									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
+			<div class="card-group vgr-cards">
+				<div class="card border-0">
+					<div class="card-body me-2 d-flex flex-row">
+
+						<div class="px-2 align-middle text-center justify-content-center align-items-center">
+							<div class="d-flex flex-column me-3 mt-1">
+								<button class="border-0 bg-transparent p-2" id="upvoteBtn"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+								<span class="mx-1" id="vote-count"><?= $row['like_ammount']?></span>
+								<button class="border-0 bg-transparent p-2" id="downvoteBtn"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+							</div>
+						</div>
+
+						<div class="d-flex flex-column w-100">
+							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+								<?php if ($_SESSION['id']) {?>
+								<div style="width: 60px; height: 40px; overflow:hidden;">
+									<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+								</div>
 								<?php } ?>
-								<span class="post-username mx-2"><?= $row['username'] ?></span>
-								<span class="post-date"><?= $row['date_created'] ?></span>
-								<div class="w-100 d-flex justify-content-end">
-									<button class="category-button" role="button"><?= $row['category'] ?></button>
+								<span class="post-username me-1"><?= $row['username']?></span>
+								<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+								<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created']?></span>
+								<div class="w-100 d-flex flex-row justify-content-end">
+									<button class="category-button" role="button"><?= $row['category']?></button>
 								</div>
 							</div>
 							<div class="content-container d-flex flex-column">
-								<h4 class="card-title"><?= $row['title'] ?></h4>
-								<p class="card-text"><?= $row['body'] ?></p>
+								<h4 class="card-title"><?= $row['title']?></h4>
+								<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap;"><?= $row['body']?></p>
 							</div>
 							<div class="feedback-container d-flex flex-row my-2">
-								<button><i class="fa-solid fa-thumbs-up"></i></button>
-								<span class="mx-1"><?= $row['like_ammount'] ?> likes</span>
-								<button><i class="fa-solid fa-comment"></i></button>
-								<span class="mx-1"><?= $row['comment_ammount'] ?> comments</span>
+								<button class="px-2 py-2" style="max-width: 10rem"><i class="fa-solid fa-comment" style="color: grey;"></i>
+								<span class="mx-auto my-auto" style="font-weight: bold; color: #6B6B6B"><?= $row['comment_ammount']?> comments</span></button>
+								<a onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'" class="post-detail-link ms-auto align-self-end" style="text-decoration: none; color: #6B6B6B; font-size: 13px; " href="post_detail.php">show details</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		<?php }} ?>
 	</article>
 

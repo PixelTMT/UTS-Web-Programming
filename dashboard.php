@@ -91,10 +91,12 @@ function CheckActive($_category){
 		<div class="jumboDesc">
 			<h1>Welcome to <span>Spacely</span></h1>
 			<h2>Chill Place to Learn and Discuss</h2>
-			<span id="typed" class="mt-3"></span>
+			<div style="height: 100px; padding-bottom: 10px;">
+				<span id="typed" class="mt-3"></span>
+			</div>
 
 			<form action="#" method="POST">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" type="submit" name="cari">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit" name="cari">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
@@ -131,9 +133,11 @@ function CheckActive($_category){
 						<div class="d-flex flex-column w-100">
 							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 								<?php if ($_SESSION['id']) {?>
-								<img src=<?= "user_img/" . $row['img']?> alt="user img" class="post-header rounded-circle">
+								<div style="width: 60px; height: 40px; overflow:hidden;">
+									<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+								</div>
 								<?php } ?>
-								<span class="post-username mx-2"><?= $row['username']?></span>
+								<span class="post-username me-1"><?= $row['username']?></span>
 								<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 								<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created']?></span>
 								<div class="w-100 d-flex flex-row justify-content-end">
@@ -142,11 +146,12 @@ function CheckActive($_category){
 							</div>
 							<div class="content-container d-flex flex-column">
 								<h4 class="card-title"><?= $row['title']?></h4>
-								<p class="card-text"><?= $row['body']?></p>
+								<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap;"><?= $row['body']?></p>
 							</div>
 							<div class="feedback-container d-flex flex-row my-2">
-								<button class="px-2 py-2"><i class="fa-solid fa-comment" style="color: grey;"></i>
+								<button class="px-2 py-2" style="max-width: 10rem"><i class="fa-solid fa-comment" style="color: grey;"></i>
 								<span class="mx-auto my-auto" style="font-weight: bold; color: #6B6B6B"><?= $row['comment_ammount']?> comments</span></button>
+								<a onMouseOver="this.style.textDecoration='underline'" onMouseOut="this.style.textDecoration='none'" class="post-detail-link ms-auto align-self-end" style="text-decoration: none; color: #6B6B6B; font-size: 13px; " href="post_detail.php">show details</a>
 							</div>
 						</div>
 					</div>
