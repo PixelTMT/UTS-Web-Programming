@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("security.php");
+require_once 'mailing.php';
 var_dump($name);
 
 if (
@@ -27,57 +28,34 @@ if (
         $_SESSION['ERROR'] = "name must be alphanumeric";
         header('location: create_account_form.php');
     }
-    $id = "U";
-    $name = $_POST["name"];
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $encrypted = Encode($_POST["password"]);
-    $user_key = $encrypted['key'];
-    $encrypted_password = $encrypted['encoded'];
-    $img = $_FILES["img"]["name"];
-    $img_temp = $_FILES["img"]['tmp_name'];
-    $file_ext = explode(".", $img);
-    $file_ext = end($file_ext);
-    $file_ext = strtolower($file_ext);
-
-    //check if database is empty
-
-    if (check_img_type($file_ext)) {
-        // 0 = user, 1 = admin
-        $id = GetID(0);
-        move_uploaded_file($img_temp, "user_img/{$id}.{$file_ext}");
-        insert_to_database($id, $name, $username, $email, $user_key, $encrypted_password, "{$id}.{$file_ext}");
-        header('location: login_form.php');
+    $_SESSION['email'] = $_POST["email"];
+    if(isset($_SESSION['OTPcode']) && $_SESSION['OTPTimespan']){
+        if(time() - $_SESSION['OTPTimespan'] > 60){
+            $code = rand(999999, 111111);
+            $_SESSION['OTPcode'] = $code;
+            $_SESSION['OTPTimespan'] = time();
+            $subject = 'Email Verification Code';
+            $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
+            sendingEmail($_POST['email'], $subject, $message);
+        }
     }
+
+    $_SESSION['email'] = $_POST['email'];
+
+    $id = "U";
+    $_SESSION['name'] = $_POST["name"];
+    $_SESSION['username'] = $_POST["username"];
+    $encrypted = Encode($_POST["password"]);
+    $_SESSION['user_key'] = $encrypted['key'];
+    $_SESSION['encrypted_password'] = $encrypted['encoded'];
+    $img = $_FILES["img"]["name"];
+    $_SESSION['img_temp'] = $_FILES["img"]['tmp_name'];
+    $_SESSION['file_ext'] = explode(".", $img);
+    $_SESSION['file_ext'] = end($_SESSION['file_ext']);
+    $_SESSION['file_ext'] = strtolower($_SESSION['file_ext']);
+    
+    header('location: create_account_verify.php');
 } else {
     $_SESSION['ERROR'] = "All fields are required. Please fill all required fields and submit again.";
     header('location: create_account_form.php');
-}
-
-
-function insert_to_database($_id, $_name, $_username, $_email, $_user_key, $_encrypted_password, $_img)
-{
-    global $blacklist;
-    $sql = "INSERT INTO user(id, name, username, email, user_key, encrypted_password, img)
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-    global $db;
-    $stmt = $db->prepare($sql);
-    $_username = str_replace($blacklist, "", $_username);
-    $_email = str_replace($blacklist, "", $_email);
-    $data = [$_id, $_name, $_username, $_email, $_user_key, $_encrypted_password, $_img];
-    $stmt->execute($data);
-}
-
-function GetID($type)
-{
-    $id = 0;
-    $sql = "SELECT * FROM user";
-    global $db;
-    $hasil = $db->query($sql);
-    while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
-        $id = intval($row['id']);
-    }
-    $re = strval($type);
-    $re .= str_pad(strval($id + 1), 4, '0', STR_PAD_LEFT);
-    return $re;
 }

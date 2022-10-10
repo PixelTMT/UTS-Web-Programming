@@ -1,4 +1,9 @@
-<?php include_once("controller.php"); ?>
+<?php 
+session_start();
+if($_SESSION['OTPTimespan'] != 'YOU WIN!' && $_SESSION['OTPcode'] != 'YOU WIN!'){
+    header('location: login_form.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,18 +19,18 @@
     <div id="container">
         <h2>Password</h2>
         <div id="line"></div>
-        <form action="newPassword.php" method="POST" autocomplete="off">
+        <form action="newPassword_process.php" method="POST" autocomplete="off">
             <?php
-            if ($errors > 0) {
-                foreach ($errors as $displayErrors) {
-            ?>
-                    <div id="alert"><?php echo $displayErrors; ?></div>
-            <?php
+            if (isset($_SESSION['ERROR'])) {
+                if($_SESSION['ERROR'] != ''){?>
+                    <div id="alert"><?php echo $_SESSION['ERROR']; ?></div>
+                <?php
+                $_SESSION['ERROR'] = '';
                 }
             }
             ?>
             <input type="password" name="password" placeholder="Password" required><br>
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" required><br>
+            <input type="password" name="password2" placeholder="Confirm Password" required><br>
             <input type="submit" name="changePassword" value="Save">
         </form>
     </div>
