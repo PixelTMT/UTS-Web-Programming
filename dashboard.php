@@ -34,6 +34,8 @@ $sql = "SELECT *,
 ) AS 'category'
 FROM post ";
 
+$hasil = $db->query($sql);
+
 switch($current_tabs){
 	case "trends":
 		$sql .= "ORDER BY comment_ammount";
@@ -45,8 +47,6 @@ switch($current_tabs){
 		$sql .= "ORDER BY date_created DESC, time_created DESC";
 		break;
 }
-
-$hasil = $db->query($sql);
 
 function CheckActive($_category){
 	global $tabs;
@@ -77,6 +77,7 @@ function CheckActive($_category){
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 	<script src="js/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<link href="css/footer.css" rel="stylesheet">
@@ -134,7 +135,8 @@ function CheckActive($_category){
 							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 								<?php if ($_SESSION['id']) {?>
 								<div style="width: 60px; height: 40px; overflow:hidden;">
-									<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+								<a href="user_profile.php?id=<?=$row['user_id']?>">
+								<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
 								</div>
 								<?php } ?>
 								<span class="post-username me-1"><?= $row['username']?></span>
