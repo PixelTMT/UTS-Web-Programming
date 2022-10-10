@@ -1,7 +1,9 @@
 <?php 
 session_start();
-if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
-    $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
+if(isset($_SESSION['OTPTimespan']) && isset($_SESSION['OTPcode'])){
+    if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
+        $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -19,7 +21,7 @@ if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
     <div id="container">
         <h2>Email</h2>
         <div id="line"></div>
-        <form action="verifyEmail_process.php" method="POST" autocomplete="off">
+        <form action="create_account_verify_process.php" method="POST" autocomplete="off">
             <?php
             if (isset($_SESSION['ERROR'])) {
                 if($_SESSION['ERROR'] != ''){?>
@@ -29,12 +31,7 @@ if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
                 }
             }
             ?>
-            <input type="number" name="OTPverify" placeholder="Verification Code" required
-            <?php
-                if(isset($_GET['OTPcode'])){
-                    echo "value='".$_GET['OTPcode']."'";
-                }
-            ?>><br>
+            <input type="number" name="OTPverify" placeholder="Verification Code" required><br>
             <input type="submit" name="verifyEmail" value="Verify">
         </form>
     </div>

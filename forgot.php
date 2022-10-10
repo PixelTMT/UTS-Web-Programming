@@ -1,4 +1,6 @@
-<?php include_once("controller.php"); ?>
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,18 +22,18 @@
             </header>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
-            <form action="forgot.php" method="POST" autocomplete="off">
+            <form action="forgot_process.php" method="POST" autocomplete="off">
                 <div class="row form-group">
                     <div class="col">
                         <label for="email" class="form-label mt-4 mb-2"> Email </label>
                         <br />
                         <label style="opacity: 0.5;"> Enter registered email</label>
                         <?php
-                        if ($errors > 0) {
-                            foreach ($errors as $displayErrors) {
-                        ?>
-                                <div id="alert"><?php echo $displayErrors; ?></div>
-                        <?php
+                        if (isset($_SESSION['ERROR'])) {
+                            if($_SESSION['ERROR'] != ''){?>
+                                <div id="alert"><?php echo $_SESSION['ERROR']; ?></div>
+                            <?php
+                            $_SESSION['ERROR'] = '';
                             }
                         }
                         ?>
