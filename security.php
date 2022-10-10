@@ -122,6 +122,25 @@ function CheckValidString($string)
     return ($string != str_ireplace($blacklist, "XX", $string)) ? true : false;
 }
 
+function CheckEmailExist($_email){
+    global $db;
+    $sql = "SELECT email FROM user";
+    $hasil = $db->query($sql);
+    while($row = $hasil->fetch(PDO::FETCH_ASSOC)){
+        if($row['email'] == $_email) return true;
+    }
+    return false;
+}
+function CheckUserNameExist($_username){
+    global $db;
+    $sql = "SELECT username FROM user";
+    $hasil = $db->query($sql);
+    while($row = $hasil->fetch(PDO::FETCH_ASSOC)){
+        if($row['username'] == $_username) return true;
+    }
+    return false;
+}
+
 function GetImgType($img)
 {
     $file_ext = explode(".", $img);
@@ -131,7 +150,7 @@ function GetImgType($img)
     return $file_ext;
 }
 
-function check_img_type($img_type)
+function check_img_type($img_type, $redirect_to)
 {
     switch ($img_type) {
         case 'jpg':
@@ -145,7 +164,7 @@ function check_img_type($img_type)
             break;
         default:
             $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
-            header('location: create_account_form.php');
+            header("location: $redirect_to");
             return false;
     }
 }
