@@ -135,10 +135,12 @@ function CheckActive($_category){
 							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 								<?php if ($_SESSION['id']) {?>
 								<div style="width: 60px; height: 40px; overflow:hidden;">
-									<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+								<a href="user_profile.php?id=<?=$row['user_id']?>">
+								<img src=<?= "user_img/" . $row['img']?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
 								</div>
 								<?php } ?>
-								<span class="post-username me-1"><?= $row['username']?></span>
+								<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?=$row['user_id']?>">
+								<span class="post-username me-1"><?= $row['username']?></span></a>
 								<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 								<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created']?></span>
 								<div class="w-100 d-flex flex-row justify-content-end">

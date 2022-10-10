@@ -1,0 +1,160 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Contrail+One&family=Dancing+Script&family=Noto+Sans+Mono:wght@700&family=Poppins:wght@200;400;700&family=Racing+Sans+One&display=swap");
+
+:root {
+  --font-size: 1rem;
+
+  --primary01: #d83f87;
+  --primary02: #2a1b3d;
+  --primary03: #44318d;
+  --secondary01: #e98074;
+  --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
+  --accent01: #e63946;
+  --accent02: #fbc531;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+
+/* SOCIAL PANEL CSS */
+.social-panel-container {
+  position: fixed;
+  right: 0;
+  bottom: 80px;
+  transform: translateX(100%);
+  transition: transform 0.4s ease-in-out;
+  z-index: 100;
+}
+
+.social-panel-container.visible {
+  transform: translateX(-10px);
+}
+
+.social-panel {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 16px 31px -17px var(--primary02);
+  border: 5px solid var(--primary03);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins";
+  position: relative;
+  height: 150px;
+  width: 300px;
+  max-width: calc(100% - 10px);
+}
+
+.social-panel button.close-btn {
+  border: 0;
+  color: #97a5ce;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 12px;
+}
+
+.social-panel button.close-btn:focus {
+  outline: none;
+}
+
+.social-panel p {
+  background-color: var(--primary03);
+  border-radius: 0 0 10px 10px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 2px 17px 6px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 180px;
+}
+
+.social-panel p i {
+  margin: 0 5px;
+}
+
+.social-panel p a {
+  color: var(--primary01);
+  text-decoration: none;
+}
+
+.social-panel ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-panel ul li {
+  margin: 0 10px;
+}
+
+.social-panel ul li a {
+  border: 1px solid #dce1f2;
+  border-radius: 50%;
+  color: #001f61;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  text-decoration: none;
+}
+
+.social-panel ul li a:hover {
+  border-color: var(--primary01);
+  box-shadow: 0 9px 12px -9px var(--primary01);
+}
+
+.social-panel ul li h5 {
+  font-size: 12px;
+  align-self: center;
+  margin-top: 5px;
+  margin: auto;
+}
+
+.floating-btn {
+  border-radius: 26.5px;
+  background-color: var(--accent02);
+  border: 1px solid black;
+  box-shadow: 0 16px 22px -17px #000000;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 12px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+}
+
+.floating-btn:hover {
+  background-color: var(--primary03);
+  color: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.floating-btn:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 480px) {
+  .social-panel-container.visible {
+    transform: translateX(0px);
+  }
+
+  .floating-btn {
+    right: 10px;
+  }
+}

@@ -44,7 +44,7 @@ $result = $stmt->fetchAll();
 	<?php include_once './components/navbar.php' ?>
 
 	<main>
-		<div class="container d-flex flex-row mb-4 justify-content-center">
+		<div class="container profile-main-container mb-4 justify-content-center">
 			<div class="container col-lg-3 card profile-container d-flex flex-row mt-4 mx-2" style="max-height: 25rem;">
 				<div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
 					<div class="my-3" style="width: 150px; height: 150px; overflow: hidden;">

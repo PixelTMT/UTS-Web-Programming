@@ -1,4 +1,4 @@
- <nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <a class="navbar-brand" href="dashboard.php">
             <img src="img/SPACELY.svg" width="45" height="45" alt="">
