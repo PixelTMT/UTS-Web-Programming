@@ -49,7 +49,7 @@ if (isset($_SESSION['ERROR'])) {
                         <label for="password" class="form-label mt-2 mb-2"> Confirm Password </label>
                         <input type="password" class="form-control" id="password" name="password2" require />
                         <label for="password" class="form-label mt-2 mb-2"> Upload Profile Picture </label>
-                        <input type="file" class="form-control" id="img" name="img" require />
+                        <input type="file" class="form-control" id="img" name="img" accept="image/*" require />
                         <div class="button-container mt-3 mb-4 text-center">
 
                             <button type="submit" class="mt-2 mb-2 btn btn-danger" name="submit" require>Create</button>

@@ -33,9 +33,31 @@ function sendingEmail($email_to, $subject, $msg){
         $mail->Subject = $subject;
         $mail->Body = $msg;
 
-        $mail->send();
+        $status = $mail->send();
+        if(!$status){
+            $email_sender = 'spacelymail@gmail.com';
+            $name_sender = 'spacely';
 
-        echo 'Message has been sent';
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = $email_sender;
+            $mail->Password = 'kvvihkrowljjysmm';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = 587;
+            $mail->SMTPSecure = 'ssl';
+            $mail->SMTPDebug = 0;
+
+            $mail->setFrom($email_sender, $name_sender);
+            $mail->addAddress($email_to);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $msg;
+
+            $status = $mail->send();
+        }
+        
+        return $status;
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }

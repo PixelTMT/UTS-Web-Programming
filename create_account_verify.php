@@ -5,6 +5,22 @@ if(isset($_SESSION['OTPTimespan']) && isset($_SESSION['OTPcode'])){
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
     }
 }
+if(isset($_GET['resend'])){
+    if(isset($_SESSION['OTPcode']) && $_SESSION['OTPTimespan']){
+        if(time() - $_SESSION['OTPTimespan'] > 60){
+            $code = rand(999999, 111111);
+            $_SESSION['OTPcode'] = $code;
+            $_SESSION['OTPTimespan'] = time();
+            $subject = 'Email Verification Code';
+            $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
+            $stat = sendingEmail($_POST['email'], $subject, $message);
+        }
+        else{
+            $t = 60 - (time() - $_SESSION['OTPTimespan']);
+            echo "<script type='text/javascript'>alert('Wait for {$t} seconds');</script>";
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +47,15 @@ if(isset($_SESSION['OTPTimespan']) && isset($_SESSION['OTPcode'])){
                 }
             }
             ?>
-            <input type="number" name="OTPverify" placeholder="Verification Code" required><br>
+            <input type="number" name="OTPverify" placeholder="Verification Code" required
+            <?php
+                if(isset($_GET['OTPcode'])){
+                    echo "value='".$_GET['OTPcode']."'";
+                }
+            ?>><br>
+            <a href="./create_account_verify.php?resend=0000">
+                <input type="button" name="resend" value="resend">
+            </a>
             <input type="submit" name="verifyEmail" value="Verify">
         </form>
     </div>

@@ -12,15 +12,11 @@ if(isset($_POST['OTPverify'])){
     $_POST['OTPverify'] == $_SESSION['OTPcode']){
         
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = 'YOU WIN!';
-
-        if (check_img_type($_SESSION['file_ext'])) {
-            // 0 = user, 1 = admin
-            $id = GetID(0);
-            move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}.{$_SESSION['file_ext']}");
-            insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}.{$_SESSION['file_ext']}");
-            session_destroy();
-            header('location: login_form.php');
-        }
+        $id = GetID(0);
+        move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}.{$_SESSION['file_ext']}");
+        insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}.{$_SESSION['file_ext']}");
+        session_destroy();
+        header('location: login_form.php');
     }
 }
 

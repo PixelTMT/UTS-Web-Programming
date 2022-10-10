@@ -2,6 +2,7 @@
 session_start();
 require 'db.php';
 require 'mailing.php';
+require_once 'security.php';
 global $db;
 
 if(isset($_POST['back'])) {
@@ -32,7 +33,7 @@ if (!empty($_FILES['img']["name"])){
     $stmt = $db->prepare($sql);
     $stmt->execute([$_SESSION["id"]]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (check_img_type($file_ext)) {
+    if (check_img_type($file_ext, 'edit_profile.php')) {
         if(file_exists("user_img/".$row['img'])) unlink("user_img/".$row['img']);
         move_uploaded_file($img_temp, "user_img/{$_SESSION["id"]}.{$file_ext}");
         $sql = "UPDATE user 
@@ -45,10 +46,15 @@ if (!empty($_FILES['img']["name"])){
     }
 }
 if (isset($_POST['email'])){
+    if(CheckEmailExist($_POST["email"])){
+        $_SESSION['ERROR'] = "Email already Exist. try another one";
+        header('location: edit_profile.php');
+        return;
+    }
     if($_POST['email'] != $_SESSION['email']){
         $_SESSION['ChangeEmail'] = $_POST['email'];
         $_SESSION['ERROR'] = "You where trying to change your email, we sending you a code to {$_POST['email']} to confirm";
-        if(isset($_SESSION['OTPcode']) && $_SESSION['OTPTimespan']){
+        if(isset($_SESSION['OTPcode']) && isset($_SESSION['OTPTimespan'])){
             if(time() - $_SESSION['OTPTimespan'] > 60){
                 $code = rand(999999, 111111);
                 $_SESSION['OTPcode'] = $code;
@@ -58,28 +64,17 @@ if (isset($_POST['email'])){
                 sendingEmail($_POST['email'], $subject, $message);
             }
         }
+        else{
+            $code = rand(999999, 111111);
+            $_SESSION['OTPcode'] = $code;
+            $_SESSION['OTPTimespan'] = time();
+            $subject = 'Email Verification Code';
+            $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
+            sendingEmail($_POST['email'], $subject, $message);
+        }
         header('location: verifyEmail.php');
         return;
     }
 }
 
 header('location: edit_profile.php');
-
-
-function check_img_type($img_type)
-{
-    switch ($img_type) {
-        case 'jpg':
-        case 'png':
-        case 'jpeg':
-        case 'svg':
-        case 'webp':
-        case 'bmp':
-        case 'gif':
-            return true;
-            break;
-        default:
-            $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
-            return false;
-    }
-}
