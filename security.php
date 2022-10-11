@@ -71,6 +71,7 @@ function CheckAccount($_username, $_password)
             $_SESSION['ERROR'] = "";
             $_SESSION['id'] = $row['id'];
             $_SESSION["username"] = $row['username'];
+            $_SESSION["name"] = $row["name"];
             $_SESSION["email"] = $row['email'];
             $_SESSION["img"] = GetImgType($row['img']);
             header('location: dashboard.php');

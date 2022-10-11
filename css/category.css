@@ -116,3 +116,10 @@ html {
 .tabbed.round ul li:after {
   border-radius: 8px 0 0 0;
 }
+
+@media (max-width: 992px) {
+  .profile-main-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

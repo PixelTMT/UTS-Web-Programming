@@ -5,7 +5,7 @@ require 'mailing.php';
 require_once 'security.php';
 global $db;
 
-if(isset($_POST['back'])) {
+if (isset($_POST['back'])) {
     header('location: profile.php');
     return;
 }
@@ -21,7 +21,7 @@ if (isset($_POST['username'])){
         $_SESSION["username"] = $_POST["username"];
     }
 }
-if (!empty($_FILES['img']["name"])){
+if (!empty($_FILES['img']["name"])) {
     $img = $_FILES["img"]["name"];
     $img_temp = $_FILES["img"]['tmp_name'];
     $file_ext = explode(".", $img);

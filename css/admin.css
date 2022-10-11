@@ -1,0 +1,153 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Contrail+One&family=Dancing+Script&family=Noto+Sans+Mono:wght@700&family=Poppins:wght@200;400;700&display=swap");
+
+:root {
+  --font-size: 1rem;
+
+  --primary01: #d83f87;
+  --primary02: #2a1b3d;
+  --primary03: #44318d;
+  --secondary01: #e98074;
+  --secondary02: #a4b3b6;
+  --secondary03: #e0fbfc;
+  --accent01: #e63946;
+  --accent02: #fbc531;
+}
+
+body {
+  font-family: "Poppins";
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: normal;
+  background: #fafafa;
+}
+
+a {
+  transition: 0.3s all ease;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none;
+}
+
+a:focus {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none;
+}
+button {
+  transition: 0.3s all ease;
+}
+
+button:hover {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button:focus {
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.wrapper {
+  width: 100%;
+}
+
+#sidebar {
+  min-width: 270px;
+  max-width: 270px;
+  background: var(--primary02);
+  color: #fff;
+  transition: all 0.3s;
+  position: relative;
+}
+
+#sidebar h1 {
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+#sidebar .logo {
+  color: #fff;
+}
+
+ul.components {
+  padding: 0;
+}
+
+ul,
+li {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+ul li a {
+  padding: 10px 0;
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+ul li a:hover {
+  color: #fff;
+}
+
+ul li a:active {
+  background: transparent;
+  color: #fff;
+}
+
+.custom-menu {
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  margin-right: -20px;
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+#content {
+  width: 100%;
+  padding: 0;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+.footer p {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control {
+  height: 40px !important;
+  background: #fff;
+  color: #000;
+  font-size: 13px;
+  border-radius: 4px;
+  box-shadow: none !important;
+  border: transparent;
+}
+
+.form-control:focus {
+  border-color: #000;
+}
+
+.form-control:active {
+  border-color: #000;
+}
