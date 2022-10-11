@@ -20,8 +20,9 @@ if (isset($_POST["categories"]) && isset($_POST["title"]) && isset($_POST["body"
     echo $body;
 
     insert_post_to_database($post_id, $user_id, $forum_id, $title, $body, $curr_time, $curr_date);
-    
-    if($_POST["categories"] == "c++") $_POST["categories"] = "cpp";
+    initialize_like($user_id, $post_id);
+
+    if ($_POST["categories"] == "c++") $_POST["categories"] = "cpp";
     header("location: category.php?list={$_POST["categories"]}");
 }
 
@@ -78,4 +79,13 @@ function get_forumID($category)
             break;
     }
     return $forum_id;
+}
+
+function initialize_like($_user_id, $_post_id)
+{
+    global $db;
+    $sql = "INSERT INTO likes(user_id, post_id, like_bool)
+    VALUES (?, ?, ?)";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$_user_id, $_post_id, 0]);
 }

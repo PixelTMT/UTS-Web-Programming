@@ -125,6 +125,17 @@ html {
   padding: 5px;
 }
 
+.comment-container img {
+  width: 3rem;
+  height: auto;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 5px;
+}
+
+.comment-container h4 {
+  color: gray;
+}
+
 .post-username {
   font-weight: bold;
 }

@@ -1,8 +1,12 @@
 <script>
-	function List(category){
+	function List(category) {
 		var url = new URL(location.href);
-    	url.searchParams.set('list', category);
+		url.searchParams.set('list', category);
 		window.location.href = url;
+	}
+
+	function addLike(like_ammount) {
+		return like_ammount += 1;
 	}
 </script>
 <?php
@@ -11,15 +15,15 @@ session_start();
 
 require_once("security.php");
 
-$tabs = array('trends','likes','latest');
+$tabs = array('trends', 'likes', 'latest');
 $current_tabs = 'trends';
-if(isset($_GET['list'])){
-	if(in_array($_GET['list'], $tabs)){
+if (isset($_GET['list'])) {
+	if (in_array($_GET['list'], $tabs)) {
 		$current_tabs = strtolower($_GET['list']);
 	}
 }
 
-$sql = "SELECT *,
+$sql = "SELECT *, id post,
 (
     SELECT username from user
     where id = user_id
@@ -31,35 +35,63 @@ $sql = "SELECT *,
 (
     SELECT categories from forum
     where id = forum_id
-) AS 'category'
+) AS 'category',
+(
+	SELECT SUM(like_bool) FROM likes GROUP BY post_id HAVING post_id = id 	
+) AS total_likes,
+(
+	SELECT 
+	CASE 
+	WHEN body is NULL
+	THEN 0
+	ELSE COUNT(body)
+	END
+	FROM comment
+	WHERE post_id = post
+) AS total_comment
 FROM post ";
 
-switch($current_tabs){
+switch ($current_tabs) {
 	case "trends":
-		$sql .= "ORDER BY comment_ammount";
+		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC";
 		break;
 	case "likes":
-		$sql .= "ORDER BY like_ammount";
+		$sql .= "ORDER BY total_likes DESC";
 		break;
 	case "latest":
 		$sql .= "ORDER BY date_created DESC, time_created DESC";
 		break;
 }
 
+
+
+
 $hasil = $db->query($sql);
 
-function CheckActive($_category){
+function CheckActive($_category)
+{
 	global $tabs;
-	if(isset($_GET['list'])){
-		if(in_array($_GET['list'], $tabs) && strtolower($_GET['list']) == $_category){
+	if (isset($_GET['list'])) {
+		if (in_array($_GET['list'], $tabs) && strtolower($_GET['list']) == $_category) {
 			echo "active";
 		}
-	}else{
-		if($_category == 'trends'){
+	} else {
+		if ($_category == 'trends') {
 			echo "active";
 		}
 	}
 }
+
+function getTotalLikes($_post_id)
+{
+	global $db;
+	$sql = "SELECT SUM(like_bool) AS total_likes FROM likes GROUP BY post_id having post_id = ?";
+	$stmt = $db->prepare($sql);
+	$stmt->execute([$_post_id]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	return $row["total_likes"];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -74,9 +106,9 @@ function CheckActive($_category){
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/regular.min.css" integrity="sha512-aNH2ILn88yXgp/1dcFPt2/EkSNc03f9HBFX0rqX3Kw37+vjipi1pK3L9W08TZLhMg4Slk810sPLdJlNIjwygFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/solid.min.css" integrity="sha512-uj2QCZdpo8PSbRGL/g5mXek6HM/APd7k/B5Hx/rkVFPNOxAQMXD+t+bG4Zv8OAdUpydZTU3UHmyjjiHv2Ww0PA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-	<script src="js/jquery.js"></script>
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<link href="css/footer.css" rel="stylesheet">
@@ -106,59 +138,168 @@ function CheckActive($_category){
 		<div class="container tabs-container mt-4">
 			<div class="tabs-wrap">
 				<ul>
-					<li class="tabs-trends <?php CheckActive("trends");?>" onclick="List('trends')" data-tabs="trends">Trending</li>
-					<li class="tabs-likes <?php CheckActive("likes");?>" onclick="List('likes')" data-tabs="likes">Most Liked</li>
-					<li class="tabs-latest <?php CheckActive("latest");?>" onclick="List('latest')" data-tabs="latest">Latest Post</li>
+					<li class="tabs-trends <?php CheckActive("trends"); ?>" onclick="List('trends')" data-tabs="trends">Trending</li>
+					<li class="tabs-likes <?php CheckActive("likes"); ?>" onclick="List('likes')" data-tabs="likes">Most Liked</li>
+					<li class="tabs-latest <?php CheckActive("latest"); ?>" onclick="List('latest')" data-tabs="latest">Latest Post</li>
 				</ul>
 			</div>
 		</div>
 
 		<!-- posts -->
-		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {?>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
 			<div class="container my-4 col-lg-8">
-			<div class="card-group vgr-cards">
-				<div class="card border-0">
-					<div class="card-body me-2 d-flex flex-row">
+				<div class="card-group vgr-cards">
+					<div class="card border-0">
+						<div class="card-body me-2 d-flex flex-row">
 
-						<div class="px-2 align-middle text-center justify-content-center align-items-center">
-							<div class="d-flex flex-column me-3 mt-1">
-								<button class="border-0 bg-transparent p-2" id="upvoteBtn"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
-								<span class="mx-1" id="vote-count"><?= $row['like_ammount']?></span>
-								<button class="border-0 bg-transparent p-2" id="downvoteBtn"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
-							</div>
-						</div>
-
-						<div class="d-flex flex-column w-100">
-							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
-								<?php if ($_SESSION['id']) {?>
-								<img src=<?= "user_img/" . $row['img']?> alt="user img" class="post-header rounded-circle">
-								<?php } ?>
-								<span class="post-username mx-2"><?= $row['username']?></span>
-								<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-								<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created']?></span>
-								<div class="w-100 d-flex flex-row justify-content-end">
-									<button class="category-button" role="button"><?= $row['category']?></button>
+							<div class="px-2 align-middle text-center justify-content-center align-items-center">
+								<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
+									<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+									<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
+									<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 								</div>
 							</div>
-							<div class="content-container d-flex flex-column">
-								<h4 class="card-title"><?= $row['title']?></h4>
-								<p class="card-text"><?= $row['body']?></p>
-							</div>
-							<div class="feedback-container d-flex flex-row my-2">
-								<button class="px-2 py-2"><i class="fa-solid fa-comment" style="color: grey;"></i>
-								<span class="mx-auto my-auto" style="font-weight: bold; color: #6B6B6B"><?= $row['comment_ammount']?> comments</span></button>
+
+							<div class="d-flex flex-column w-100">
+								<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
+									<span class="post-username mx-2"><?= $row['username'] ?></span>
+									<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+									<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created'] ?></span>
+									<div class="w-100 d-flex flex-row justify-content-end">
+										<button class="category-button" role="button"><?= $row['category'] ?></button>
+									</div>
+								</div>
+								<div class="content-container d-flex flex-column">
+									<h4 class="card-title"><?= $row['title'] ?></h4>
+									<p class="card-text"><?= $row['body'] ?></p>
+								</div>
+								<!--card container -->
+								<?php include_once "comment.php" ?>
+								<?php $stmt2 = get_comment($row["id"]);
+								$flag = 0; ?>
+								<div class="feedback-container d-flex flex-row my-2">
+									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
+										<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row["id"]) ?> comments</span>
+									</button>
+								</div>
+								<div id="test-<?= $row["id"] ?>">
+									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
+										<?php $flag = 1; ?>
+										<div class="card comment-container show_comment_container-<?= $row2["post_id"] ?>">
+											<div class="d-flex flex-column w-100">
+												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
+													<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="post-header rounded-circle">
+													<span class="post-username mx-2"><?= $row2['username'] ?></span>
+													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+												</div>
+												<div class="content-container d-flex flex-column">
+													<p class="card-text"><?= $row2['body'] ?></p>
+												</div>
+											</div>
+
+										</div>
+									<?php } ?>
+									<?php if ($flag == 0) { ?>
+										<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">
+											<div class="d-flex flex-column w-100 text-center py-1">
+												<h4 class="pt-2"> no comments yet.. </h4>
+											</div>
+										</div>
+									<?php } ?>
+								</div>
+								<form action="#" method="post" enctype="multipart/form-data">
+									<div class="input-group mb-3 mt-3">
+										<input type="text" class="form-control" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply..." aria-label="" aria-describedby="basic-addon1">
+										<div class="input-group-prepend">
+											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
+										</div>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+			</div>
 		<?php } ?>
 	</article>
-
 	<?php include_once './components/footer.php'; ?>
-
 	<script>
+		$(document).ready(function() {
+			/* LIKE */
+			$(".upvoteBtn, .downvoteBtn").click(function() {
+				var post_id = this.id;
+				var type;
+				var split_post_id = post_id.split("-");
+				var user_id = split_post_id[2];
+				var vote_container = "#vote-count" + "-" + split_post_id[1];
+				var like_container = "#like" + "-" + split_post_id[1];
+				var dislike_container = "#dislike" + "-" + split_post_id[1];
+				console.log(user_id + " " + split_post_id[1]);
+				if (split_post_id[0] == "like") {
+					$(like_container).prop("disabled", true);
+					$(dislike_container).prop("disabled", false);
+					//dosent WORK :)))-> $(".upvoteBtn").css("color", "#3d5af1");
+					type = 0;
+				} else {
+					$(like_container).prop("disabled", false);
+					$(dislike_container).prop("disabled", true);
+					type = 1;
+				}
+				$(vote_container).load("like.php", {
+					post_id: split_post_id[1],
+					post_type: type,
+					user_id: split_post_id[2]
+				});
+			});
+			/* -LIKE */
+
+			/* COMMENT */
+			show_comment_toggler = 0;
+			// hide comments
+			$(".comment-container").hide();
+			$(".btn-show-comment").click(function() {
+				var id = this.id;
+				var split_id = id.split("-");
+				var post_id = split_id[1];
+				var comment_container = ".comment-" + post_id;
+				// console.log(split_post_id[1]);
+				// console.log(split_post_id[2]);
+				console.log(comment_container);
+				if (show_comment_toggler == 0) {
+					show_comment_toggler = 1;
+					$(".show_comment_container-" + post_id).show();
+				} else {
+					show_comment_toggler = 0;
+					$(".show_comment_container-" + post_id).hide();
+				}
+			})
+			$(".btn-add").click(function() {
+				var id = this.id;
+				var split_id = id.split("-");
+				var post_id = split_id[1];
+				var body = $("#comment_body" + "-" + post_id).val();
+				var comment_container = "#test-" + post_id;
+				// console.log(split_id[1]);
+				// console.log(split_id[2]);
+				console.log(body);
+				console.log(comment_container);
+				$(comment_container).load("add_comment.php", {
+					post_id: post_id,
+					body: body
+				});
+				$("#comment_body" + "-" + post_id).val("");
+				var total_comment = $("#total_comment-" + post_id).html();
+				total_comment = total_comment.split(" ");
+				total_comment[0]++;
+				console.log(total_comment[0]);
+				$("#total_comment-" + post_id).html(total_comment[0] + " " + total_comment[1]);
+
+			})
+			/* -COMMENT */
+		})
 		// typed js
 		new Typed('#typed', {
 			strings: ['PHP', 'C', 'Javascript', 'C++', 'Python', 'Java', 'Ruby', 'SQL'],
@@ -179,34 +320,34 @@ function CheckActive($_category){
 			})
 		})
 
-	var upvoteBtn = document.getElementById('upvoteBtn');
-	var upvoteIcon = document.getElementById('upvoteIcon');
+		var upvoteBtn = document.getElementById('upvoteBtn');
+		var upvoteIcon = document.getElementById('upvoteIcon');
 
-	upvoteBtn.addEventListener('click', function onClick(event) {
-		const color = upvoteIcon.style.color;
+		// upvoteBtn.addEventListener('click', function onClick(event) {
+		// 	const color = upvoteIcon.style.color;
 
-		if(color === 'grey') {
-			upvoteIcon.style.color = '#3d5af1';
-		} else {
-			upvoteIcon.style.color = 'grey';
-		}
+		// 	if (color === 'grey') {
+		// 		upvoteIcon.style.color = '#3d5af1';
+		// 	} else {
+		// 		upvoteIcon.style.color = 'grey';
+		// 	}
 
-		
-	})
 
-	var downvoteBtn = document.getElementById('downvoteBtn');
-	var downvoteIcon = document.getElementById('downvoteIcon');
 
-	downvoteBtn.addEventListener('click', function onClick(event) {
-		const color = downvoteIcon.style.color;
+		// })
 
-		if(color === 'grey') {
-			downvoteIcon.style.color = '#e63946';
-		} else {
-			downvoteIcon.style.color = 'grey';
-		}
-	})
+		var downvoteBtn = document.getElementById('downvoteBtn');
+		var downvoteIcon = document.getElementById('downvoteIcon');
 
+		// downvoteBtn.addEventListener('click', function onClick(event) {
+		// 	const color = downvoteIcon.style.color;
+
+		// 	if (color === 'grey') {
+		// 		downvoteIcon.style.color = '#e63946';
+		// 	} else {
+		// 		downvoteIcon.style.color = 'grey';
+		// 	}
+		// })
 	</script>
 </body>
 
