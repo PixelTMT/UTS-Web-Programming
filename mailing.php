@@ -47,6 +47,13 @@ function sendingEmail($email_to, $subject, $msg){
             $mail->Port = 587;
             $mail->SMTPSecure = 'ssl';
             $mail->SMTPDebug = 0;
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => false
+                )
+            );
 
             $mail->setFrom($email_sender, $name_sender);
             $mail->addAddress($email_to);

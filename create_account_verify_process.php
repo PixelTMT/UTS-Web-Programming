@@ -13,8 +13,8 @@ if(isset($_POST['OTPverify'])){
         
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = 'YOU WIN!';
         $id = GetID(0);
-        move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}.{$_SESSION['file_ext']}");
-        insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}.{$_SESSION['file_ext']}");
+        move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}{$_SESSION['img']}");
+        insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}{$_SESSION['img']}");
         session_destroy();
         header('location: login_form.php');
     }
