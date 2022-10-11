@@ -52,7 +52,9 @@ if (!empty($_SESSION['ERROR'])) {
             <div class="container col-lg-3 card profile-container d-flex flex-column mt-4 mx-2 align-items-center justify-content-center" style="max-height: 25rem;">
                 <h4>Current Profile</h4>
                 <div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
-                    <img src=<?= "user_img/" . $row["img"] ?> class="rounded-circle my-2" style="max-width: 10rem;">
+                    <div class="my-3" style="width: 150px; height: 150px; overflow:hidden;">
+                    <img src=<?= "user_img/" . $row["img"] ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
                     <h3><?= $row["username"] ?></h3>
                     <span class="my-1"><?= $row["name"] ?></span>
                     <span class="my-1"><?= $row["email"] ?></span>

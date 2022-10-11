@@ -32,3 +32,15 @@
   border: 2px solid rgba(0, 0, 0, 0.7);
   border-radius: 2px;
 }
+
+.profile-main-container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 992px) {
+  .profile-main-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

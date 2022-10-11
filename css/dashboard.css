@@ -74,6 +74,7 @@ html {
 }
 
 #typed {
+  font-family: "Noto Sans Mono";
   font-size: 4rem;
   color: #ffffff;
 }
@@ -163,12 +164,10 @@ html {
   border: 0;
 }
 
-/* simple animate on scroll */
-.js-scroll {
-  opacity: 0;
-  transition: opacity 500ms;
+.bottom-right-round {
+  border-bottom-right-radius: 4vw;
 }
 
-.js-scroll.scrolled {
-  opacity: 1;
+.post-username:hover {
+  text-decoration: underline;
 }

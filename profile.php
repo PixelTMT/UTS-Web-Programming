@@ -54,10 +54,12 @@ function getTotalLikes($_post_id)
 	<?php include_once './components/navbar.php' ?>
 
 	<main>
-		<div class="container d-flex flex-row mb-4 justify-content-center">
+		<div class="container profile-main-container mb-4 justify-content-center">
 			<div class="container col-lg-3 card profile-container d-flex flex-row mt-4 mx-2" style="max-height: 25rem;">
 				<div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
-					<img src=<?= "user_img/" . $row["img"] ?> class="user-img rounded-circle my-2" style="max-width: 12rem;">
+					<div class="my-3" style="width: 150px; height: 150px; overflow: hidden;">
+						<img src=<?= "user_img/" . $row["img"] ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit:cover;">
+					</div>
 					<h3><?= $row["username"] ?></h3>
 					<span class="my-1"><?= $row["name"] ?></span>
 					<span class="my-1"><?= $row["email"] ?></span>
@@ -72,7 +74,7 @@ function getTotalLikes($_post_id)
 					<?php if (!$result) {
 					?>
 						<div>
-							<h2> You haven't posted anything yet </h2>
+							<h2 class="text-center mb-3"> You haven't posted anything yet </h2>
 							<div class="container temporary text-center d-flex align-items-center justify-content-center">
 								<a href="create_post_form.php"><button class="category-button" role="button">Add Post</button></a>
 							</div>

@@ -11,8 +11,6 @@
 </script>
 <?php
 session_start();
-//need login
-
 require_once("security.php");
 
 $tabs = array('trends', 'likes', 'latest');
@@ -62,10 +60,6 @@ switch ($current_tabs) {
 		$sql .= "ORDER BY date_created DESC, time_created DESC";
 		break;
 }
-
-
-
-
 $hasil = $db->query($sql);
 
 function CheckActive($_category)
@@ -112,27 +106,57 @@ function getTotalLikes($_post_id)
 	<link href="css/navbar.css" rel="stylesheet">
 	<link href="css/dashboard.css" rel="stylesheet">
 	<link href="css/footer.css" rel="stylesheet">
+	<link href="css/side_panel.css" rel="stylesheet">
 </head>
 
 <body>
 	<!-- navbar -->
-	<?php include_once './components/navbar.php' ?>
+	<?php include_once './components/navbar.php'  ?>
 
 	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid">
 		<div class="jumboDesc">
 			<h1>Welcome to <span>Spacely</span></h1>
 			<h2>Chill Place to Learn and Discuss</h2>
-			<span id="typed" class="mt-3"></span>
+			<div style="height: 100px; padding-bottom: 10px;">
+				<span id="typed" class="mt-3"></span>
+			</div>
 
 			<form action="#" method="POST">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" type="submit" name="cari">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit" name="cari">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
 				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
 			</form>
 		</div>
 	</main>
+
+	<aside>
+		<div class="social-panel-container">
+			<div class="social-panel">
+				<p>Spacely Side Panel</p>
+				<button class="close-btn"><i class="fas fa-times"></i></button>
+				<ul class="mt-3">
+					<li>
+						<a href="#" class="ms-2">
+							<i class="fa-solid fa-phone"></i>
+						</a>
+						<h5 class="mt-2">Ask Admin</h5>
+					</li>
+					<li>
+						<a href="create_post_form.php">
+							<i class="fa-solid fa-pencil"></i>
+						</a>
+						<h5 class="mx-auto mt-2">Add Post</h5>
+
+					</li>
+				</ul>
+			</div>
+		</div>
+		<button class="floating-btn">
+			Click me
+		</button>
+	</aside>
 
 	<article>
 		<div class="container tabs-container mt-4">
@@ -149,12 +173,13 @@ function getTotalLikes($_post_id)
 		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
 			<div class="container my-4 col-lg-8">
 				<div class="card-group vgr-cards">
-					<div class="card border-0">
-						<div class="card-body me-2 d-flex flex-row">
+					<div class="card border-0 bottom-right-round">
+						<div class="card-body me-4 d-flex flex-row">
 
 							<div class="px-2 align-middle text-center justify-content-center align-items-center">
 								<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
-									<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+									<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like">
+										<i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 									<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 									<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 								</div>
@@ -162,19 +187,25 @@ function getTotalLikes($_post_id)
 
 							<div class="d-flex flex-column w-100">
 								<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
-									<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="post-header rounded-circle">
-									<span class="post-username mx-2"><?= $row['username'] ?></span>
+									<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
+										<a href="user_profile.php?id=<?= $row['user_id'] ?>">
+											<img src=<?= "user_img/" . $row['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+									</div>
+									<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row['user_id'] ?>">
+										<span class="post-username me-1"><?= $row['username'] ?></span>
+									</a>
+
 									<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 									<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row['date_created'] ?></span>
 									<div class="w-100 d-flex flex-row justify-content-end">
-										<button class="category-button" role="button"><?= $row['category'] ?></button>
+										<?php $category = $row['category']; ?>
+										<a href="category.php?list=<?= strtolower($category) ?>"><button class="category-button" role="button"><?= $row['category'] ?></button></a>
 									</div>
 								</div>
 								<div class="content-container d-flex flex-column">
 									<h4 class="card-title"><?= $row['title'] ?></h4>
-									<p class="card-text"><?= $row['body'] ?></p>
+									<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap;"><?= $row['body'] ?></p>
 								</div>
-								<!--card container -->
 								<?php include_once "comment.php" ?>
 								<?php $stmt2 = get_comment($row["id"]);
 								$flag = 0; ?>
@@ -186,13 +217,21 @@ function getTotalLikes($_post_id)
 								<div id="test-<?= $row["id"] ?>">
 									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 										<?php $flag = 1; ?>
-										<div class="card comment-container show_comment_container-<?= $row2["post_id"] ?>">
+										<div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
 											<div class="d-flex flex-column w-100">
 												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-													<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="post-header rounded-circle">
-													<span class="post-username mx-2"><?= $row2['username'] ?></span>
-													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+													<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+														<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
+															<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
+																<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+														</div>
+														<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
+															<span class="post-username me-1"><?= $row2['username'] ?></span>
+														</a>
+
+														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+													</div>
 												</div>
 												<div class="content-container d-flex flex-column">
 													<p class="card-text"><?= $row2['body'] ?></p>
@@ -210,18 +249,19 @@ function getTotalLikes($_post_id)
 									<?php } ?>
 								</div>
 								<form action="#" method="post" enctype="multipart/form-data">
-									<div class="input-group mb-3 mt-3">
-										<input type="text" class="form-control" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply..." aria-label="" aria-describedby="basic-addon1">
-										<div class="input-group-prepend">
-											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
-										</div>
+									<div class="feedback-container d-flex flex-row my-2">
+										<?php if (!empty($_SESSION["id"])) { ?>
+											<input type="text" class="form-control" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply..." aria-label="" aria-describedby="basic-addon1">
+											<div class="input-group-prepend">
+												<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
+											</div>
+										<?php } ?>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 		<?php } ?>
 	</article>
@@ -237,13 +277,16 @@ function getTotalLikes($_post_id)
 				var vote_container = "#vote-count" + "-" + split_post_id[1];
 				var like_container = "#like" + "-" + split_post_id[1];
 				var dislike_container = "#dislike" + "-" + split_post_id[1];
-				console.log(user_id + " " + split_post_id[1]);
+				$("#like-" + split_post_id[1] + "-" + user_id).addClass("blue-btn");
 				if (split_post_id[0] == "like") {
+					$("#like-" + split_post_id[1] + "-" + user_id).children("i").css("color", "blue");
+					$("#dislike-" + split_post_id[1] + "-" + user_id).children("i").css("color", "gray");
 					$(like_container).prop("disabled", true);
 					$(dislike_container).prop("disabled", false);
-					//dosent WORK :)))-> $(".upvoteBtn").css("color", "#3d5af1");
 					type = 0;
 				} else {
+					$("#dislike-" + split_post_id[1] + "-" + user_id).children("i").css("color", "red");
+					$("#like-" + split_post_id[1] + "-" + user_id).children("i").css("color", "gray");
 					$(like_container).prop("disabled", false);
 					$(dislike_container).prop("disabled", true);
 					type = 1;
@@ -299,6 +342,14 @@ function getTotalLikes($_post_id)
 
 			})
 			/* -COMMENT */
+			$('.floating-btn').click(function() {
+				$('.social-panel-container').addClass("visible");
+			});
+
+			$('.close-btn').click(function() {
+				console.log("test!");
+				$('.social-panel-container').removeClass("visible");
+			});
 		})
 		// typed js
 		new Typed('#typed', {
@@ -319,35 +370,6 @@ function getTotalLikes($_post_id)
 				tab.classList.add("active");
 			})
 		})
-
-		var upvoteBtn = document.getElementById('upvoteBtn');
-		var upvoteIcon = document.getElementById('upvoteIcon');
-
-		// upvoteBtn.addEventListener('click', function onClick(event) {
-		// 	const color = upvoteIcon.style.color;
-
-		// 	if (color === 'grey') {
-		// 		upvoteIcon.style.color = '#3d5af1';
-		// 	} else {
-		// 		upvoteIcon.style.color = 'grey';
-		// 	}
-
-
-
-		// })
-
-		var downvoteBtn = document.getElementById('downvoteBtn');
-		var downvoteIcon = document.getElementById('downvoteIcon');
-
-		// downvoteBtn.addEventListener('click', function onClick(event) {
-		// 	const color = downvoteIcon.style.color;
-
-		// 	if (color === 'grey') {
-		// 		downvoteIcon.style.color = '#e63946';
-		// 	} else {
-		// 		downvoteIcon.style.color = 'grey';
-		// 	}
-		// })
 	</script>
 </body>
 

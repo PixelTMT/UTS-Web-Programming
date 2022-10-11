@@ -13,7 +13,8 @@ function get_comment($_post_id)
         where id = user_id
     ) AS 'img'
     from comment
-    WHERE post_id = ?";
+    WHERE post_id = ?
+    ORDER BY date_created DESC";
 
     $stmt = $db->prepare($sql);
     $stmt->execute([$_post_id]);

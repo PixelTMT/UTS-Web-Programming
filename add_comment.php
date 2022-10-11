@@ -51,13 +51,21 @@ $flag = 0; ?>
 <div id="test-<?= $post_id ?>">
     <?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
         <?php $flag = 1; ?>
-        <div class="card comment-container show_comment_container-<?= $row2["post_id"] ?>">
+        <div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
             <div class="d-flex flex-column w-100">
                 <div class="card-container d-flex align-items-center mb-2 text-nowrap">
-                    <img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="post-header rounded-circle">
-                    <span class="post-username mx-2"><?= $row2['username'] ?></span>
-                    <i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-                    <span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+                    <div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+                        <div style="min-width: 50px; min-height: 40px; overflow:hidden;">
+                            <a href="user_profile.php?id=<?= $row2['user_id'] ?>">
+                                <img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+                        </div>
+                        <a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
+                            <span class="post-username me-1"><?= $row2['username'] ?></span>
+                        </a>
+
+                        <i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+                        <span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+                    </div>
                 </div>
                 <div class="content-container d-flex flex-column">
                     <p class="card-text"><?= $row2['body'] ?></p>
