@@ -34,31 +34,49 @@ if(isset($_GET['resend'])){
 </head>
 
 <body>
-    <div id="container">
-        <h2>Email</h2>
-        <div id="line"></div>
-        <form action="create_account_verify_process.php" method="POST" autocomplete="off">
-            <?php
-            if (isset($_SESSION['ERROR'])) {
-                if($_SESSION['ERROR'] != ''){?>
-                    <div id="alert"><?php echo $_SESSION['ERROR']; ?></div>
-                <?php
-                $_SESSION['ERROR'] = '';
-                }
-            }
-            ?>
-            <input type="number" name="OTPverify" placeholder="Verification Code" required
-            <?php
-                if(isset($_GET['OTPcode'])){
-                    echo "value='".$_GET['OTPcode']."'";
-                }
-            ?>><br>
-            <a href="./create_account_verify.php?resend=0000">
-                <input type="button" name="resend" value="resend">
+<div class="main container d-flex flex-column justify-content-center align-items-center mt-5">
+        <div class="text-center mt-4 header mx-auto">
+            <img src="img/SPACELY.svg" class="logo mt-2 mb-4" alt="...">
+            <header>
+                <p class="h3" style="font-weight:100;">OTP Verification</p>
+            </header>
+        </div>
+        <div class="login d-flex justify-content-center align-items-center mt-4">
+            <form action="create_account_verify_process.php" method="POST" autocomplete="off">
+                <div class="row form-group">
+                    <div class="col">
+                        <?php
+                        if (isset($_SESSION['ERROR'])) {
+                            if($_SESSION['ERROR'] != ''){?>
+                                <div id="alert"><?php echo $_SESSION['ERROR']; ?></div>
+                            <?php
+                            $_SESSION['ERROR'] = '';
+                            }
+                        }
+                        ?>
+                        <label for="OTPverify" class="form-label mt-2 mb-2"> Verify Email </label>
+                        <br />
+                        <label style="opacity: 0.5;"> Enter Verification from your Email</label>
+                        <input type="number" class="form-control mt-1" name="OTPverify" placeholder="Verification Code" required
+                        <?php
+                            if(isset($_GET['OTPcode'])){
+                                echo "value='".$_GET['OTPcode']."'";
+                            }
+                        ?>>
+
+                        <input type="submit" class="mt-2 mb-2 btn btn-danger" name="verifyEmail" value="Verify">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="footer mt-4 d-flex text-center justify-content-center">
+            <p>not receive the code yet? &nbsp;</p>
+            <a href="./create_account_verify.php?resend=0000">Resend
             </a>
-            <input type="submit" name="verifyEmail" value="Verify">
-        </form>
-    </div>
+        </div>
+
+        <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>

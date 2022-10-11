@@ -16,7 +16,7 @@ if (isset($_POST['email'])) {
             $_SESSION['ERROR'] = "Invalid Email";
             header('location: forgot.php');
         }
-        if(isset($_SESSION['OTPcode']) && $_SESSION['OTPTimespan']){
+        if(isset($_SESSION['OTPcode']) && isset($_SESSION['OTPTimespan'])){
             if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
                 $code = rand(999999, 111111);
                 $_SESSION['OTPcode'] = $code;
