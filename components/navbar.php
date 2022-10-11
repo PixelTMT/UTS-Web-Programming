@@ -1,9 +1,9 @@
- <nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <a class="navbar-brand" href="dashboard.php">
             <img src="img/SPACELY.svg" width="45" height="45" alt="">
         </a>
-        <a href="create_post_form.php"><button class="border-0 ms-3 px-3 py-2" style="border-radius: 20px; font-size: 14px; background-color: #B92B27; color: #fff"><i class="fa-solid fa-pencil me-2" style="font-size: 13px;"></i>Add Post</button></a>
+        <a href="create_post_form.php"><button class="border-0 ms-3 px-3 py-2 nav-add-post" style="border-radius: 20px; font-size: 14px; background-color: #B92B27; color: #fff"><i class="fa-solid fa-pencil me-2" style="font-size: 13px;"></i>Add Post</button></a>
         <button class="navbar-toggler navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#nvbCollapse" aria-controls="nvbCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
