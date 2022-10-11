@@ -9,37 +9,37 @@ if (
 ) {
     if (CheckValidString($_POST["email"])) {
         $_SESSION['ERROR'] = "Invalid Email";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     if(CheckEmailExist($_POST["email"])){
         $_SESSION['ERROR'] = "Email already Exist. try another one or login";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     if (CheckValidString($_POST["password"]) || CheckValidString($_POST['password2'])) {
         if (CheckValidString($_POST["password"]) != CheckValidString($_POST['password2'])) {
             $_SESSION['ERROR'] = "Password not match";
-            header('location: create_account_form.php');
+            exit(header('location: create_account_form.php'));
             return;
         }
         $_SESSION['ERROR'] = "Password must be alphanumeric";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     if (CheckValidString($_POST["username"])) {
         $_SESSION['ERROR'] = "username must be alphanumeric";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     if(CheckUserNameExist($_POST["username"])){
         $_SESSION['ERROR'] = "username already Exist. try another one or login";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     if (CheckValidString($_POST["name"])) {
         $_SESSION['ERROR'] = "name must be alphanumeric";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
         return;
     }
     $_SESSION['email'] = $_POST["email"];
@@ -68,14 +68,14 @@ if (
             $_SESSION['img'] = ".". $file_ext;
             $_SESSION['img_temp'] = $img_temp;
             $_SESSION['file_ext'] = $file_ext;
-            header('location: create_account_verify.php');
+            exit(header('location: create_account_verify.php'));
         }
     }
     else{
         $_SESSION['ERROR'] = "Failed to sending email to {$_POST['email']}, try again later";
-        header('location: create_account_form.php');
+        exit(header('location: create_account_form.php'));
     }
 } else {
     $_SESSION['ERROR'] = "All fields are required. Please fill all required fields and submit again.";
-    header('location: create_account_form.php');
+    exit(header('location: create_account_form.php'));
 }

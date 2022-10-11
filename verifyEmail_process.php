@@ -4,7 +4,7 @@ require_once 'db.php';
 if(isset($_SESSION['OTPTimespan'])){
     if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
-        header('location: verifyEmail.php');
+        exit(header('location: verifyEmail.php'));
         return;
     }
 }
@@ -21,15 +21,15 @@ if(isset($_POST['OTPverify'])){
                 $data = [$_SESSION["email"], $_SESSION["id"]];
                 $stmt->execute($data);
                 $_SESSION["email"] = $_SESSION["email"];
-                header('location: edit_profile.php');
+                exit(header('location: edit_profile.php'));
                 return;
             }
         }
-        header('location: newPassword.php');
+        exit(header('location: newPassword.php'));
     }
     else{
         $_SESSION['ERROR'] = 'Wrong OTP';
-        header('location: verifyEmail.php');
+        exit(header('location: verifyEmail.php'));
     }
 }
-else header('location: login_form.php');
+else exit(header('location: login_form.php'));

@@ -4,7 +4,7 @@ require_once 'security.php';
 require_once 'db.php';
 if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
     $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
-    header('location: create_account_form.php');
+    exit(header('location: create_account_form.php'));
     return;
 }
 if(isset($_POST['OTPverify'])){
@@ -16,7 +16,7 @@ if(isset($_POST['OTPverify'])){
         move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}{$_SESSION['img']}");
         insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}{$_SESSION['img']}");
         session_destroy();
-        header('location: login_form.php');
+        exit(header('location: login_form.php'));
     }
 }
 

@@ -6,7 +6,7 @@ require_once 'security.php';
 global $db;
 
 if (isset($_POST['back'])) {
-    header('location: profile.php');
+    exit(header('location: profile.php'));
     return;
 }
 
@@ -46,12 +46,12 @@ if (!empty($_FILES['img']["name"])) {
     }
 }
 if (isset($_POST['email'])){
-    if(CheckEmailExist($_POST["email"])){
-        $_SESSION['ERROR'] = "Email already Exist. try another one";
-        header('location: edit_profile.php');
-        return;
-    }
     if($_POST['email'] != $_SESSION['email']){
+        if(CheckEmailExist($_POST["email"])){
+            $_SESSION['ERROR'] = "Email already Exist. try another one";
+            exit(header('location: edit_profile.php'));
+            return;
+        }
         $_SESSION['ChangeEmail'] = $_POST['email'];
         $_SESSION['ERROR'] = "You where trying to change your email, we sending you a code to {$_POST['email']} to confirm";
         if(isset($_SESSION['OTPcode']) && isset($_SESSION['OTPTimespan'])){
@@ -72,9 +72,9 @@ if (isset($_POST['email'])){
             $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
             sendingEmail($_POST['email'], $subject, $message);
         }
-        header('location: verifyEmail.php');
+        exit(header('location: verifyEmail.php'));
         return;
     }
 }
 
-header('location: edit_profile.php');
+exit(header('location: edit_profile.php'));

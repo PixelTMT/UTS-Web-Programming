@@ -7,7 +7,7 @@ $url = $_SERVER['REQUEST_URI'];
 if (isset($_GET['id'])) {
 	$id = $_GET['id'];
 } else {
-	header("location:profile.php");
+	exit(header("location:profile.php"));
 }
 
 if(isset($_POST['delete'])){
