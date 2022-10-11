@@ -67,6 +67,17 @@ function CheckAccount($_username, $_password)
     if ($row) {
         //account exist
         if ($t['encoded'] == $row['encrypted_password']) {
+            $sql_ = "SELECT * FROM banned
+                    where user_id = ?";
+            $stmt_ = $db->prepare($sql_);
+            $stmt_->execute([$row['id']]);
+            $row_ = $stmt_->fetch(PDO::FETCH_ASSOC);
+            if($row_['user_id'] == $row['id']){
+                $_SESSION['ERROR'] = "ACCOUNT HAS BEEN BANNED.";
+                header('location: login_form.php');
+                return;
+            }
+
             //login success
             $_SESSION['ERROR'] = "";
             $_SESSION['id'] = $row['id'];
@@ -74,10 +85,14 @@ function CheckAccount($_username, $_password)
             $_SESSION["name"] = $row["name"];
             $_SESSION["email"] = $row['email'];
             $_SESSION["img"] = GetImgType($row['img']);
+            if(substr($_SESSION['id'],0,1) == 1){
+                $_SESSION['isAdmin'] = true;
+            }
+            else $_SESSION['isAdmin'] = false;
             header('location: dashboard.php');
         } else {
             //login failed
-            $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
+            $_SESSION['ERROR'] = "Password is wrong, try again.";
             header('location: login_form.php');
         }
     } else {

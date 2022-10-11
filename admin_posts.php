@@ -1,7 +1,7 @@
 <?php 
 
 session_start();
-
+require_once 'isAdmin.php';
 require_once("security.php");
 
 $sql = "SELECT *,
