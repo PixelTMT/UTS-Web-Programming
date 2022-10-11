@@ -12,9 +12,9 @@ $curr_time = date("H:i:s");
 
 if ($body != "") {
     initialize_comment($user_id, $post_id, $body, $curr_time, $curr_date, $id);
-    echo "<div class='text-center' style='color:green'> <b> your comment has been made! </b> </div>";
+    echo "<div class='text-left' style='color:green'> <b> Your comment has been made! </b> </div>";
 } else {
-    echo "<div class='text-center' style='color:red'> <b> your comment cannot be empty! </b> </div>";
+    echo "<div class='text-left' style='color:red'> <b> Your comment cannot be empty! </b> </div>";
 }
 
 

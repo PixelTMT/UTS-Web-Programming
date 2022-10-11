@@ -35,8 +35,8 @@ if(isset($_GET['resend'])){
 </head>
 
 <body>
-    <div id="container">
-        <h2>Email</h2>
+    <div id="container justify-content-center align-items-center text-center">
+        <h2 style="font-family: 'Poppins';">Email</h2>
         <div id="line"></div>
         <form action="verifyEmail_process.php" method="POST" autocomplete="off">
             <?php
@@ -48,7 +48,7 @@ if(isset($_GET['resend'])){
                 }
             }
             ?>
-            <input type="number" name="OTPverify" placeholder="Verification Code" required
+            <input class="p-2" style="font-size: 2rem;" type="number" name="OTPverify" placeholder="Verification Code" required
             <?php
                 if(isset($_GET['OTPcode'])){
                     echo "value='".$_GET['OTPcode']."'";

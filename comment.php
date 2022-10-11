@@ -27,7 +27,8 @@ function get_comment_total($_post_id)
     $sql = "SELECT COUNT(post_id) AS total_comment
     FROM comment
     GROUP BY post_id
-    HAVING post_id = ?";
+    HAVING post_id = ?
+    ORDER BY time_created";
 
     $stmt = $db->prepare($sql);
     $stmt->execute([$_post_id]);

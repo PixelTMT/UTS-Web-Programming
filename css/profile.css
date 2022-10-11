@@ -38,9 +38,26 @@
   flex-direction: row;
 }
 
+.show-likes-container {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 6px;
+  max-width: 80px;
+}
+
 @media (max-width: 992px) {
   .profile-main-container {
     display: flex;
     flex-direction: column;
+  }
+
+  .profile-posts {
+    width: 475px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-posts {
+    width: 300px;
   }
 }

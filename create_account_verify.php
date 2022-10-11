@@ -31,11 +31,14 @@ if(isset($_GET['resend'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification Form</title>
     <link rel="stylesheet" href="css/forgot.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
-    <div id="container">
-        <h2>Email</h2>
+    <div id="container justify-content-center align-items-center">
+        <h2 class="my-3 mx-3" style="font-family: 'Poppins'; color: #fff">Email</h2s>
         <div id="line"></div>
         <form action="create_account_verify_process.php" method="POST" autocomplete="off">
             <?php
@@ -47,16 +50,16 @@ if(isset($_GET['resend'])){
                 }
             }
             ?>
-            <input type="number" name="OTPverify" placeholder="Verification Code" required
+            <input class="p-2" style="font-size: 1.5rem;" type="number" name="OTPverify" placeholder="Verification Code" required
             <?php
                 if(isset($_GET['OTPcode'])){
                     echo "value='".$_GET['OTPcode']."'";
                 }
             ?>><br>
             <a href="./create_account_verify.php?resend=0000">
-                <input type="button" name="resend" value="resend">
+                <input class="btn btn-info" style="width: 6rem;" type="button" name="resend" value="resend">
             </a>
-            <input type="submit" name="verifyEmail" value="Verify">
+            <input class="btn btn-success" style="width: 6rem;" type="submit" name="verifyEmail" value="Verify">
         </form>
     </div>
 </body>

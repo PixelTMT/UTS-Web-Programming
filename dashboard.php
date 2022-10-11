@@ -114,20 +114,14 @@ function getTotalLikes($_post_id)
 	<?php include_once './components/navbar.php'  ?>
 
 	<!-- hero -->
-	<main class="jumbotron jumbotron-fluid">
+	<main class="jumbotron jumbotron-fluid" id="backToTop">
 		<div class="jumboDesc">
 			<h1>Welcome to <span>Spacely</span></h1>
 			<h2>Chill Place to Learn and Discuss</h2>
 			<div style="height: 100px; padding-bottom: 10px;">
 				<span id="typed" class="mt-3"></span>
 			</div>
-
-			<form action="#" method="POST">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit" name="cari">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</button>
-				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
-			</form>
+			<a href="#postsId"><i class="fa-solid fa-angles-down mt-5"></i></a>
 		</div>
 	</main>
 
@@ -138,16 +132,16 @@ function getTotalLikes($_post_id)
 				<button class="close-btn"><i class="fas fa-times"></i></button>
 				<ul class="mt-3">
 					<li>
-						<a href="#" class="ms-2">
-							<i class="fa-solid fa-phone"></i>
+						<a href="#backToTop" class="ms-2">
+							<i class="fa-solid fa-circle-up"></i>
 						</a>
-						<h5 class="mt-2">Ask Admin</h5>
+						<h5 class="mt-2">Back to top</h5>
 					</li>
 					<li>
 						<a href="create_post_form.php">
 							<i class="fa-solid fa-pencil"></i>
 						</a>
-						<h5 class="mx-auto mt-2">Add Post</h5>
+						<h5 class="mx-auto mt-2">Add post</h5>
 
 					</li>
 				</ul>
@@ -160,7 +154,7 @@ function getTotalLikes($_post_id)
 
 	<article>
 		<div class="container tabs-container mt-4">
-			<div class="tabs-wrap">
+			<div class="tabs-wrap" id="postsId">
 				<ul>
 					<li class="tabs-trends <?php CheckActive("trends"); ?>" onclick="List('trends')" data-tabs="trends">Trending</li>
 					<li class="tabs-likes <?php CheckActive("likes"); ?>" onclick="List('likes')" data-tabs="likes">Most Liked</li>
@@ -210,23 +204,40 @@ function getTotalLikes($_post_id)
 									<a href="category.php?list=<?= strtolower($category) ?>"><button class="category-button" role="button"><?= $row['category'] ?></button></a>
 								</div>
 							</div>
-							<div class="content-container d-flex flex-column">
-								<h4 class="card-title"><?= $row['title'] ?></h4>
-								<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap;"><?= $row['body'] ?></p>
+							<div class="content-container d-flex flex-column" style="overflow-wrap: anywhere;">
+								<h4 class="card-title mt-2"><?= $row['title'] ?></h4>
+								<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
+								<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p></a>
+
+								<!-- modal to show more text of body -->
+								<div class="modal" id="modal<?php echo $row["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content p-3">
+												<div class="modal-header">
+													<h5 class="modal-title">Post Body</h5>
+												</div>
+												<div class="modal-body">
+													<p><?= $row["body"] ?></p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- close modal-->
+
 							</div>
 							<?php include_once "comment.php" ?>
 							<?php $stmt2 = get_comment($row["id"]);
 							$flag = 0; ?>
 							<div class="feedback-container d-flex flex-row my-2">
-								<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
-									<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row["id"]) ?> comments</span>
+								<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 								</button>
 							</div>
 							<div id="test-<?= $row["id"] ?>">
 								<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 									<?php $flag = 1; ?>
 									<div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
-										<div class="d-flex flex-column w-100">
+										<div class="each-comment-container d-flex flex-column w-100">
 											<div class="card-container d-flex align-items-center mb-2 text-nowrap">
 												<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 													<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
@@ -245,7 +256,6 @@ function getTotalLikes($_post_id)
 												<p class="card-text"><?= $row2['body'] ?></p>
 											</div>
 										</div>
-
 									</div>
 								<?php } ?>
 								<?php if ($flag == 0) { ?>
@@ -259,9 +269,9 @@ function getTotalLikes($_post_id)
 							<form action="#" method="post" enctype="multipart/form-data">
 								<div class="feedback-container d-flex flex-row my-2">
 									<?php if (!empty($_SESSION["id"])) { ?>
-										<input type="text" class="form-control" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply..." aria-label="" aria-describedby="basic-addon1">
+										<input type="text" class="form-control comment-reply" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
 										<div class="input-group-prepend">
-											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
+											<button class="btn-add btn btn-outline-danger ms-2" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
 										</div>
 									<?php } ?>
 								</div>
@@ -275,6 +285,7 @@ function getTotalLikes($_post_id)
 	</article>
 	<?php include_once './components/footer.php'; ?>
 	<script type="text/javascript" src="js/buttons.js"></script>
+
 </body>
 
 </html>
