@@ -1,2 +1,2 @@
 <?php
-header('location: dashboard.php');
+exit(header('location: dashboard.php'));

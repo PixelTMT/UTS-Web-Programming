@@ -74,7 +74,7 @@ function CheckAccount($_username, $_password)
             $row_ = $stmt_->fetch(PDO::FETCH_ASSOC);
             if($row_['user_id'] == $row['id']){
                 $_SESSION['ERROR'] = "ACCOUNT HAS BEEN BANNED.";
-                header('location: login_form.php');
+                exit(header('location: login_form.php'));
                 return;
             }
 
@@ -89,15 +89,15 @@ function CheckAccount($_username, $_password)
                 $_SESSION['isAdmin'] = true;
             }
             else $_SESSION['isAdmin'] = false;
-            header('location: dashboard.php');
+            exit(header('location: dashboard.php'));
         } else {
             //login failed
             $_SESSION['ERROR'] = "Password is wrong, try again.";
-            header('location: login_form.php');
+            exit(header('location: login_form.php'));
         }
     } else {
         $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
-        header('location: login_form.php');
+        exit(header('location: login_form.php'));
     }
 }
 
@@ -180,7 +180,7 @@ function check_img_type($img_type, $redirect_to)
             break;
         default:
             $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
-            header("location: $redirect_to");
+            exit(header("location: $redirect_to"));
             return false;
     }
 }

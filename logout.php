@@ -1,4 +1,5 @@
 <?php
 session_start();
 session_destroy();
-header('location: login_form.php');
+session_gc();
+exit(header('location: login_form.php'));

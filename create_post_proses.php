@@ -23,7 +23,7 @@ if (isset($_POST["categories"]) && isset($_POST["title"]) && isset($_POST["body"
     initialize_like($user_id, $post_id);
 
     if ($_POST["categories"] == "c++") $_POST["categories"] = "cpp";
-    header("location: category.php?list={$_POST["categories"]}");
+    exit(header("location: category.php?list={$_POST["categories"]}"));
 }
 
 function insert_post_to_database($_post_id, $_user_id, $_forum_id, $_title, $_body, $_time_created, $_date_created)

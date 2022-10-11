@@ -14,7 +14,7 @@ if (isset($_POST['email'])) {
     if ($row) {
         if (CheckValidString($_POST["email"])) {
             $_SESSION['ERROR'] = "Invalid Email";
-            header('location: forgot.php');
+            exit(header('location: forgot.php'));
         }
         if(isset($_SESSION['OTPcode']) && isset($_SESSION['OTPTimespan'])){
             if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
@@ -28,11 +28,11 @@ if (isset($_POST['email'])) {
         }
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['message'] = "We've sent a verification code to your Email <br> {$_POST['email']}";
-        header('location: verifyEmail.php');
+        exit(header('location: verifyEmail.php'));
     } else {
         $_SESSION['ERROR'] = "Email doesn't Exist";
     }
 }
 else{
-    header('location: forgot.php');
+    exit(header('location: forgot.php'));
 }

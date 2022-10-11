@@ -12,7 +12,7 @@ function deletePost($_id){
     $stmt = $db->prepare($sql);
     $data = [$_id];
     $stmt->execute($data);
-    //header("Refresh:0");
+    //exit(header("Refresh:0");
 }
 function deleteComment($_id){
     global $db;
@@ -21,7 +21,7 @@ function deleteComment($_id){
     $stmt = $db->prepare($sql);
     $data = [$_id];
     $stmt->execute($data);
-    //header("Refresh:0");
+    //exit(header("Refresh:0");
 }
 function banUser($_id){
     global $db;

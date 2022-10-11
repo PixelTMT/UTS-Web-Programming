@@ -1,7 +1,7 @@
 <?php 
 session_start();
 if($_SESSION['OTPTimespan'] != 'YOU WIN!' && $_SESSION['OTPcode'] != 'YOU WIN!'){
-    header('location: login_form.php');
+    exit(header('location: login_form.php'));
 }
 ?>
 <!DOCTYPE html>
