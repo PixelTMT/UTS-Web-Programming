@@ -1,7 +1,6 @@
 <?php
 require_once "db.php";
 require_once 'security.php';
-require_once 'deleteStuff.php';
 session_start();
 $url = $_SERVER['REQUEST_URI'];
 if (isset($_GET['id'])) {
@@ -10,8 +9,14 @@ if (isset($_GET['id'])) {
 	exit(header("location:profile.php"));
 }
 
+<<<<<<< Updated upstream
 if(isset($_POST['delete'])){
 	if(isset($_POST['deletePost'])){
+=======
+<<<<<<< Updated upstream
+if (isset($_POST['delete'])) {
+	if (isset($_POST['deletePost'])) {
+>>>>>>> Stashed changes
 		deletePost($_POST['deletePost']);
 		//echo $_POST['deletePost'];
 	}
@@ -26,6 +31,27 @@ if(isset($_POST['delete'])){
 	if(isset($_POST['unbanUser'])) {
 		unbanUser($_POST['unbanUser']);
 		//echo $_POST['banUser'];
+=======
+if($_SESSION['isAdmin']){
+	require_once 'deleteStuff.php';
+	if(isset($_POST['delete'])){
+		if(isset($_POST['deletePost'])){
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if(isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+		if(isset($_POST['banUser'])) {
+			banUser($_POST['banUser']);
+			//echo $_POST['banUser'];
+		}
+		if(isset($_POST['unbanUser'])) {
+			unbanUser($_POST['unbanUser']);
+			//echo $_POST['banUser'];
+		}
+>>>>>>> Stashed changes
 	}
 }
 

@@ -37,3 +37,22 @@ function unbanUser($_id){
     $data = [$_id];
     $stmt->execute($data);
 }
+function deleteUser($_id){
+    global $db;
+    $sql = "DELETE FROM user 
+            WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $data = [$_id];
+    $stmt->execute($data);
+    global $db;
+    $sql = "DELETE FROM post 
+            WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $data = [$_id];
+    $stmt->execute($data);
+    $sql = "DELETE FROM comment 
+            WHERE post_id = ?";
+    $stmt = $db->prepare($sql);
+    $data = [$_id];
+    $stmt->execute($data);
+}

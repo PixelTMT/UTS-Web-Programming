@@ -12,6 +12,7 @@
 <?php
 session_start();
 require_once("security.php");
+<<<<<<< Updated upstream
 include_once 'deleteStuff.php';
 if(isset($_POST['delete'])){
 	if(isset($_POST['deletePost'])){
@@ -21,6 +22,19 @@ if(isset($_POST['delete'])){
 	if(isset($_POST['deleteComment'])) {
 		deleteComment($_POST['deleteComment']);
 		//echo $_POST['deleteComment'];
+=======
+if($_SESSION['isAdmin']){
+	include_once 'deleteStuff.php';
+	if(isset($_POST['delete'])){
+		if(isset($_POST['deletePost'])){
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if(isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+>>>>>>> Stashed changes
 	}
 }
 
