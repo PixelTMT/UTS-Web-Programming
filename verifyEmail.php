@@ -40,7 +40,7 @@ if(isset($_GET['resend'])){
         <div class="text-center mt-4 header mx-auto">
             <img src="img/SPACELY.svg" class="logo mt-2 mb-4" alt="...">
             <header>
-                <p class="h3" style="font-weight:100;">OTP Verification</p>
+                <p class="h3" style="font-weight:100; "font-family: 'Poppins';">OTP Verification</p>
             </header>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">

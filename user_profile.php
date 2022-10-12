@@ -123,7 +123,7 @@ function getTotalLikes($_post_id)
 					<div class="profile-posts my-2 mb-3">
 						<span class="mb-3 text-muted" style="font-size: 14px"><?= $row2["date_created"] ?></span>
 
-						<div class="w-100 mt-1 d-flex justify-content-between align-items-center p-2 text-white" style="border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; background-color:#44318d;">
+						<div class="w-100 mt-1 d-flex justify-content-between align-items-center p-2 text-white" style="overflow-wrap: anywhere; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; background-color:#44318d;">
 
 							<h5 class="ms-2"><?= $row2["title"] ?></h5>
 							<button class="category-button" role="button"><?= get_category($row2["forum_id"]) ?></button>

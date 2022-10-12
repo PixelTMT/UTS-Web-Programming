@@ -28,18 +28,18 @@ if (
         return;
     }
     if (CheckValidString($_POST["username"])) {
-        $_SESSION['ERROR'] = "username must be alphanumeric";
-        exit(header('location: create_account_form.php'));
+        $_SESSION['ERROR'] = "Username must be alphanumeric";
+        header('location: create_account_form.php');
         return;
     }
     if(CheckUserNameExist($_POST["username"])){
-        $_SESSION['ERROR'] = "username already Exist. try another one or login";
-        exit(header('location: create_account_form.php'));
+        $_SESSION['ERROR'] = "Username already Exist. Try another one or login";
+        header('location: create_account_form.php');
         return;
     }
     if (CheckValidString($_POST["name"])) {
-        $_SESSION['ERROR'] = "name must be alphanumeric";
-        exit(header('location: create_account_form.php'));
+        $_SESSION['ERROR'] = "Name must be alphanumeric";
+        header('location: create_account_form.php');
         return;
     }
     $_SESSION['email'] = $_POST["email"];
