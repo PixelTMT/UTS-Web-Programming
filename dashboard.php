@@ -10,15 +10,15 @@
 	}
 </script>
 <?php
-session_start();
 require_once("security.php");
-include_once 'deleteStuff.php';
-if(isset($_POST['delete'])){
-	if(isset($_POST['deletePost'])){
+require_once("isAdmin.php");
+include_once('deleteStuff.php');
+if (isset($_POST['delete'])) {
+	if (isset($_POST['deletePost'])) {
 		deletePost($_POST['deletePost']);
 		//echo $_POST['deletePost'];
 	}
-	if(isset($_POST['deleteComment'])) {
+	if (isset($_POST['deleteComment'])) {
 		deleteComment($_POST['deleteComment']);
 		//echo $_POST['deleteComment'];
 	}
@@ -60,7 +60,7 @@ $sql = "SELECT *, id post,
 ) AS total_comment
 FROM post ";
 
-if(isset($_GET['keyword'])){
+if (isset($_GET['keyword'])) {
 	$sql .= "WHERE title like '%{$_GET['keyword']}%' ";
 }
 switch ($current_tabs) {
@@ -227,22 +227,23 @@ function getTotalLikes($_post_id)
 							<div class="content-container d-flex flex-column" style="overflow-wrap: anywhere;">
 								<h4 class="card-title mt-2"><?= $row['title'] ?></h4>
 								<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
-								<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p></a>
+									<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p>
+								</a>
 
 								<!-- modal to show more text of body -->
 								<div class="modal" id="modal<?php echo $row["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
-										<div class="modal-dialog modal-dialog-centered" role="document">
-											<div class="modal-content p-3">
-												<div class="modal-header">
-													<h5 class="modal-title">Post Body</h5>
-												</div>
-												<div class="modal-body">
-													<p><?= $row["body"] ?></p>
-												</div>
+									<div class="modal-dialog modal-dialog-centered" role="document">
+										<div class="modal-content p-3">
+											<div class="modal-header">
+												<h5 class="modal-title">Post Body</h5>
+											</div>
+											<div class="modal-body">
+												<p><?= $row["body"] ?></p>
 											</div>
 										</div>
 									</div>
-									<!-- close modal-->
+								</div>
+								<!-- close modal-->
 
 							</div>
 							<?php include_once "comment.php" ?>
@@ -253,12 +254,12 @@ function getTotalLikes($_post_id)
 									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 								</button>
 							</div>
-							<?php if($_SESSION['isAdmin']){?>
+							<?php if ($_SESSION['isAdmin']) { ?>
 								<form action="dashboard.php" method='post'>
 									<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
 									<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
 								</form>
-							<?php }?>
+							<?php } ?>
 							<div id="test-<?= $row["id"] ?>">
 								<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 									<?php $flag = 1; ?>
@@ -276,12 +277,12 @@ function getTotalLikes($_post_id)
 
 													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
-													<?php if($_SESSION['isAdmin']){?>
+													<?php if ($_SESSION['isAdmin']) { ?>
 														<form action="dashboard.php" method='post'>
 															<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
 															<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
 														</form>
-													<?php }?>
+													<?php } ?>
 												</div>
 											</div>
 											<div class="content-container d-flex flex-column">
