@@ -19,6 +19,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: #f1f2f2;
+  font-family: "Poppins";
 }
 
 html {
@@ -34,6 +35,7 @@ html {
   overflow: hidden;
   transition: border 250ms ease;
 }
+
 .tabbed ul {
   margin: 0px;
   padding: 0px;
@@ -42,10 +44,12 @@ html {
   padding-left: 48px;
   list-style-type: none;
 }
+
 .tabbed ul * {
   margin: 0px;
   padding: 0px;
 }
+
 .tabbed ul li {
   display: block;
   float: right;
@@ -78,27 +82,32 @@ html {
   background-color: #fff;
   transition: all 250ms ease;
 }
+
 .tabbed ul li:before {
   right: -24px;
   transform: skew(30deg, 0deg);
   box-shadow: rgba(0, 0, 0, 0.1) 3px 2px 5px,
     inset rgba(255, 255, 255, 0.09) -1px 0;
 }
+
 .tabbed ul li:after {
   left: -24px;
   transform: skew(-30deg, 0deg);
   box-shadow: rgba(0, 0, 0, 0.1) -3px 2px 5px,
     inset rgba(255, 255, 255, 0.09) 1px 0;
 }
+
 .tabbed ul li:hover,
 .tabbed ul li:hover:before,
 .tabbed ul li:hover:after {
   background-color: #f4f7f9;
   color: #444;
 }
+
 .tabbed ul li.active {
   z-index: 3;
 }
+
 .tabbed ul li.active,
 .tabbed ul li.active:before,
 .tabbed ul li.active:after {
@@ -108,11 +117,14 @@ html {
 
 /* Round Tabs */
 .tabbed.round ul li {
+  width: max-content;
   border-radius: 8px 8px 0 0;
 }
+
 .tabbed.round ul li:before {
   border-radius: 0 8px 0 0;
 }
+
 .tabbed.round ul li:after {
   border-radius: 8px 0 0 0;
 }
