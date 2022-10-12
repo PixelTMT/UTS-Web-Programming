@@ -19,6 +19,7 @@ if (!empty($_SESSION['ERROR'])) {
         $_SESSION['ERROR'] = "";
     }
 }
+
 ?>
 
 <!DOCTYPE html>

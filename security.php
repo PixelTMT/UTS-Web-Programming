@@ -67,6 +67,17 @@ function CheckAccount($_username, $_password)
     if ($row) {
         //account exist
         if ($t['encoded'] == $row['encrypted_password']) {
+            $sql_ = "SELECT * FROM banned
+                    where user_id = ?";
+            $stmt_ = $db->prepare($sql_);
+            $stmt_->execute([$row['id']]);
+            $row_ = $stmt_->fetch(PDO::FETCH_ASSOC);
+            if($row_['user_id'] == $row['id']){
+                $_SESSION['ERROR'] = "ACCOUNT HAS BEEN BANNED.";
+                exit(header('location: login_form.php'));
+                return;
+            }
+
             //login success
             $_SESSION['ERROR'] = "";
             $_SESSION['id'] = $row['id'];
@@ -74,15 +85,19 @@ function CheckAccount($_username, $_password)
             $_SESSION["name"] = $row["name"];
             $_SESSION["email"] = $row['email'];
             $_SESSION["img"] = GetImgType($row['img']);
-            header('location: dashboard.php');
+            if(substr($_SESSION['id'],0,1) == 1){
+                $_SESSION['isAdmin'] = true;
+            }
+            else $_SESSION['isAdmin'] = false;
+            exit(header('location: dashboard.php'));
         } else {
             //login failed
-            $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
-            header('location: login_form.php');
+            $_SESSION['ERROR'] = "Password is wrong, try again.";
+            exit(header('location: login_form.php'));
         }
     } else {
         $_SESSION['ERROR'] = "Username / Password is wrong, try again.";
-        header('location: login_form.php');
+        exit(header('location: login_form.php'));
     }
 }
 
@@ -123,6 +138,25 @@ function CheckValidString($string)
     return ($string != str_ireplace($blacklist, "XX", $string)) ? true : false;
 }
 
+function CheckEmailExist($_email){
+    global $db;
+    $sql = "SELECT email FROM user";
+    $hasil = $db->query($sql);
+    while($row = $hasil->fetch(PDO::FETCH_ASSOC)){
+        if($row['email'] == $_email) return true;
+    }
+    return false;
+}
+function CheckUserNameExist($_username){
+    global $db;
+    $sql = "SELECT username FROM user";
+    $hasil = $db->query($sql);
+    while($row = $hasil->fetch(PDO::FETCH_ASSOC)){
+        if($row['username'] == $_username) return true;
+    }
+    return false;
+}
+
 function GetImgType($img)
 {
     $file_ext = explode(".", $img);
@@ -132,7 +166,7 @@ function GetImgType($img)
     return $file_ext;
 }
 
-function check_img_type($img_type)
+function check_img_type($img_type, $redirect_to)
 {
     switch ($img_type) {
         case 'jpg':
@@ -146,7 +180,7 @@ function check_img_type($img_type)
             break;
         default:
             $_SESSION['ERROR'] = "YOU CAN ONLY UPLOAD AN IMAGE FILE.";
-            header('location: create_account_form.php');
+            exit(header("location: $redirect_to"));
             return false;
     }
 }

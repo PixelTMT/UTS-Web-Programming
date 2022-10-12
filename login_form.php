@@ -42,16 +42,20 @@ if (isset($_SESSION['ERROR'])) {
                     <div class="col">
                         <label for="username" class="form-label mt-4 mb-2"> Username </label>
                         <input type="text" class="form-control" id="username" name="username" required />
-                        <label for="password" class="form-label mt-2 mb-2"> Password </label>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="password" class="form-label mt-2 mb-2"> Password </label>
+                            <a href="forgot.php">Forgot Your Password?</a>
+                        </div>
                         <input type="password" class="form-control" id="password" name="password" required />
                         <div class="button-container mt-3 mb-4 text-center">
-                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>login</button>
+                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>Login</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="footer mt-4 d-flex text-center justify-content-center">
+
+        <div class="footer mt-1 d-flex text-center justify-content-center">
             <p>Don't have an Account yet? &nbsp;</p>
             <a href="create_account_form.php"> Sign up here</a>
         </div>

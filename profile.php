@@ -86,7 +86,7 @@ function getTotalLikes($_post_id)
 							<div class="profile-posts my-2 mb-3">
 								<span class="mb-3 text-muted" style="font-size: 14px"><?= $row2["date_created"] ?></span>
 
-								<div class="w-100 mt-1 d-flex justify-content-between align-items-center p-2 text-white" style="border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; background-color:#44318d;">
+								<div class="w-100 mt-1 d-flex justify-content-between align-items-center p-2 text-white" style="overflow-wrap: anywhere; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; background-color:#44318d;">
 
 									<h5 class="ms-2"><?= $row2["title"] ?></h5>
 									<button class="category-button" role="button"><?= get_category($row2["forum_id"]) ?></button>
@@ -110,28 +110,29 @@ function getTotalLikes($_post_id)
 										</div>
 									</div>
 									<!-- close modal-->
-									<div class="feedback-container d-flex flex-row my-3">
-										<div class="border border-3 border-light rounded me-2 p-1">
-											<button disabled class="rounded-circle bg-transparent">
-												<i class="fa-solid fa-thumbs-up"></i>
+
+									<div class="feedback-container d-flex flex-column my-3">
+										<div class="my-2 mx-1 show-likes-container align-middle my-auto">
+											<button disabled class="btn-show-likes">
+												<i class="fa-solid fa-thumbs-up" style="color: rgba(0, 0, 0, 0.75)"></i>
 											</button>
-											<span class="mx-1"><?= getTotalLikes($row2["id"]) ?></span>
+											<span style="color: rgba(0, 0, 0, 0.75); font-weight: bold;"><?= getTotalLikes($row2["id"]) ?></span>
 										</div>
 
-										<div class="border border-3 border-light rounded me-2 p-1">
+										<div class="rounded me-2 p-1">
 											<?php include_once "comment.php"; ?>
 											<?php $stmt2 = get_comment($row2["id"]);
 											$flag = 0; ?>
-											<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
-												<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row2["id"]) ?> comments</span>
+											<button class="btn-show-comment px-2 py-2 my-1" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+												<span class="mx-2 my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row2["id"]) ?> comments</span>
 											</button>
-											<div id="test-<?= $row2["id"] ?>">
+											<div id="test-<?= $row2["id"]?>">
 												<?php while ($row3 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 													<?php $flag = 1; ?>
-													<div class="card comment-container show_comment_container-<?= $row3["post_id"] ?>">
+													<div class="card my-2 comment-container show_comment_container-<?= $row3["post_id"] ?>">
 														<div class="d-flex flex-column w-100">
 															<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-																<img src=<?= "user_img/" . $row3['img'] ?> alt="user img" class="post-header rounded-circle">
+																<img src=<?= "user_img/" . $row3['img'] ?> alt="user img" class="post-header rounded-circle p-0 me-2" style="width: 40px; height: 40px; object-fit:cover;>
 																<span class="post-username mx-2"><?= $row3['username'] ?></span>
 																<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 																<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row3['date_created'] ?></span>
@@ -196,81 +197,7 @@ function getTotalLikes($_post_id)
 		}
 		return $forum_id;
 	} ?>
-	<script>
-		$(document).ready(function() {
-			/* LIKE */
-			$(".upvoteBtn, .downvoteBtn").click(function() {
-				var post_id = this.id;
-				var type;
-				var split_post_id = post_id.split("-");
-				var user_id = split_post_id[2];
-				var vote_container = "#vote-count" + "-" + split_post_id[1];
-				var like_container = "#like" + "-" + split_post_id[1];
-				var dislike_container = "#dislike" + "-" + split_post_id[1];
-				console.log(user_id + " " + split_post_id[1]);
-				if (split_post_id[0] == "like") {
-					$(like_container).prop("disabled", true);
-					$(dislike_container).prop("disabled", false);
-					//dosent WORK :)))-> $(".upvoteBtn").css("color", "#3d5af1");
-					type = 0;
-				} else {
-					$(like_container).prop("disabled", false);
-					$(dislike_container).prop("disabled", true);
-					type = 1;
-				}
-				$(vote_container).load("like.php", {
-					post_id: split_post_id[1],
-					post_type: type,
-					user_id: split_post_id[2]
-				});
-			});
-			/* -LIKE */
-
-			/* COMMENT */
-			show_comment_toggler = 0;
-			// hide comments
-			$(".comment-container").hide();
-			$(".btn-show-comment").click(function() {
-				var id = this.id;
-				var split_id = id.split("-");
-				var post_id = split_id[1];
-				var comment_container = ".comment-" + post_id;
-				// console.log(split_post_id[1]);
-				// console.log(split_post_id[2]);
-				console.log(comment_container);
-				if (show_comment_toggler == 0) {
-					show_comment_toggler = 1;
-					$(".show_comment_container-" + post_id).show();
-				} else {
-					show_comment_toggler = 0;
-					$(".show_comment_container-" + post_id).hide();
-				}
-			})
-			$(".btn-add").click(function() {
-				var id = this.id;
-				var split_id = id.split("-");
-				var post_id = split_id[1];
-				var body = $("#comment_body" + "-" + post_id).val();
-				var comment_container = "#test-" + post_id;
-				// console.log(split_id[1]);
-				// console.log(split_id[2]);
-				console.log(body);
-				console.log(comment_container);
-				$(comment_container).load("add_comment.php", {
-					post_id: post_id,
-					body: body
-				});
-				$("#comment_body" + "-" + post_id).val("");
-				var total_comment = $("#total_comment-" + post_id).html();
-				total_comment = total_comment.split(" ");
-				total_comment[0]++;
-				console.log(total_comment[0]);
-				$("#total_comment-" + post_id).html(total_comment[0] + " " + total_comment[1]);
-
-			})
-			/* -COMMENT */
-		})
-	</script>
+	<script type="text/javascript" src="js/buttons.js"></script>
 </body>
 
 </html>
