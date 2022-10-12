@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2022 at 03:11 PM
+-- Generation Time: Oct 12, 2022 at 08:51 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -39,7 +39,6 @@ CREATE TABLE `banned` (
 --
 
 INSERT INTO `banned` (`user_id`, `reason`, `banned_since`, `banned_until`) VALUES
-('00001', 0, '0000-00-00', '0000-00-00'),
 ('00006', 0, '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
@@ -74,10 +73,7 @@ INSERT INTO `comment` (`id`, `user_id`, `post_id`, `body`, `time_created`, `date
 ('C0031', '00003', 'p0006', '................', '21:39:39', '2022-10-10'),
 ('C0032', '00003', 'p0006', '.;.', '21:39:52', '2022-10-10'),
 ('C0033', '00003', 'p0006', 'PLS WORK..', '21:40:29', '2022-10-10'),
-('C0034', '00003', 'p0006', 'YESSSSSSSS IT WORKS :))))))))))))))))', '21:40:40', '2022-10-10'),
-('C0035', '00001', 'p0003', 'lmao', '21:41:32', '2022-10-10'),
-('C0036', '00001', 'p0002', '+1', '21:47:05', '2022-10-10'),
-('C0038', '00001', 'p0009', 'wow gud', '06:10:24', '2022-10-11');
+('C0034', '00003', 'p0006', 'YESSSSSSSS IT WORKS :))))))))))))))))', '21:40:40', '2022-10-10');
 
 -- --------------------------------------------------------
 
@@ -121,18 +117,6 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`user_id`, `post_id`, `like_bool`) VALUES
-('00001', 'p0001', 1),
-('00001', 'p0002', 1),
-('00001', 'p0003', 1),
-('00001', 'p0004', 0),
-('00001', 'p0005', 1),
-('00001', 'p0006', 0),
-('00001', 'p0007', 0),
-('00001', 'p0008', 1),
-('00001', 'p0009', 1),
-('00001', 'p0010', 1),
-('00001', 'p0011', 1),
-('00001', 'p0015', 1),
 ('00003', 'p0001', 1),
 ('00003', 'p0003', 1),
 ('00003', 'p0006', 1),
@@ -143,7 +127,10 @@ INSERT INTO `likes` (`user_id`, `post_id`, `like_bool`) VALUES
 ('00005', 'p0001', 1),
 ('00005', 'p0002', 1),
 ('00005', 'p0003', 0),
-('00005', 'p0004', 1);
+('00005', 'p0004', 1),
+('10001', 'p0006', 1),
+('10001', 'p0008', 0),
+('10001', 'p0009', 1);
 
 -- --------------------------------------------------------
 
@@ -168,21 +155,12 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id`, `title`, `body`, `like_ammount`, `comment_ammount`, `time_created`, `date_created`, `user_id`, `forum_id`) VALUES
-('p0001', 'test', 'dkfa[fdkakadf[psafdoapsdofsd[a', 23, 0, '00:00:09', '2007-10-22', '00001', 'F0001'),
-('p0002', 'testing 2', 'bla bla bla', 21, 0, '00:00:11', '2007-10-22', '00001', 'F0002'),
-('p0003', 'CAWDSA', 'infromatika is good', 1, 0, '00:00:02', '2007-10-22', '00001', 'F0004'),
-('p0004', 'testing, testing', '????????????????????????????????????????????????', 1, 0, '00:00:04', '2022-10-08', '00001', 'F0008'),
 ('p0005', 'AUTO FISHING WEB', 'fish', 0, 0, '00:00:05', '2022-10-08', '00003', 'F0002'),
 ('p0006', 'FISHING 2', 'fish fish', 1, 0, '00:00:06', '2022-10-08', '00003', 'F0004'),
 ('p0007', 'FISHING 3', 'fish fish fish', 1, 0, '00:00:06', '2022-10-08', '00003', 'F0002'),
-('p0008', 'suk dik ', 'adwasdsafafdfasfsasdfdfasasdfsdfasf', 1, 0, '00:00:07', '2022-10-08', '00004', 'F0007'),
-('p0009', 'suk dik mor', 'adwasdsafafdfasfsasdfdfasasdfsdfasf dassdaasd ', 0, 0, '00:00:07', '2022-10-08', '00004', 'F0005'),
-('p0010', 'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER', 'AW', 0, 0, '00:00:09', '2022-10-08', '00001', 'F0008'),
-('p0011', 'testing', 'aljdasjlafhdhfjlkhsdjksdfhkjlasdfsdf', 0, 0, '13:35:22', '2022-10-09', '00001', 'F0002'),
 ('p0012', 'testing like', 'LIKE', 0, 0, '15:15:43', '2022-10-10', '00003', 'F0002'),
 ('p0013', 'TESTING LIKE 4', 'testing testing..\r\n', 0, 0, '15:19:07', '2022-10-10', '00003', 'F0006'),
-('p0014', 'Testing 3 like', 'testing .. tesintg', 0, 0, '15:20:43', '2022-10-10', '00003', 'F0007'),
-('p0015', 'sleeping guide', 'Many factors can interfere with a good night\'s sleep - from work stress and family responsibilities to illnesses. It\'s no wonder that quality sleep is sometimes elusive.\r\n\r\nYou might not be able to control the factors that interfere with your sleep. However, you can adopt habits that encourage better sleep. Start with these simple tips.\r\n\r\n1. Stick to a sleep schedule\r\nSet aside no more than eight hours for sleep. The recommended amount of sleep for a healthy adult is at least seven hours. Most people don\'t need more than eight hours in bed to be well rested.\r\n\r\nGo to bed and get up at the same time every day, including weekends. Being consistent reinforces your body\'s sleep-wake cycle.\r\n\r\nIf you don\'t fall asleep within about 20 minutes of going to bed, leave your bedroom and do something relaxing. Read or listen to soothing music. Go back to bed when you\'re tired. Repeat as needed, but continue to maintain your sleep schedule and wake-up time.\r\n\r\n2. Pay attention to what you eat and drink\r\nDon\'t go to bed hungry or stuffed. In particular, avoid heavy or large meals within a couple of hours of bedtime. Discomfort might keep you up.\r\n\r\nNicotine, caffeine and alcohol deserve caution, too. The stimulating effects of nicotine and caffeine take hours to wear off and can interfere with sleep. And even though alcohol might make you feel sleepy at first, it can disrupt sleep later in the night.', 0, 0, '02:50:11', '2022-10-11', '00001', 'F0004');
+('p0014', 'Testing 3 like', 'testing .. tesintg', 0, 0, '15:20:43', '2022-10-10', '00003', 'F0007');
 
 -- --------------------------------------------------------
 
@@ -205,10 +183,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `user_key`, `encrypted_password`, `img`, `name`) VALUES
-('00001', 'ivanhalim', 'ivanhalim888@yahoo.co.id', '49sN7Ea!ri8c9jLy870J', 'qvfcj9saXZ3cODtHF3V48yNLNQ82', '00001.jpg', 'Grego'),
 ('00002', 'svan', 'ivanhalim888@gmail.com', 'A60XJf!Ydj5ig9mfkT6A', 'bLZNsa!3cQQrz20Gwkb', '00002.jpg', 'ivanhalim'),
 ('00003', 'ikan', 'ikan@gmail.com', 'mE5946K9pfAsb8Uet9sn', '1tjKC5LZ1qeoYWDlyzHOw8R', '00003.jpg', 'tongkol'),
-('00004', 'Agustinusss', 'ivanhalim888@gmail.com', 'R7ZR83jxIHKNpu6w!hws', '6GgTn6IRhREmw3UUbLClbD', '00004.jpg', 'Latihan1'),
 ('00005', 'Hunter2', 'awa@gmail.com', '4Saheyuh!36G0XCE5n1d', 'g22bom92txAy!nzJmyR48s1', '00005.jpg', 'AWDAWDA'),
 ('00006', 'Kenzi1010', 'supergamerzone134@gmail.com', 'L!OUiNgX3K30Pn7CddPq', 'wWLpBGm8ppO3Zoi8ti4c8X9Lk', '00006.png', 'Pixel'),
 ('10001', 'admin', '', 'ADWjWuuhXZiOYNFvMyMi', 'o4eoYm9JNukh9ucsRvlL8xQs', '10001.png', 'admin');
@@ -263,24 +239,28 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `banned`
+--
+ALTER TABLE `banned`
+  ADD CONSTRAINT `banned_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`);
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `likes`
 --
 ALTER TABLE `likes`
-  ADD CONSTRAINT `post_id_like` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_id_like` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_id_like` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`forum_id`) REFERENCES `forum` (`id`);
 COMMIT;
 
