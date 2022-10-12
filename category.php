@@ -128,8 +128,8 @@ function getTotalLikes($_post_id)
 		</div>
 
 
-		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
-			if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
+			<?php if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
 				<div class="container my-4 col-lg-8">
 					<div class="card-group vgr-cards">
 						<div class="card border-0">
@@ -161,56 +161,57 @@ function getTotalLikes($_post_id)
 									<div class="content-container d-flex flex-column mt-3" style="overflow-wrap: anywhere;">
 										<h4 class="card-title" style="overflow: hidden;"><?= $row['title'] ?></h4>
 										<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
-										<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p></a>
+											<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p>
+										</a>
 
-									<!-- modal to show more text of body -->
+										<!-- modal to show more text of body -->
 										<div class="modal" id="modal<?php echo $row["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
-												<div class="modal-dialog modal-dialog-centered" role="document">
-													<div class="modal-content p-3">
-														<div class="modal-header">
-															<h5 class="modal-title">Post Body</h5>
-														</div>
-														<div class="modal-body">
-															<p><?= $row["body"] ?></p>
-														</div>
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content p-3">
+													<div class="modal-header">
+														<h5 class="modal-title">Post Body</h5>
+													</div>
+													<div class="modal-body">
+														<p><?= $row["body"] ?></p>
 													</div>
 												</div>
 											</div>
-									<!-- close modal-->
+										</div>
+										<!-- close modal-->
 									</div>
 								</div>
 								<?php include_once "comment.php" ?>
 								<?php $stmt2 = get_comment($row["id"]);
 								$flag = 0; ?>
 								<div class="feedback-container d-flex flex-row my-2">
-								<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
-									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
-								</button>
-							</div>
+									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+										<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
+									</button>
+								</div>
 								<div id="test-<?= $row["id"] ?>">
 									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 										<?php $flag = 1; ?>
 										<div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
-										<div class="each-comment-container d-flex flex-column w-100">
-											<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-												<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
-													<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
-														<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
-															<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
-													</div>
-													<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
-														<span class="post-username me-1"><?= $row2['username'] ?></span>
-													</a>
+											<div class="each-comment-container d-flex flex-column w-100">
+												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
+													<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+														<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
+															<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
+																<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+														</div>
+														<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
+															<span class="post-username me-1"><?= $row2['username'] ?></span>
+														</a>
 
-													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+													</div>
+												</div>
+												<div class="content-container d-flex flex-column">
+													<p class="card-text"><?= $row2['body'] ?></p>
 												</div>
 											</div>
-											<div class="content-container d-flex flex-column">
-												<p class="card-text"><?= $row2['body'] ?></p>
-											</div>
 										</div>
-									</div>
 									<?php } ?>
 									<?php if ($flag == 0) { ?>
 										<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">
