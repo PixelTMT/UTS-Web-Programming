@@ -12,15 +12,17 @@
 <?php
 session_start();
 require_once("security.php");
-include_once 'deleteStuff.php';
-if (isset($_POST['delete'])) {
-	if (isset($_POST['deletePost'])) {
-		deletePost($_POST['deletePost']);
-		//echo $_POST['deletePost'];
-	}
-	if (isset($_POST['deleteComment'])) {
-		deleteComment($_POST['deleteComment']);
-		//echo $_POST['deleteComment'];
+if($_SESSION['isAdmin']){
+	include_once 'deleteStuff.php';
+	if(isset($_POST['delete'])){
+		if(isset($_POST['deletePost'])){
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if(isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
 	}
 }
 
@@ -97,7 +99,8 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if($row) return $row["total_likes"];
+	return 0;
 }
 
 ?>
@@ -126,7 +129,7 @@ function getTotalLikes($_post_id)
 <body>
 	<!-- navbar -->
 	<?php include_once './components/navbar.php'  ?>
-
+	
 	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid" id="backToTop">
 		<div class="jumboDesc">
@@ -140,7 +143,12 @@ function getTotalLikes($_post_id)
 			</form>
 		</div>
 	</main>
-
+	<form action="dashboard.php" method="get">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+	<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
+	</form>
 	<aside>
 		<div class="social-panel-container">
 			<div class="social-panel">
@@ -167,6 +175,7 @@ function getTotalLikes($_post_id)
 			Click me
 		</button>
 	</aside>
+	
 
 	<article>
 		<div class="container tabs-container mt-4">

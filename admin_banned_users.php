@@ -3,21 +3,25 @@
 session_start();
 require_once('isAdmin.php');
 require_once("security.php");
+require_once('deleteStuff.php');
 
-if (isset($_POST["user_id_unban"]) && isset($_POST["username"])) {
-    $post_id = $_POST["user_id_unban"];
-    $user_name = $_POST["username"];
-    //unbanUser($post_id);
-    echo "<span class='d-flex justify-content-center text-center'>  {$user_name} has been <b> Unbanned </b> </span>";
-}
-if (isset($_POST["user_id_delete"]) && isset($_POST["username"])) {
-    $post_id = $_POST["user_id_delete"];
-    $user_name = $_POST["username"];
-    //delete user???
-    echo "<span class='d-flex justify-content-center text-center'>  {$user_name} has been <b> Deleted </b> </span>";
+if(isset($_POST['delete'])){
+    if(isset($_POST['user_id_delete'])) {
+        deleteUser($_POST['user_id_delete']);
+		unset($_POST['user_id_delete']);
+        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Deleted </b> </span>";
+		//echo $_POST['user_id_delete'];
+	}
+	if(isset($_POST['user_id_unban'])) {
+        unbanUser($_POST['user_id_unban']);
+		unset($_POST['user_id_unban']);
+        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Unbanned </b> </span>";
+		//echo $_POST['user_id_unban'];
+	}
+    unset($_POST['delete']);
 }
 
-$sql = "SELECT * from user where NOT id = ?"; //ni ganti jangan user sesuai database 
+$sql = "SELECT * from user where id = ANY(SELECT user_id from banned)"; //ni ganti jangan user sesuai database 
 $stmt = $db->prepare($sql);
 $data = [$_SESSION["id"]];
 $stmt->execute($data);
@@ -51,9 +55,6 @@ $stmt->execute($data);
             <div class="p-4">
                 <h1><a href="#" style="text-decoration: none; color: #fff;" class="logo">Admin Panel</a></h1>
                 <ul class="list-unstyled components mb-5">
-                    <li>
-                        <a href="admin_posts.php"><span class="fa-solid fa-rectangle-list my-3 me-2"></span>Posts List</a>
-                    </li>
                     <li>
                         <a href="admin_users.php"><span class="fa-solid fa-user-group my-3 me-2"></span>User Data</a>
                     </li>
@@ -101,11 +102,13 @@ $stmt->execute($data);
                                 <form action="admin_banned_users.php" method='post'>
                                     <input type="text" name='user_id_unban' value="<?= $row["id"] ?>" hidden>
                                     <input type="text" name='username' value="<?= $row["username"] ?>" hidden>
-                                    <button class="adminBtn edit-profile btn btn-danger my-2 px-3" style="max-width: 10rem;" id="ban-<?= $row['id'] ?>-<?= $row['username'] ?>">Ban User</button>
+                                    <input type="text" name='delete' value="delete" hidden>
+                                    <button class="adminBtn edit-profile btn btn-danger my-2 px-3" style="max-width: 10rem;" id="ban-<?= $row['id'] ?>-<?= $row['username'] ?>">unBan User</button>
                                 </form>
                                 <form action="admin_banned_users.php" method='post'>
                                     <input type="text" name='user_id_delete' value="<?= $row["id"] ?>" hidden>
                                     <input type="text" name='username' value="<?= $row["username"] ?>" hidden>
+                                    <input type="text" name='delete' value="delete" hidden>
                                     <button class="adminBtn edit-profile btn btn-danger my-2 px-3" style="max-width: 10rem;" id="delete-<?= $row['id'] ?>-<?= $row['username'] ?>">Delete Account</button>
                                 </form>
                             </div>

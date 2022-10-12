@@ -57,8 +57,11 @@ $sql = "SELECT *,
     SELECT categories from forum
     where id = forum_id
 ) AS 'category'
-FROM post
-ORDER BY time_created DESC";
+FROM post ";
+if (isset($_GET['keyword'])) {
+	$sql .= "WHERE title like '%{$_GET['keyword']}%' ";
+}
+$sql .= "ORDER BY time_created DESC";
 
 $hasil = $db->query($sql);
 function CheckActive($_category)
@@ -126,8 +129,13 @@ function getTotalLikes($_post_id)
 				<li <?php CheckActive("php"); ?> onclick="List('php')"><img src="img/php.svg"> PHP</li>
 			</ul>
 		</div>
-
-
+		<form action="?keyword=" method="get">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			<?php if(isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
+			<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
+		</form>
 		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
 			<?php if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
 				<div class="container my-4 col-lg-8">

@@ -1,7 +1,6 @@
 <?php
 require_once "db.php";
 require_once 'security.php';
-require_once 'deleteStuff.php';
 session_start();
 $url = $_SERVER['REQUEST_URI'];
 if (isset($_GET['id'])) {
@@ -9,24 +8,36 @@ if (isset($_GET['id'])) {
 } else {
 	exit(header("location:profile.php"));
 }
-
-if (isset($_POST['delete'])) {
-	if (isset($_POST['deletePost'])) {
-		deletePost($_POST['deletePost']);
-		//echo $_POST['deletePost'];
+if($_SESSION['isAdmin']){
+	require_once 'deleteStuff.php';
+	if(isset($_POST['delete'])){
+		if(isset($_POST['deletePost'])){
+			deletePost($_POST['deletePost']);
+			unset($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if(isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			unset($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+		if(isset($_POST['banUser'])) {
+			banUser($_POST['banUser']);
+			unset($_POST['banUser']);
+			//echo $_POST['banUser'];
+		}
+		if(isset($_POST['unbanUser'])) {
+			unbanUser($_POST['unbanUser']);
+			unset($_POST['unbanUser']);
+			//echo $_POST['banUser'];
+		}
+		unset($_POST['delete']);
 	}
-	if (isset($_POST['deleteComment'])) {
-		deleteComment($_POST['deleteComment']);
-		//echo $_POST['deleteComment'];
-	}
-	if (isset($_POST['banUser'])) {
-		banUser($_POST['banUser']);
-		//echo $_POST['banUser'];
-	}
-	if (isset($_POST['unbanUser'])) {
-		unbanUser($_POST['unbanUser']);
-		//echo $_POST['banUser'];
-	}
+	$sql_b = "SELECT user_id from banned where user_id=?"; //ni ganti jangan user sesuai database 
+	$stmt_b = $db->prepare($sql_b);
+	$data_b = [$_GET['id']];
+	$stmt_b->execute($data_b);
+	$isBanned = $stmt_b->fetch(PDO::FETCH_ASSOC);
 }
 
 //user data
@@ -91,18 +102,18 @@ function getTotalLikes($_post_id)
 					<h3><?= $row["username"] ?></h3>
 					<span class="my-1"><?= $row["name"] ?></span>
 					<span class="my-1"><?= $row["email"] ?></span>
-					<?php if ($_SESSION['isAdmin']) { ?>
+					<?php if ($_SESSION['isAdmin']) if(!$isBanned){{?>
 						<form action="<?= $url ?>" method='post'>
 							<input type="text" name='banUser' value=<?= $row["id"] ?> hidden>
 							<button class="btn btn-danger px-1 py-1" name='delete'>Ban User</button>
 						</form>
-					<?php } ?>
-					<?php if ($_SESSION['isAdmin']) { ?>
+					<?php }} ?>
+					<?php if ($_SESSION['isAdmin']) if($isBanned){{ ?>
 						<form action="<?= $url ?>" method='post'>
 							<input type="text" name='unbanUser' value=<?= $row["id"] ?> hidden>
 							<button class="btn btn-danger px-1 py-1" name='delete'>unBan User</button>
 						</form>
-					<?php } ?>
+					<?php }} ?>
 				</div>
 			</div>
 			<div class="container card profile-container d-flex flex-row mt-4 mx-2 col-lg-8">
@@ -177,13 +188,13 @@ function getTotalLikes($_post_id)
 														<p class="card-text"><?= $row3['body'] ?></p>
 													</div>
 												</div>
+												<?php if ($_SESSION['isAdmin']) { ?>
+													<form action="<?= $url ?>" method='post'>
+														<input type="text" name='deleteComment' value=<?= $row3["id"] ?> hidden>
+														<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
+													</form>
+												<?php } ?>
 											</div>
-											<?php if ($_SESSION['isAdmin']) { ?>
-												<form action="<?= $url ?>" method='post'>
-													<input type="text" name='deleteComment' value=<?= $row3["id"] ?> hidden>
-													<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
-												</form>
-											<?php } ?>
 										<?php } ?>
 										<?php if ($flag == 0) { ?>
 											<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">

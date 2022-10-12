@@ -10,13 +10,14 @@
         <div class="collapse navbar-collapse text-center" id="nvbCollapse">
             <ul class="navbar-nav nav ms-auto">
             <?php
+                if(isset($_SESSION['isAdmin'])){
                 if($_SESSION['isAdmin']){
                 ?>
                 <li class="nav-item mx-2 my-2">
                     <a class="nav-link" href="admin_users.php">Admin Panel</a>
                 </li>
                 <?php
-                }
+                }}
                 ?>
                 <li class="nav-item mx-2 my-2">
                     <a class="nav-link" href="dashboard.php">Dashboard</a>

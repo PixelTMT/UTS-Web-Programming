@@ -1,6 +1,7 @@
 <?php
 
 // hidupkan sebelum di kumpul
+// biar kalau error tidak keliatan
 //error_reporting(0);
 require_once "db.php";
 $blacklist = array(
@@ -85,10 +86,10 @@ function CheckAccount($_username, $_password)
             $_SESSION["name"] = $row["name"];
             $_SESSION["email"] = $row['email'];
             $_SESSION["img"] = GetImgType($row['img']);
+            $_SESSION['isAdmin'] = false;
             if(substr($_SESSION['id'],0,1) == 1){
                 $_SESSION['isAdmin'] = true;
             }
-            else $_SESSION['isAdmin'] = false;
             exit(header('location: dashboard.php'));
         } else {
             //login failed
