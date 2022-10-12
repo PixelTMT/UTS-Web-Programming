@@ -51,13 +51,13 @@ FROM post ";
 
 switch ($current_tabs) {
 	case "trends":
-		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC";
+		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC LIMIT 10";
 		break;
 	case "likes":
-		$sql .= "ORDER BY total_likes DESC";
+		$sql .= "ORDER BY total_likes DESC LIMIT 10";
 		break;
 	case "latest":
-		$sql .= "ORDER BY date_created DESC, time_created DESC";
+		$sql .= "ORDER BY date_created DESC, time_created DESC LIMIT 10";
 		break;
 }
 $hasil = $db->query($sql);
