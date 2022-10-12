@@ -57,7 +57,8 @@ $sql = "SELECT *,
     SELECT categories from forum
     where id = forum_id
 ) AS 'category'
-FROM post";
+FROM post
+ORDER BY time_created DESC";
 
 $hasil = $db->query($sql);
 function CheckActive($_category)
@@ -104,6 +105,7 @@ function getTotalLikes($_post_id)
 	<link href="css/dashboard.css" rel="stylesheet">
 	<link href="css/footer.css" rel="stylesheet">
 	<link href="css/category.css" rel="stylesheet">
+	<link href="css/side_panel.css" rel="stylesheet">
 	<title>Profile</title>
 </head>
 
@@ -126,8 +128,8 @@ function getTotalLikes($_post_id)
 		</div>
 
 
-		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
-			if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
+			<?php if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
 				<div class="container my-4 col-lg-8">
 					<div class="card-group vgr-cards">
 						<div class="card border-0">
@@ -149,31 +151,48 @@ function getTotalLikes($_post_id)
 									</div>
 								</div>
 								<div class="d-flex flex-row">
-									<div class="px-2 align-middle text-center justify-content-center align-items-center">
-										<div class="d-flex flex-column me-3 mt-1">
+									<div class="px-1 pb-2 align-middle text-center justify-content-center align-items-center">
+										<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
 											<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 											<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 											<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 										</div>
 									</div>
-									<div class="content-container d-flex flex-column">
-										<h4 class="card-title"><?= $row['title'] ?></h4>
-										<p class="card-text"><?= $row['body'] ?></p>
+									<div class="content-container d-flex flex-column mt-3" style="overflow-wrap: anywhere;">
+										<h4 class="card-title" style="overflow: hidden;"><?= $row['title'] ?></h4>
+										<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
+											<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p>
+										</a>
+
+										<!-- modal to show more text of body -->
+										<div class="modal" id="modal<?php echo $row["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content p-3">
+													<div class="modal-header">
+														<h5 class="modal-title">Post Body</h5>
+													</div>
+													<div class="modal-body">
+														<p><?= $row["body"] ?></p>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- close modal-->
 									</div>
 								</div>
 								<?php include_once "comment.php" ?>
 								<?php $stmt2 = get_comment($row["id"]);
 								$flag = 0; ?>
 								<div class="feedback-container d-flex flex-row my-2">
-									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
-										<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row["id"]) ?> comments</span>
+									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+										<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 									</button>
 								</div>
 								<div id="test-<?= $row["id"] ?>">
 									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 										<?php $flag = 1; ?>
 										<div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
-											<div class="d-flex flex-column w-100">
+											<div class="each-comment-container d-flex flex-column w-100">
 												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
 													<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 														<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
@@ -192,7 +211,6 @@ function getTotalLikes($_post_id)
 													<p class="card-text"><?= $row2['body'] ?></p>
 												</div>
 											</div>
-
 										</div>
 									<?php } ?>
 									<?php if ($flag == 0) { ?>
@@ -205,7 +223,7 @@ function getTotalLikes($_post_id)
 								</div>
 								<form action="#" method="post" enctype="multipart/form-data">
 									<div class="input-group mb-3 mt-3">
-										<input type="text" class="form-control" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply..." aria-label="" aria-describedby="basic-addon1">
+										<input type="text" class="form-control me-2 rounded" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
 										<div class="input-group-prepend">
 											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
 										</div>

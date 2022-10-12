@@ -39,50 +39,51 @@ include "NeedLogin.php";
                     <div class="card-body">
                         <form action="create_post_proses.php" method="post" enctype="multipart/form-data">
                             <div class="user-container d-flex align-items-center mb-2 text-nowrap">
-                                <div class="categories mx-auto w-100">
+                                <div class="categories mx-auto w-100 d-flex flex-column justify-conte">
                                     <div>
                                         <h5 class="mb-2 text-start text-danger" style="font-weight: bolder;">STEP 1</h5>
                                         <h5 class="mb-2 text-start" style="font-size: 15px">Choose a programming language to discuss</h5>
                                     </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category1" value="c++">
-                                        <label class="form-check-label" for="category1">C++</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category2" value="python">
-                                        <label class="form-check-label" for="category2">Python</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category3" value="java">
-                                        <label class="form-check-label" for="category3">Java</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category4" value="ruby">
-                                        <label class="form-check-label" for="category4">Ruby</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category5" value="sql">
-                                        <label class="form-check-label" for="category5">SQL</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category5" value="php">
-                                        <label class="form-check-label" for="category5">PHP</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category6" value="c">
-                                        <label class="form-check-label" for="category6">C</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="categories" id="category7" value="javascript">
-                                        <label class="form-check-label" for="category7">Javascript</label>
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category1" value="c++">
+                                            <label class="form-check-label" for="category1">C++</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category2" value="python">
+                                            <label class="form-check-label" for="category2">Python</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category3" value="java">
+                                            <label class="form-check-label" for="category3">Java</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category4" value="ruby">
+                                            <label class="form-check-label" for="category4">Ruby</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category5" value="sql">
+                                            <label class="form-check-label" for="category5">SQL</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category5" value="php">
+                                            <label class="form-check-label" for="category5">PHP</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category6" value="c">
+                                            <label class="form-check-label" for="category6">C</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="categories" id="category7" value="javascript">
+                                            <label class="form-check-label" for="category7">Javascript</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="content-container d-flex flex-column">
                                 <h5 class="mb-2 mt-3 text-start text-danger" style="font-weight: bolder;">STEP 2</h5>
                                 <h5 class="mb-2 text-start" style="font-size: 15px">Write the title of your post</h5>
-                                <input type="text" class="form-control mb-3" id="title" name="title" required placeholder="Title" maxlength="100" />
+                                <input type="text" class="form-control mb-3" id="title" name="title" required placeholder="Title" maxlength="75" />
                                 <span id="maxCharacters"></span>
                                 <h5 class="mb-2 mt-3 text-start text-danger" style="font-weight: bolder;">STEP 3</h5>
                                 <h5 class="mb-2 text-start" style="font-size: 15px">Write your post content</h5>

@@ -11,7 +11,7 @@
 
 <body>
     <div id="container">
-        <h1>Congrat! Password has been reset</h1>
+        <h1>Congrats! Password has been reset</h1>
     </div>
 </body>
 
