@@ -39,7 +39,7 @@ include "NeedLogin.php";
                     <div class="card-body">
                         <form action="create_post_proses.php" method="post" enctype="multipart/form-data">
                             <div class="user-container d-flex align-items-center mb-2 text-nowrap">
-                                <div class="categories mx-auto w-100">
+                                <div class="categories mx-auto w-100 d-flex flex-column">
                                     <div>
                                         <h5 class="mb-2 text-start text-danger" style="font-weight: bolder;">STEP 1</h5>
                                         <h5 class="mb-2 text-start" style="font-size: 15px">Choose a programming language to discuss</h5>
@@ -82,7 +82,7 @@ include "NeedLogin.php";
                             <div class="content-container d-flex flex-column">
                                 <h5 class="mb-2 mt-3 text-start text-danger" style="font-weight: bolder;">STEP 2</h5>
                                 <h5 class="mb-2 text-start" style="font-size: 15px">Write the title of your post</h5>
-                                <input type="text" class="form-control mb-3" id="title" name="title" required placeholder="Title" maxlength="100" />
+                                <input type="text" class="form-control mb-3" id="title" name="title" required placeholder="Title" maxlength="75" />
                                 <span id="maxCharacters"></span>
                                 <h5 class="mb-2 mt-3 text-start text-danger" style="font-weight: bolder;">STEP 3</h5>
                                 <h5 class="mb-2 text-start" style="font-size: 15px">Write your post content</h5>

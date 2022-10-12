@@ -48,7 +48,7 @@ if (isset($_SESSION['ERROR'])) {
                         </div>
                         <input type="password" class="form-control" id="password" name="password" required />
                         <div class="button-container mt-3 mb-4 text-center">
-                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>login</button>
+                            <button type="submit" class="mt-2 mb-2 btn btn-danger" name="login" required>Login</button>
                         </div>
                     </div>
                 </div>

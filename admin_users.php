@@ -1,7 +1,7 @@
 <?php 
 
 session_start();
-
+require_once 'isAdmin.php';
 require_once("security.php");
 
 $sql = "SELECT * from user";
@@ -87,7 +87,7 @@ $hasil = $db->query($sql);
     <?php } ?>
     </main>
         </div>
-
+		<script type="text/javascript" src="js/buttons.js"></script>
 
   </body>
 </html>
