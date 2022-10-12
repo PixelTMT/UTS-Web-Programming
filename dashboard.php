@@ -12,6 +12,17 @@
 <?php
 session_start();
 require_once("security.php");
+include_once 'deleteStuff.php';
+if(isset($_POST['delete'])){
+	if(isset($_POST['deletePost'])){
+		deletePost($_POST['deletePost']);
+		//echo $_POST['deletePost'];
+	}
+	if(isset($_POST['deleteComment'])) {
+		deleteComment($_POST['deleteComment']);
+		//echo $_POST['deleteComment'];
+	}
+}
 
 $tabs = array('trends', 'likes', 'latest');
 $current_tabs = 'trends';
@@ -49,6 +60,9 @@ $sql = "SELECT *, id post,
 ) AS total_comment
 FROM post ";
 
+if(isset($_GET['keyword'])){
+	$sql .= "WHERE title like '%{$_GET['keyword']}%' ";
+}
 switch ($current_tabs) {
 	case "trends":
 		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC";
@@ -122,6 +136,12 @@ function getTotalLikes($_post_id)
 				<span id="typed" class="mt-3"></span>
 			</div>
 			<a href="#postsId"><i class="fa-solid fa-angles-down mt-5"></i></a>
+			<form action="dashboard.php" method="get">
+				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
+			</form>
 		</div>
 	</main>
 
@@ -233,6 +253,12 @@ function getTotalLikes($_post_id)
 									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 								</button>
 							</div>
+							<?php if($_SESSION['isAdmin']){?>
+								<form action="dashboard.php" method='post'>
+									<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
+									<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
+								</form>
+							<?php }?>
 							<div id="test-<?= $row["id"] ?>">
 								<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 									<?php $flag = 1; ?>
@@ -250,6 +276,12 @@ function getTotalLikes($_post_id)
 
 													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+													<?php if($_SESSION['isAdmin']){?>
+														<form action="dashboard.php" method='post'>
+															<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
+															<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
+														</form>
+													<?php }?>
 												</div>
 											</div>
 											<div class="content-container d-flex flex-column">
