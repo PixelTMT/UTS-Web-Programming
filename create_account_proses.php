@@ -18,12 +18,12 @@ if (
         return;
     }
     if (CheckValidString($_POST["password"]) || CheckValidString($_POST['password2'])) {
-        if (CheckValidString($_POST["password"]) != CheckValidString($_POST['password2'])) {
-            $_SESSION['ERROR'] = "Password not match";
-            exit(header('location: create_account_form.php'));
-            return;
-        }
         $_SESSION['ERROR'] = "Password must be alphanumeric";
+        exit(header('location: create_account_form.php'));
+        return;
+    }
+    if ($_POST["password"] != $_POST['password2']) {
+        $_SESSION['ERROR'] = "Password not match";
         exit(header('location: create_account_form.php'));
         return;
     }

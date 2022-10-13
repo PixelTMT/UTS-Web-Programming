@@ -60,7 +60,9 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if($row)
+		return $row["total_likes"];
+	return 0;
 }
 ?>
 
