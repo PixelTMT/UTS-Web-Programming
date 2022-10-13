@@ -103,6 +103,16 @@ function getTotalLikes($_post_id)
 	return 0;
 }
 
+function isLikePost($_post_id){
+	global $db;
+	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
+	$stmt = $db->prepare($sql);
+	$stmt->execute([$_SESSION['id'],$_post_id]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	if($row) return 'font-size:1.25rem; color:blue';
+	return 'font-size:1.25rem; color:grey';
+	
+}
 ?>
 
 <!DOCTYPE html>
@@ -143,11 +153,12 @@ function getTotalLikes($_post_id)
 			</form>
 		</div>
 	</main>
-	<form action="dashboard.php" method="get">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</button>
-	<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
+	<form action="?keyword=" method="get">
+			<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
+				<i class="fa-solid fa-magnifying-glass"></i>
+			</button>
+		<?php if(isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
+		<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
 	</form>
 	<aside>
 		<div class="social-panel-container">
@@ -199,7 +210,7 @@ function getTotalLikes($_post_id)
 								<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
 									<?php if (!empty($_SESSION["id"])) { ?>
 										<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like">
-											<i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+											<i class="fa-solid fa-arrow-up" id="upvoteIcon" style="<?= isLikePost($row["id"]) ?>"></i></button>
 										<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 										<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 								</div>

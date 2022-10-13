@@ -85,9 +85,20 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if($row)
+		return $row["total_likes"];
+	return 0;
 }
-
+function isLikePost($_post_id){
+	global $db;
+	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
+	$stmt = $db->prepare($sql);
+	$stmt->execute([$_SESSION['id'],$_post_id]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	if($row) return 'font-size:1.25rem; color:blue';
+	return 'font-size:1.25rem; color:grey';
+	
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -161,7 +172,7 @@ function getTotalLikes($_post_id)
 								<div class="d-flex flex-row">
 									<div class="px-1 pb-2 align-middle text-center justify-content-center align-items-center">
 										<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
-											<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+											<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="<?= isLikePost($row["id"]) ?>"></i></button>
 											<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 											<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 										</div>

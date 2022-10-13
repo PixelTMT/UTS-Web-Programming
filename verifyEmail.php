@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once 'mailing.php';
+
 if(isset($_SESSION['OTPTimespan']) && isset($_SESSION['OTPcode'])){
     if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
@@ -14,7 +15,7 @@ if(isset($_GET['resend'])){
             $_SESSION['OTPTimespan'] = time();
             $subject = 'Email Verification Code';
             $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
-            sendingEmail($_SESSION['email'], $subject, $message);
+            sendingEmail($_SESSION['ChangeEmail'], $subject, $message);
         }
         else{
             $t = 60 - (time() - $_SESSION['OTPTimespan']);
@@ -40,11 +41,11 @@ if(isset($_GET['resend'])){
         <div class="text-center mt-4 header mx-auto">
             <img src="img/SPACELY.svg" class="logo mt-2 mb-4" alt="...">
             <header>
-                <p class="h3" style="font-weight:100; "font-family: 'Poppins';">OTP Verification</p>
+                <p class="h3" style="font-weight:100;">OTP Verification</p>
             </header>
         </div>
         <div class="login d-flex justify-content-center align-items-center mt-4">
-            <form action="verifyEmail.php" method="POST" autocomplete="off">
+            <form action="verifyEmail_process.php" method="POST" autocomplete="off">
                 <div class="row form-group">
                     <div class="col">
                         <?php
@@ -58,8 +59,8 @@ if(isset($_GET['resend'])){
                         ?>
                         <label for="OTPverify" class="form-label mt-2 mb-2"> Verify Email </label>
                         <br />
-                        <label style="opacity: 0.5;"> Enter Verification from your Email</label>
-                        <input type="number" class="form-control mt-1" name="OTPverify" placeholder="Verification Code" required
+                        <label style="opacity: 0.5;"> Enter Verification code from your Email</label>
+                        <input type="text" class="form-control mt-1" name="OTPverify" placeholder="Verification Code" required
                         <?php
                             if(isset($_GET['OTPcode'])){
                                 echo "value='".$_GET['OTPcode']."'";
