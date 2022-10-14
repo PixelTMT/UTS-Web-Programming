@@ -1,5 +1,6 @@
 <?php 
 session_start();
+require_once 'mailing.php';
 if(isset($_SESSION['OTPTimespan']) && isset($_SESSION['OTPcode'])){
     if(time() - $_SESSION['OTPTimespan'] > 60 * 5){
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = '';
@@ -13,7 +14,7 @@ if(isset($_GET['resend'])){
             $_SESSION['OTPTimespan'] = time();
             $subject = 'Email Verification Code';
             $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
-            $stat = sendingEmail($_POST['email'], $subject, $message);
+            sendingEmail($_POST['email'], $subject, $message);
         }
         else{
             $t = 60 - (time() - $_SESSION['OTPTimespan']);
@@ -30,8 +31,8 @@ if(isset($_GET['resend'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification Form</title>
-    <link rel="stylesheet" href="css/forgot.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/forget.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
@@ -59,8 +60,8 @@ if(isset($_GET['resend'])){
                         ?>
                         <label for="OTPverify" class="form-label mt-2 mb-2"> Verify Email </label>
                         <br />
-                        <label style="opacity: 0.5;"> Enter Verification from your Email</label>
-                        <input type="number" class="form-control mt-1" name="OTPverify" placeholder="Verification Code" required
+                        <label style="opacity: 0.5;"> Enter Verification code from your Email</label>
+                        <input type="text" class="form-control mt-1" name="OTPverify" placeholder="Verification Code" required
                         <?php
                             if(isset($_GET['OTPcode'])){
                                 echo "value='".$_GET['OTPcode']."'";

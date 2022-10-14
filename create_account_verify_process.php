@@ -14,10 +14,27 @@ if(isset($_POST['OTPverify'])){
         $_SESSION['OTPTimespan'] = $_SESSION['OTPcode'] = 'YOU WIN!';
         $id = GetID(0);
         move_uploaded_file($_SESSION['img_temp'], "user_img/{$id}{$_SESSION['img']}");
+        if(false){
+            echo $id;
+            echo "<br/>";
+            echo $_SESSION['name'];
+            echo "<br/>";
+            echo $_SESSION['username'];
+            echo "<br/>";
+            echo $_SESSION['email'];
+            echo "<br/>";
+            echo $_SESSION['user_key'];
+            echo "<br/>";
+            echo $_SESSION['encrypted_password'];
+            echo "<br/>";
+            echo "{$id}{$_SESSION['img']}";
+        }
         insert_to_database($id, $_SESSION['name'], $_SESSION['username'], $_SESSION['email'], $_SESSION['user_key'], $_SESSION['encrypted_password'], "{$id}{$_SESSION['img']}");
         session_destroy();
         exit(header('location: login_form.php'));
     }
+    $_SESSION['ERROR'] = "Wrong OTP CODE";
+    exit(header('location: create_account_verify.php'));
 }
 
 function insert_to_database($_id, $_name, $_username, $_email, $_user_key, $_encrypted_password, $_img)
@@ -40,7 +57,8 @@ function GetID($type)
     global $db;
     $hasil = $db->query($sql);
     while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
-        $id = intval($row['id']);
+        if(substr($row['id'],0,1) != 1)
+            $id = intval(substr($row['id'],1));
     }
     $re = strval($type);
     $re .= str_pad(strval($id + 1), 4, '0', STR_PAD_LEFT);

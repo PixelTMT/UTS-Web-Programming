@@ -6,8 +6,22 @@
 	}
 </script>
 <?php
+
+$current_active_list = "cpp";
 session_start();
-$current_active_list = 'cpp';
+if ($_SESSION['isAdmin']) {
+	include_once 'deleteStuff.php';
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if (isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+	}
+}
 $C_list_A = array(
 	'sql',
 	'php',
@@ -41,14 +55,12 @@ if (isset($_GET['list'])) {
 		$current_active_list = strtolower($_GET['list']);
 	}
 }
-
-require_once 'NeedLogin.php';
 require_once 'security.php';
 $sql = "SELECT *,
 (
     SELECT username from user
     where id = user_id
-) AS 'username',
+) AS username,
 (
     SELECT img from user
     where id = user_id
@@ -57,8 +69,12 @@ $sql = "SELECT *,
     SELECT categories from forum
     where id = forum_id
 ) AS 'category'
-FROM post
-ORDER BY time_created DESC";
+FROM post ";
+if (isset($_GET['keyword'])) {
+	$sql .= "WHERE title like '%{$_GET['keyword']}%' 
+	OR body like '%{$_GET['keyword']}%'";
+}
+$sql .= "ORDER BY time_created DESC";
 
 $hasil = $db->query($sql);
 function CheckActive($_category)
@@ -82,9 +98,20 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if ($row)
+		return $row["total_likes"];
+	return 0;
 }
-
+function isLikePost($_post_id)
+{
+	global $db;
+	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
+	$stmt = $db->prepare($sql);
+	$stmt->execute([$_SESSION['id'], $_post_id]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	if ($row) return 'font-size:1.25rem; color:blue';
+	return 'font-size:1.25rem; color:grey';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,10 +153,15 @@ function getTotalLikes($_post_id)
 				<li <?php CheckActive("php"); ?> onclick="List('php')"><img src="img/php.svg"> PHP</li>
 			</ul>
 		</div>
-
-
-		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) {
-			if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
+		<form class="text-center" action="?keyword=" method="get">
+			<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 40px; height: 40px;" type="submit">
+				<i class="fa-solid fa-magnifying-glass text-center"></i>
+			</button>
+			<?php if (isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
+			<input type="text" name="keyword" class="jumbotron-search w-25 text-center" placeholder="search post Title here.." <?php if (isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'"; ?>>
+		</form>
+		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
+			<?php if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
 				<div class="container my-4 col-lg-8">
 					<div class="card-group vgr-cards">
 						<div class="card border-0">
@@ -153,7 +185,7 @@ function getTotalLikes($_post_id)
 								<div class="d-flex flex-row">
 									<div class="px-1 pb-2 align-middle text-center justify-content-center align-items-center">
 										<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
-											<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+											<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like"><i class="fa-solid fa-arrow-up" id="upvoteIcon" style="<?= isLikePost($row["id"]) ?>"></i></button>
 											<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 											<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 										</div>
@@ -161,56 +193,69 @@ function getTotalLikes($_post_id)
 									<div class="content-container d-flex flex-column mt-3" style="overflow-wrap: anywhere;">
 										<h4 class="card-title" style="overflow: hidden;"><?= $row['title'] ?></h4>
 										<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
-										<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p></a>
+											<p class="card-text card-body-content" style="max-height: 6rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient:vertical; overflow: hidden; text-overflow: ellipsis; white-space:wrap; overflow-wrap: anywhere;"><?= $row['body'] ?></p>
+										</a>
 
-									<!-- modal to show more text of body -->
+										<!-- modal to show more text of body -->
 										<div class="modal" id="modal<?php echo $row["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
-												<div class="modal-dialog modal-dialog-centered" role="document">
-													<div class="modal-content p-3">
-														<div class="modal-header">
-															<h5 class="modal-title">Post Body</h5>
-														</div>
-														<div class="modal-body">
-															<p><?= $row["body"] ?></p>
-														</div>
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content p-3">
+													<div class="modal-header">
+														<h5 class="modal-title">Post Body</h5>
+													</div>
+													<div class="modal-body">
+														<p><?= $row["body"] ?></p>
 													</div>
 												</div>
 											</div>
-									<!-- close modal-->
+										</div>
+										<!-- close modal-->
 									</div>
 								</div>
 								<?php include_once "comment.php" ?>
 								<?php $stmt2 = get_comment($row["id"]);
 								$flag = 0; ?>
 								<div class="feedback-container d-flex flex-row my-2">
-								<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
-									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
-								</button>
-							</div>
+									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+										<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
+									</button>
+								</div>
+								<?php if (!empty($_SESSION['isAdmin'])) { ?>
+									<form action="category.php" method='post'>
+										<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
+										<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
+									</form>
+								<?php } ?>
 								<div id="test-<?= $row["id"] ?>">
 									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 										<?php $flag = 1; ?>
 										<div class="card mb-3 comment-container show_comment_container-<?= $row2["post_id"] ?>">
-										<div class="each-comment-container d-flex flex-column w-100">
-											<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-												<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
-													<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
-														<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
-															<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
-													</div>
-													<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
-														<span class="post-username me-1"><?= $row2['username'] ?></span>
-													</a>
+											<div class="each-comment-container d-flex flex-column w-100">
+												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
+													<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
+														<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
+															<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
+																<img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+														</div>
+														<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
+															<span class="post-username me-1"><?= $row2['username'] ?></span>
+														</a>
 
-													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+														<?php if (!empty($_SESSION['isAdmin'])) { ?>
+															<form action="category.php" method='post'>
+																<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
+																<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
+															</form>
+														<?php } ?>
+													</div>
+												</div>
+												<div class="content-container d-flex flex-column">
+													<p class="card-text"><?= $row2['body'] ?></p>
 												</div>
 											</div>
-											<div class="content-container d-flex flex-column">
-												<p class="card-text"><?= $row2['body'] ?></p>
-											</div>
 										</div>
-									</div>
 									<?php } ?>
 									<?php if ($flag == 0) { ?>
 										<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">
@@ -222,10 +267,12 @@ function getTotalLikes($_post_id)
 								</div>
 								<form action="#" method="post" enctype="multipart/form-data">
 									<div class="input-group mb-3 mt-3">
-										<input type="text" class="form-control me-2 rounded" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
-										<div class="input-group-prepend">
-											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
-										</div>
+										<?php if (!empty($_SESSION["id"])) { ?>
+											<input type="text" class="form-control comment-reply" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
+											<div class="input-group-prepend">
+												<button class="btn-add btn btn-outline-danger ms-2" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
+											</div>
+										<?php } ?>
 									</div>
 								</form>
 							</div>

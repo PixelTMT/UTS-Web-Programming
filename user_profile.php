@@ -1,32 +1,46 @@
 <?php
 require_once "db.php";
 require_once 'security.php';
-require_once 'deleteStuff.php';
 session_start();
 $url = $_SERVER['REQUEST_URI'];
 if (isset($_GET['id'])) {
+	if ($_GET['id'] == $_SESSION["id"] && isset($_SESSION["id"])) {
+		header("location:profile.php");
+	}
 	$id = $_GET['id'];
 } else {
 	exit(header("location:profile.php"));
 }
-
-if(isset($_POST['delete'])){
-	if(isset($_POST['deletePost'])){
-		deletePost($_POST['deletePost']);
-		//echo $_POST['deletePost'];
+if ($_SESSION['isAdmin']) {
+	require_once 'deleteStuff.php';
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
+			deletePost($_POST['deletePost']);
+			unset($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if (isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			unset($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+		if (isset($_POST['banUser'])) {
+			banUser($_POST['banUser']);
+			unset($_POST['banUser']);
+			//echo $_POST['banUser'];
+		}
+		if (isset($_POST['unbanUser'])) {
+			unbanUser($_POST['unbanUser']);
+			unset($_POST['unbanUser']);
+			//echo $_POST['banUser'];
+		}
+		unset($_POST['delete']);
 	}
-	if(isset($_POST['deleteComment'])) {
-		deleteComment($_POST['deleteComment']);
-		//echo $_POST['deleteComment'];
-	}
-	if(isset($_POST['banUser'])) {
-		banUser($_POST['banUser']);
-		//echo $_POST['banUser'];
-	}
-	if(isset($_POST['unbanUser'])) {
-		unbanUser($_POST['unbanUser']);
-		//echo $_POST['banUser'];
-	}
+	$sql_b = "SELECT user_id from banned where user_id=?"; //ni ganti jangan user sesuai database 
+	$stmt_b = $db->prepare($sql_b);
+	$data_b = [$_GET['id']];
+	$stmt_b->execute($data_b);
+	$isBanned = $stmt_b->fetch(PDO::FETCH_ASSOC);
 }
 
 //user data
@@ -49,7 +63,9 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if ($row)
+		return $row["total_likes"];
+	return 0;
 }
 ?>
 
@@ -91,18 +107,20 @@ function getTotalLikes($_post_id)
 					<h3><?= $row["username"] ?></h3>
 					<span class="my-1"><?= $row["name"] ?></span>
 					<span class="my-1"><?= $row["email"] ?></span>
-					<?php if($_SESSION['isAdmin']){?>
-						<form action="<?= $url?>" method='post'>
-							<input type="text" name='banUser' value=<?= $row["id"] ?> hidden>
-							<button class="btn btn-danger px-1 py-1" name='delete'>Ban User</button>
-						</form>
-					<?php }?>
-					<?php if($_SESSION['isAdmin']){?>
-						<form action="<?= $url?>" method='post'>
-							<input type="text" name='unbanUser' value=<?= $row["id"] ?> hidden>
-							<button class="btn btn-danger px-1 py-1" name='delete'>unBan User</button>
-						</form>
-					<?php }?>
+					<?php if ($_SESSION['isAdmin']) if (!$isBanned) { { ?>
+							<form action="<?= $url ?>" method='post'>
+								<input type="text" name='banUser' value=<?= $row["id"] ?> hidden>
+								<button class="btn btn-danger px-1 py-1" name='delete'>Ban User</button>
+							</form>
+					<?php }
+					} ?>
+					<?php if ($_SESSION['isAdmin']) if ($isBanned) { { ?>
+							<form action="<?= $url ?>" method='post'>
+								<input type="text" name='unbanUser' value=<?= $row["id"] ?> hidden>
+								<button class="btn btn-danger px-1 py-1" name='delete'>unBan User</button>
+							</form>
+					<?php }
+					} ?>
 				</div>
 			</div>
 			<div class="container card profile-container d-flex flex-row mt-4 mx-2 col-lg-8">
@@ -129,85 +147,74 @@ function getTotalLikes($_post_id)
 							<button class="category-button" role="button"><?= get_category($row2["forum_id"]) ?></button>
 						</div>
 						<div class="my-2 d-flex flex-column">
-							
+
 							<a onMouseOver="this.style.backgroundColor='#D9D9D9'" onMouseOut="this.style.backgroundColor='rgba(236,236,236,0.5)'" data-bs-toggle="modal" data-bs-target="#modal<?php echo $row2["id"] ?>" class="p-3 rounded" style="cursor: pointer; background-color:rgba(236,236,236,0.5); color: black; text-decoration: none; ">
 								<span class="post-body-content"><?= $row2["body"] ?></span></a>
-								
-								<!-- modal to show more text of body -->
-								<div class="modal" id="modal<?php echo $row2["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-centered" role="document">
-										<div class="modal-content p-3">
-											<div class="modal-header">
-												<h5 class="modal-title">Post Body</h5>
-											</div>
-											<div class="modal-body">
-												<p><?= $row2["body"] ?></p>
-											</div>
+
+							<!-- modal to show more text of body -->
+							<div class="modal" id="modal<?php echo $row2["id"] ?>" tabindex="-1" role="dialog" aria-labelledby="modallabel1" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content p-3">
+										<div class="modal-header">
+											<h5 class="modal-title">Post Body</h5>
+										</div>
+										<div class="modal-body">
+											<p><?= $row2["body"] ?></p>
+										</div>
 									</div>
 								</div>
 							</div>
 							<!-- close modal-->
-							<div class="feedback-container d-flex flex-row my-3">
-								<div class="border border-3 border-light rounded me-2 p-1">
-									<button disabled class="rounded-circle bg-transparent">
-										<i class="fa-solid fa-thumbs-up"></i>
+
+							<div class="feedback-container d-flex flex-column my-3">
+								<div class="my-2 mx-1 show-likes-container align-middle my-auto">
+									<button disabled class="btn-show-likes">
+										<i class="fa-solid fa-thumbs-up" style="color: rgba(0, 0, 0, 0.75)"></i>
 									</button>
-									<span class="mx-1"><?= getTotalLikes($row2["id"]) ?></span>
+									<span style="color: rgba(0, 0, 0, 0.75); font-weight: bold;"><?= getTotalLikes($row2["id"]) ?></span>
 								</div>
-								
-								<div class="border border-3 border-light rounded me-2 p-1">
+
+								<div class="rounded me-2 p-1">
 									<?php include_once "comment.php"; ?>
 									<?php $stmt2 = get_comment($row2["id"]);
 									$flag = 0; ?>
-									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
-									<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row2["id"]) ?> comments</span>
-								</button>
-								<div id="test-<?= $row2["id"] ?>">
-									<?php while ($row3 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
-										<?php $flag = 1; ?>
-										<div class="card comment-container show_comment_container-<?= $row3["post_id"] ?>">
-											<div class="d-flex flex-column w-100">
-												<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-													<img src=<?= "user_img/" . $row3['img'] ?> alt="user img" class="post-header rounded-circle">
-													<span class="post-username mx-2"><?= $row3['username'] ?></span>
-													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
-													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row3['date_created'] ?></span>
-												</div>
-												<div class="content-container d-flex flex-column">
-													<p class="card-text"><?= $row3['body'] ?></p>
+									<button class="btn-show-comment px-2 py-2 my-1" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+										<span class="mx-2 my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row2["id"]) ?> comments</span>
+									</button>
+									<div id="test-<?= $row2["id"] ?>">
+										<?php while ($row3 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
+											<?php $flag = 1; ?>
+											<div class="card my-2 comment-container show_comment_container-<?= $row3["post_id"] ?>">
+												<div class="d-flex flex-column w-100">
+													<div class="card-container d-flex align-items-center mb-2 text-nowrap">
+														<img src=<?= "user_img/" . $row3['img'] ?> alt="user img" class="post-header rounded-circle p-0 me-2" style="width: 40px; height: 40px; object-fit:cover;>
+																<span class=" post-username mx-2"><?= $row3['username'] ?></span>
+														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
+														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row3['date_created'] ?></span>
+													</div>
+													<div class="content-container d-flex flex-column">
+														<p class="card-text"><?= $row3['body'] ?></p>
 													</div>
 												</div>
-												<?php if($_SESSION['isAdmin']){?>
-													<form action="<?= $url?>" method='post'>
-														<input type="text" name='deleteComment' value=<?= $row3["id"] ?> hidden>
-														<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
-													</form>
-												<?php }?>
-												
 											</div>
-											<?php } ?>
-											<?php if ($flag == 0) { ?>
-												<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">
-													<div class="d-flex flex-column w-100 text-center py-1">
-														<h4 class="pt-2"> no comments yet.. </h4>
-													</div>
+										<?php } ?>
+										<?php if ($flag == 0) { ?>
+											<div class=" card comment-container show_comment_container-<?= $row["id"] ?>">
+												<div class="d-flex flex-column w-100 text-center py-1">
+													<h4 class="pt-2"> no comments yet.. </h4>
 												</div>
-												<?php } ?>
 											</div>
-										</div>
+										<?php } ?>
 									</div>
-									<?php if($_SESSION['isAdmin']){?>
-										<form action="<?= $url?>" method='post'>
-											<input type="text" name='deletePost' value=<?= $row2["id"] ?> hidden>
-											<button class="btn btn-danger px-1 py-1" name='delete'>Delete Post</button>
-										</form>
-									<?php }?>
+								</div>
+							</div>
 							<hr class="pembatas-post">
 						</div>
 					<?php } ?>
 				<?php } ?>
 					</div>
 			</div>
+		</div>
 		</div>
 		</div>
 	</main>

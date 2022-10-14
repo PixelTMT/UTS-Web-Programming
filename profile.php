@@ -141,7 +141,6 @@ function getTotalLikes($_post_id)
 																<p class="card-text"><?= $row3['body'] ?></p>
 															</div>
 														</div>
-
 													</div>
 												<?php } ?>
 												<?php if ($flag == 0) { ?>

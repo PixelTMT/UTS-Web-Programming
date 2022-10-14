@@ -1,26 +1,18 @@
-<script>
-	function List(category) {
-		var url = new URL(location.href);
-		url.searchParams.set('list', category);
-		window.location.href = url;
-	}
-
-	function addLike(like_ammount) {
-		return like_ammount += 1;
-	}
-</script>
 <?php
-require_once("security.php");
+session_start();
 require_once("isAdmin.php");
-include_once('deleteStuff.php');
-if (isset($_POST['delete'])) {
-	if (isset($_POST['deletePost'])) {
-		deletePost($_POST['deletePost']);
-		//echo $_POST['deletePost'];
-	}
-	if (isset($_POST['deleteComment'])) {
-		deleteComment($_POST['deleteComment']);
-		//echo $_POST['deleteComment'];
+require_once("security.php");
+if ($_SESSION['isAdmin']) {
+	include_once 'deleteStuff.php';
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if (isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
 	}
 }
 
@@ -65,13 +57,13 @@ if (isset($_GET['keyword'])) {
 }
 switch ($current_tabs) {
 	case "trends":
-		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC";
+		$sql .= "ORDER BY (total_likes * 0.3) + (total_comment * 0.7) DESC LIMIT 10";
 		break;
 	case "likes":
-		$sql .= "ORDER BY total_likes DESC";
+		$sql .= "ORDER BY total_likes DESC LIMIT 10";
 		break;
 	case "latest":
-		$sql .= "ORDER BY date_created DESC, time_created DESC";
+		$sql .= "ORDER BY date_created DESC, time_created DESC LIMIT 10";
 		break;
 }
 $hasil = $db->query($sql);
@@ -97,10 +89,33 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	return $row["total_likes"];
+	if ($row) return $row["total_likes"];
+	return 0;
 }
 
+function isLikePost($_post_id)
+{
+	global $db;
+	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
+	$stmt = $db->prepare($sql);
+	$stmt->execute([$_SESSION['id'], $_post_id]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	if ($row) return 'font-size:1.25rem; color:blue';
+	return 'font-size:1.25rem; color:grey';
+}
 ?>
+
+<script>
+	function List(category) {
+		var url = new URL(location.href);
+		url.searchParams.set('list', category);
+		window.location.href = url;
+	}
+
+	function addLike(like_ammount) {
+		return like_ammount += 1;
+	}
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -136,15 +151,8 @@ function getTotalLikes($_post_id)
 				<span id="typed" class="mt-3"></span>
 			</div>
 			<a href="#postsId"><i class="fa-solid fa-angles-down mt-5"></i></a>
-			<form action="dashboard.php" method="get">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</button>
-				<input type="text" name="keyword" class="jumbotron-search w-25 text-center">
-			</form>
 		</div>
 	</main>
-
 	<aside>
 		<div class="social-panel-container">
 			<div class="social-panel">
@@ -172,6 +180,7 @@ function getTotalLikes($_post_id)
 		</button>
 	</aside>
 
+
 	<article>
 		<div class="container tabs-container mt-4">
 			<div class="tabs-wrap" id="postsId">
@@ -194,7 +203,7 @@ function getTotalLikes($_post_id)
 								<div class="d-flex flex-column me-3 mt-1 justify-content-center align-items-center">
 									<?php if (!empty($_SESSION["id"])) { ?>
 										<button type="button" class="upvoteBtn border-0 bg-transparent p-2 pt-3" id="like-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="upvoteBtn" value="like">
-											<i class="fa-solid fa-arrow-up" id="upvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
+											<i class="fa-solid fa-arrow-up" id="upvoteIcon" style="<?= isLikePost($row["id"]) ?>"></i></button>
 										<span class="mx-1 mb-3 mt-3" id="vote-count-<?= $row['id'] ?>"><?= getTotalLikes($row["id"]) ?></span>
 										<button type="button" class="downvoteBtn border-0 bg-transparent p-2 pt-1" id="dislike-<?= $row['id'] ?>-<?= $_SESSION['id'] ?>" name="downvoteBtn" value="dislike"><i class="fa-solid fa-arrow-down" id="downvoteIcon" style="font-size:1.25rem; color:grey"></i></button>
 								</div>
@@ -254,7 +263,7 @@ function getTotalLikes($_post_id)
 									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 								</button>
 							</div>
-							<?php if ($_SESSION['isAdmin']) { ?>
+							<?php if (!empty($_SESSION['isAdmin'])) { ?>
 								<form action="dashboard.php" method='post'>
 									<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
 									<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
@@ -277,7 +286,7 @@ function getTotalLikes($_post_id)
 
 													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
-													<?php if ($_SESSION['isAdmin']) { ?>
+													<?php if (!empty($_SESSION['isAdmin'])) { ?>
 														<form action="dashboard.php" method='post'>
 															<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
 															<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
