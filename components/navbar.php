@@ -44,7 +44,7 @@
                     <li class="nav-item mx-2 my-2 align-middle">
                         <a class="nav-link" href="profile.php">
                             <?= $_SESSION["username"]; ?>
-                            <img src=<?= "user_img/" . $_SESSION["id"].".jpg"?> alt="You" class="rounded-circle " style="width: 25px; height:25px;">
+                            <img src=<?= "user_img/" . $_SESSION["id"].".jpg?".time()?> alt="You" class="rounded-circle " style="width: 25px; height:25px;">
                         </a>
                     </li>
 

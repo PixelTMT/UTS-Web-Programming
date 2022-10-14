@@ -98,7 +98,7 @@ $stmt->execute($data);
                         <div class="container col-lg-12 card profile-container d-flex flex-row mt-4 mx-2" style="max-height: 25rem;">
                             <div class="profile-bio d-flex flex-column ms-auto me-auto my-4">
                                 <div class="my-3" style="width: 150px; height: 150px; overflow: hidden;">
-                                    <img src=<?= "user_img/" . $row["id"].".jpg" ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit:cover;">
+                                    <img src=<?= "user_img/" . $row["id"].".jpg?".time() ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit:cover;">
                                 </div>
                                 <h3><?= $row["username"] ?></h3>
                                 <span class="my-1"><?= $row["email"] ?></span>
