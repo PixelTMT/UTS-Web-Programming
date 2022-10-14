@@ -1,5 +1,6 @@
 <?php
 session_start();
+clearstatcache();
 require "NeedLogin.php";
 require "db.php";
 //user data
@@ -36,7 +37,6 @@ if (!empty($_SESSION['ERROR'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/solid.min.css" integrity="sha512-uj2QCZdpo8PSbRGL/g5mXek6HM/APd7k/B5Hx/rkVFPNOxAQMXD+t+bG4Zv8OAdUpydZTU3UHmyjjiHv2Ww0PA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <script src="js/jquery.js"></script>
     <link href="css/navbar.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/footer.css" rel="stylesheet">
@@ -54,7 +54,7 @@ if (!empty($_SESSION['ERROR'])) {
                 <h4>Current Profile</h4>
                 <div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
                     <div class="my-3" style="width: 150px; height: 150px; overflow:hidden;">
-                        <img src=<?= "user_img/" . $row["id"].".jpg" ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src=<?= "user_img/" . $row["id"].".jpg?".time() ?> class="rounded-circle NO-CACHE" style="width: 150px; height: 150px; object-fit: cover;">
                     </div>
                     <h3><?= $row["username"] ?></h3>
                     <span class="my-1"><?= $row["name"] ?></span>
@@ -93,3 +93,14 @@ if (!empty($_SESSION['ERROR'])) {
             </div>
         </div>
     </main>
+    <script>
+    $(document).ready(function ()
+    {           
+        $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+    var nods = document.getElementsByClassName('NO-CACHE');
+    for (var i = 0; i < nods.length; i++)
+    {
+        nods[i].attributes['src'].value += "?a=" + Math.random();
+    }
+    </script>

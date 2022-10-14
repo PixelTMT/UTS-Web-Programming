@@ -3,6 +3,9 @@
 // hidupkan sebelum di kumpul
 // biar kalau error tidak keliatan
 //error_reporting(0);
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
 require_once "db.php";
 $blacklist = array(
     '&', ';', '`', '‘',

@@ -102,7 +102,7 @@ function getTotalLikes($_post_id)
 			<div class="container col-lg-3 card profile-container d-flex flex-row mt-4 mx-2" style="max-height: 25rem;">
 				<div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
 					<div class="my-3" style="width: 150px; height: 150px; overflow: hidden;">
-						<img src=<?= "user_img/" . $row["id"].".jpg" ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit:cover;">
+						<img src=<?= "user_img/" . $row["id"].".jpg?".time() ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit:cover;">
 					</div>
 					<h3><?= $row["username"] ?></h3>
 					<span class="my-1"><?= $row["name"] ?></span>
@@ -187,7 +187,7 @@ function getTotalLikes($_post_id)
 											<div class="card my-2 comment-container show_comment_container-<?= $row3["post_id"] ?>">
 												<div class="d-flex flex-column w-100">
 													<div class="card-container d-flex align-items-center mb-2 text-nowrap">
-														<img src=<?= "user_img/" . $row3['user_id'].".jpg" ?> alt="user img" class="post-header rounded-circle p-0 me-2" style="width: 40px; height: 40px; object-fit:cover;>
+														<img src=<?= "user_img/" . $row3['user_id'].".jpg?".time() ?> alt="user img" class="post-header rounded-circle p-0 me-2" style="width: 40px; height: 40px; object-fit:cover;>
 																<span class=" post-username mx-2"><?= $row3['username'] ?></span>
 														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row3['date_created'] ?></span>

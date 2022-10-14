@@ -1,7 +1,7 @@
 <?php
-
+session_start();
 include "db.php";
-include "Needlogin.php";
+include "NeedLogin.php";
 include "comment.php";
 $post_id = $_POST["post_id"];
 $user_id = $_SESSION["id"];
@@ -55,7 +55,7 @@ $flag = 0; ?>
                     <div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
                         <div style="min-width: 50px; min-height: 40px; overflow:hidden;">
                             <a href="user_profile.php?id=<?= $row2['user_id'] ?>">
-                                <img src=<?= "user_img/" . $row2['user_id'].".jpg" ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+                                <img src=<?= "user_img/" . $row2['user_id'].".jpg?".time() ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
                             </a>
                         </div>
                         <a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">

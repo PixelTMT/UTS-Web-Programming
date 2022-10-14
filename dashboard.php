@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("security.php");
-if ($_SESSION['isAdmin']) {
+if (isset($_SESSION['isAdmin'])) {
 	include_once 'deleteStuff.php';
 	if (isset($_POST['delete'])) {
 		if (isset($_POST['deletePost'])) {
@@ -178,7 +178,13 @@ function isLikePost($_post_id)
 			Click me
 		</button>
 	</aside>
-
+	<form class="text-center" action="?keyword=" method="get">
+			<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 40px; height: 40px;" type="submit">
+				<i class="fa-solid fa-magnifying-glass text-center"></i>
+			</button>
+			<?php if (isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
+			<input type="text" name="keyword" class="jumbotron-search w-25 text-center" placeholder="search post Title here.." <?php if (isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'"; ?>>
+		</form>
 
 	<article>
 		<div class="container tabs-container mt-4">
@@ -219,7 +225,7 @@ function isLikePost($_post_id)
 							<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 								<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
 									<a href="user_profile.php?id=<?= $row['user_id'] ?>">
-										<img src=<?= "user_img/" . $row['user_id'].".jpg" ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+										<img src=<?= "user_img/" . $row['user_id'].".jpg?".time() ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
 								</div>
 								<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row['user_id'] ?>">
 									<span class="post-username me-1"><?= $row['username'] ?></span>
@@ -277,7 +283,7 @@ function isLikePost($_post_id)
 												<div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
 													<div style="min-width: 50px; min-height: 40px; overflow:hidden;">
 														<a href="user_profile.php?id=<?= $row2['user_id'] ?>">
-															<img src=<?= "user_img/" . $row2['user_id'] .".jpg"?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+															<img src=<?= "user_img/" . $row2['user_id'] .".jpg?".time()?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
 														</a>
 													</div>
 													<a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
