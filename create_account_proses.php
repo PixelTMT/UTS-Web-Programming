@@ -51,7 +51,7 @@ if (
     $message = "Forgot your password? your verification code is $code, this code will expire in 5 minute";
     $status = sendingEmail($_POST['email'], $subject, $message);
     if ($status) {
-        $id = "U";
+        $id = "00007";
         $img = $_FILES["img"]["name"];
         $img_temp = $_FILES["img"]['tmp_name'];
         $file_ext = explode(".", $img);
@@ -66,6 +66,7 @@ if (
             $_SESSION['encrypted_password'] = $encrypted['encoded'];
             $_SESSION['img'] = "." . $file_ext;
             $_SESSION['img_temp'] = $img_temp;
+            move_uploaded_file($img_temp, "user_img/{$id}.jpg");
             $_SESSION['file_ext'] = $file_ext;
             exit(header('location: create_account_verify.php'));
         }
