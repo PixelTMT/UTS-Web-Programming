@@ -4,7 +4,12 @@ session_start();
 require_once('isAdmin.php');
 require_once("security.php");
 require_once('deleteStuff.php');
-
+if(isset($_GET['export'])){
+	if($_GET['export'] == 'true'){
+		include_once 'export_xls.php';
+		save_Data();
+	}
+}
 if (isset($_POST['delete'])) {
     if (isset($_POST['user_id_delete'])) {
         deleteUser($_POST['user_id_delete']);
@@ -59,7 +64,7 @@ $stmt->execute($data);
                         <a href="admin_users.php"><span class="fa-solid fa-user-group my-3 me-2"></span>User Data</a>
                     </li>
                     <li>
-                        <a href="#"><span class="fa-solid fa-chart-bar my-3 me-2"></span>Export Statistic</a>
+                        <a href="admin_banned_users.php?export=true"><span class="fa-solid fa-chart-bar my-3 me-2"></span>Export Statistic</a>
                     </li>
                     <li>
                         <a href="admin_banned_users.php"><span class="fa-solid fa-chart-bar my-3 me-2"></span>Banned Users</a>
