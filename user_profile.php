@@ -4,29 +4,32 @@ require_once 'security.php';
 session_start();
 $url = $_SERVER['REQUEST_URI'];
 if (isset($_GET['id'])) {
+	if ($_GET['id'] == $_SESSION["id"] && isset($_SESSION["id"])) {
+		header("location:profile.php");
+	}
 	$id = $_GET['id'];
 } else {
 	exit(header("location:profile.php"));
 }
-if($_SESSION['isAdmin']){
+if ($_SESSION['isAdmin']) {
 	require_once 'deleteStuff.php';
-	if(isset($_POST['delete'])){
-		if(isset($_POST['deletePost'])){
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
 			deletePost($_POST['deletePost']);
 			unset($_POST['deletePost']);
 			//echo $_POST['deletePost'];
 		}
-		if(isset($_POST['deleteComment'])) {
+		if (isset($_POST['deleteComment'])) {
 			deleteComment($_POST['deleteComment']);
 			unset($_POST['deleteComment']);
 			//echo $_POST['deleteComment'];
 		}
-		if(isset($_POST['banUser'])) {
+		if (isset($_POST['banUser'])) {
 			banUser($_POST['banUser']);
 			unset($_POST['banUser']);
 			//echo $_POST['banUser'];
 		}
-		if(isset($_POST['unbanUser'])) {
+		if (isset($_POST['unbanUser'])) {
 			unbanUser($_POST['unbanUser']);
 			unset($_POST['unbanUser']);
 			//echo $_POST['banUser'];
@@ -60,7 +63,7 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($row)
+	if ($row)
 		return $row["total_likes"];
 	return 0;
 }
@@ -104,18 +107,20 @@ function getTotalLikes($_post_id)
 					<h3><?= $row["username"] ?></h3>
 					<span class="my-1"><?= $row["name"] ?></span>
 					<span class="my-1"><?= $row["email"] ?></span>
-					<?php if ($_SESSION['isAdmin']) if(!$isBanned){{?>
-						<form action="<?= $url ?>" method='post'>
-							<input type="text" name='banUser' value=<?= $row["id"] ?> hidden>
-							<button class="btn btn-danger px-1 py-1" name='delete'>Ban User</button>
-						</form>
-					<?php }} ?>
-					<?php if ($_SESSION['isAdmin']) if($isBanned){{ ?>
-						<form action="<?= $url ?>" method='post'>
-							<input type="text" name='unbanUser' value=<?= $row["id"] ?> hidden>
-							<button class="btn btn-danger px-1 py-1" name='delete'>unBan User</button>
-						</form>
-					<?php }} ?>
+					<?php if ($_SESSION['isAdmin']) if (!$isBanned) { { ?>
+							<form action="<?= $url ?>" method='post'>
+								<input type="text" name='banUser' value=<?= $row["id"] ?> hidden>
+								<button class="btn btn-danger px-1 py-1" name='delete'>Ban User</button>
+							</form>
+					<?php }
+					} ?>
+					<?php if ($_SESSION['isAdmin']) if ($isBanned) { { ?>
+							<form action="<?= $url ?>" method='post'>
+								<input type="text" name='unbanUser' value=<?= $row["id"] ?> hidden>
+								<button class="btn btn-danger px-1 py-1" name='delete'>unBan User</button>
+							</form>
+					<?php }
+					} ?>
 				</div>
 			</div>
 			<div class="container card profile-container d-flex flex-row mt-4 mx-2 col-lg-8">
@@ -160,20 +165,21 @@ function getTotalLikes($_post_id)
 								</div>
 							</div>
 							<!-- close modal-->
-							<div class="feedback-container d-flex flex-row my-3">
-								<div class="border border-3 border-light rounded me-2 p-1">
-									<button disabled class="rounded-circle bg-transparent">
-										<i class="fa-solid fa-thumbs-up"></i>
+
+							<div class="feedback-container d-flex flex-column my-3">
+								<div class="my-2 mx-1 show-likes-container align-middle my-auto">
+									<button disabled class="btn-show-likes">
+										<i class="fa-solid fa-thumbs-up" style="color: rgba(0, 0, 0, 0.75)"></i>
 									</button>
-									<span class="mx-1"><?= getTotalLikes($row2["id"]) ?></span>
+									<span style="color: rgba(0, 0, 0, 0.75); font-weight: bold;"><?= getTotalLikes($row2["id"]) ?></span>
 								</div>
 
-								<div class="border border-3 border-light rounded me-2 p-1">
+								<div class="rounded me-2 p-1">
 									<?php include_once "comment.php"; ?>
 									<?php $stmt2 = get_comment($row2["id"]);
 									$flag = 0; ?>
-									<button class="btn-show-comment px-2 py-2" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: grey;"></i>
-										<span class="mx-auto my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: #6B6B6B"><?= get_comment_total($row2["id"]) ?> comments</span>
+									<button class="btn-show-comment px-2 py-2 my-1" id="show_comment-<?= $row2["id"] ?>"><i class=" fa-solid fa-comment" style="color: rgba(0, 0, 0, 0.75);"></i>
+										<span class="mx-2 my-auto total_comment" id="total_comment-<?= $row2["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row2["id"]) ?> comments</span>
 									</button>
 									<div id="test-<?= $row2["id"] ?>">
 										<?php while ($row3 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
@@ -190,12 +196,6 @@ function getTotalLikes($_post_id)
 														<p class="card-text"><?= $row3['body'] ?></p>
 													</div>
 												</div>
-												<?php if ($_SESSION['isAdmin']) { ?>
-													<form action="<?= $url ?>" method='post'>
-														<input type="text" name='deleteComment' value=<?= $row3["id"] ?> hidden>
-														<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
-													</form>
-												<?php } ?>
 											</div>
 										<?php } ?>
 										<?php if ($flag == 0) { ?>
@@ -208,17 +208,11 @@ function getTotalLikes($_post_id)
 									</div>
 								</div>
 							</div>
-							<?php if ($_SESSION['isAdmin']) { ?>
-								<form action="<?= $url ?>" method='post'>
-									<input type="text" name='deletePost' value=<?= $row2["id"] ?> hidden>
-									<button class="btn btn-danger px-1 py-1" name='delete'>Delete Post</button>
-								</form>
-							<?php } ?>
+							<hr class="pembatas-post">
 						</div>
-						<hr class="pembatas-post">
-					</div>
+					<?php } ?>
 				<?php } ?>
-			<?php } ?>
+					</div>
 			</div>
 		</div>
 		</div>

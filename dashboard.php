@@ -1,25 +1,15 @@
-<script>
-	function List(category) {
-		var url = new URL(location.href);
-		url.searchParams.set('list', category);
-		window.location.href = url;
-	}
-
-	function addLike(like_ammount) {
-		return like_ammount += 1;
-	}
-</script>
 <?php
 session_start();
+require_once("isAdmin.php");
 require_once("security.php");
-if($_SESSION['isAdmin']){
+if ($_SESSION['isAdmin']) {
 	include_once 'deleteStuff.php';
-	if(isset($_POST['delete'])){
-		if(isset($_POST['deletePost'])){
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
 			deletePost($_POST['deletePost']);
 			//echo $_POST['deletePost'];
 		}
-		if(isset($_POST['deleteComment'])) {
+		if (isset($_POST['deleteComment'])) {
 			deleteComment($_POST['deleteComment']);
 			//echo $_POST['deleteComment'];
 		}
@@ -99,21 +89,33 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($row) return $row["total_likes"];
+	if ($row) return $row["total_likes"];
 	return 0;
 }
 
-function isLikePost($_post_id){
+function isLikePost($_post_id)
+{
 	global $db;
 	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
 	$stmt = $db->prepare($sql);
-	$stmt->execute([$_SESSION['id'],$_post_id]);
+	$stmt->execute([$_SESSION['id'], $_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($row) return 'font-size:1.25rem; color:blue';
+	if ($row) return 'font-size:1.25rem; color:blue';
 	return 'font-size:1.25rem; color:grey';
-	
 }
 ?>
+
+<script>
+	function List(category) {
+		var url = new URL(location.href);
+		url.searchParams.set('list', category);
+		window.location.href = url;
+	}
+
+	function addLike(like_ammount) {
+		return like_ammount += 1;
+	}
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -139,7 +141,7 @@ function isLikePost($_post_id){
 <body>
 	<!-- navbar -->
 	<?php include_once './components/navbar.php'  ?>
-	
+
 	<!-- hero -->
 	<main class="jumbotron jumbotron-fluid" id="backToTop">
 		<div class="jumboDesc">
@@ -149,17 +151,8 @@ function isLikePost($_post_id){
 				<span id="typed" class="mt-3"></span>
 			</div>
 			<a href="#postsId"><i class="fa-solid fa-angles-down mt-5"></i></a>
-			<form action="dashboard.php" method="get">
-			</form>
 		</div>
 	</main>
-	<form action="?keyword=" method="get">
-			<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
-				<i class="fa-solid fa-magnifying-glass"></i>
-			</button>
-		<?php if(isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
-		<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
-	</form>
 	<aside>
 		<div class="social-panel-container">
 			<div class="social-panel">
@@ -186,7 +179,7 @@ function isLikePost($_post_id){
 			Click me
 		</button>
 	</aside>
-	
+
 
 	<article>
 		<div class="container tabs-container mt-4">
@@ -270,7 +263,7 @@ function isLikePost($_post_id){
 									<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 								</button>
 							</div>
-							<?php if ($_SESSION['isAdmin']) { ?>
+							<?php if (!empty($_SESSION['isAdmin'])) { ?>
 								<form action="dashboard.php" method='post'>
 									<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
 									<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
@@ -293,7 +286,7 @@ function isLikePost($_post_id){
 
 													<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 													<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
-													<?php if ($_SESSION['isAdmin']) { ?>
+													<?php if (!empty($_SESSION['isAdmin'])) { ?>
 														<form action="dashboard.php" method='post'>
 															<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
 															<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>

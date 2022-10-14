@@ -5,19 +5,19 @@ require_once('isAdmin.php');
 require_once("security.php");
 require_once('deleteStuff.php');
 
-if(isset($_POST['delete'])){
-    if(isset($_POST['user_id_delete'])) {
+if (isset($_POST['delete'])) {
+    if (isset($_POST['user_id_delete'])) {
         deleteUser($_POST['user_id_delete']);
-		unset($_POST['user_id_delete']);
-        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Deleted </b> </span>";
-		//echo $_POST['user_id_delete'];
-	}
-	if(isset($_POST['user_id_unban'])) {
+        unset($_POST['user_id_delete']);
+        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been &nbsp <b> Deleted </b> </span>";
+        //echo $_POST['user_id_delete'];
+    }
+    if (isset($_POST['user_id_unban'])) {
         unbanUser($_POST['user_id_unban']);
-		unset($_POST['user_id_unban']);
-        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Unbanned </b> </span>";
-		//echo $_POST['user_id_unban'];
-	}
+        unset($_POST['user_id_unban']);
+        echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been  &nbsp <b> Unbanned </b> </span>";
+        //echo $_POST['user_id_unban'];
+    }
     unset($_POST['delete']);
 }
 
@@ -51,7 +51,7 @@ $stmt->execute($data);
 <body>
 
     <div class="wrapper d-flex">
-        <nav id="sidebar" class="active">
+        <nav id="sidebar" class="active" style="height:100vh;">
             <div class="p-4">
                 <h1><a href="#" style="text-decoration: none; color: #fff;" class="logo">Admin Panel</a></h1>
                 <ul class="list-unstyled components mb-5">
@@ -85,8 +85,8 @@ $stmt->execute($data);
         </nav>
 
         <!-- Page Content  -->
-        <main class="d-flex flex-column justify-content-center align-items-center">
-            <h2 class=" my-4 ms-6 text-center">All Banned Users Account</h2>
+        <main class="d-flex flex-column justify-content-start align-items-center">
+            <h2 class=" my-4 ms-4 text-center">All Banned Users Account</h2>
             <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
                 <div class="d-flex flex-row justify-content-center align-items-center" style="width: 1500px;">
                     <div class="container mb-4 d-flex flex-row col-lg-6">

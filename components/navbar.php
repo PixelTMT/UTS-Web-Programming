@@ -7,17 +7,21 @@
         <button class="navbar-toggler navbar-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#nvbCollapse" aria-controls="nvbCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse text-center" id="nvbCollapse">
+
+
             <ul class="navbar-nav nav ms-auto">
-            <?php
-                if(isset($_SESSION['isAdmin'])){
-                if($_SESSION['isAdmin']){
-                ?>
-                <li class="nav-item mx-2 my-2">
-                    <a class="nav-link" href="admin_users.php">Admin Panel</a>
-                </li>
                 <?php
-                }}
+                if (isset($_SESSION['isAdmin'])) {
+                    if ($_SESSION['isAdmin']) {
+                ?>
+                        <li class="nav-item mx-2 my-2">
+                            <a class="nav-link" href="admin_users.php">Admin Panel</a>
+                        </li>
+                <?php
+                    }
+                }
                 ?>
                 <li class="nav-item mx-2 my-2">
                     <a class="nav-link" href="dashboard.php">Dashboard</a>

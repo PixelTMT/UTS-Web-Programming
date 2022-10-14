@@ -5,17 +5,17 @@ require_once('isAdmin.php');
 require_once("security.php");
 require_once("deleteStuff.php");
 
-if(isset($_POST['delete'])){
-	if(isset($_POST['user_id_ban'])) {
+if (isset($_POST['user_id_ban'])) {
+	if (isset($_POST['user_id_ban'])) {
 		banUser($_POST['user_id_ban']);
 		unset($_POST['user_id_ban']);
-		echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Deleted </b> </span>";
+		echo "<span class='d-flex justify-content-center text-center'>{$_POST['username']} has been &nbsp <b> Banned </b> </span>";
 		//echo $_POST['banUser'];
 	}
-	if(isset($_POST['user_id_delete'])) {
+	if (isset($_POST['user_id_delete'])) {
 		deleteUser($_POST['user_id_delete']);
 		unset($_POST['user_id_delete']);
-		echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been <b> Banned </b> </span>";
+		echo "<span class='d-flex justify-content-center text-center'>  {$_POST['username']} has been  &nbsp <b> Deleted </b> </span>";
 		//echo $_POST['user_id_delete'];
 	}
 	unset($_POST['delete']);

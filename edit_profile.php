@@ -11,7 +11,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $incomplete_msg = "Please fill all required fields and submit again.";
 $alert_msg = $incomplete_msg;
-$style = "display:none;";
+$style = "display:none; color:red;";
 if (!empty($_SESSION['ERROR'])) {
     if ($_SESSION['ERROR'] != "") {
         $alert_msg = $_SESSION['ERROR'];
@@ -54,7 +54,7 @@ if (!empty($_SESSION['ERROR'])) {
                 <h4>Current Profile</h4>
                 <div class="profile-bio d-flex flex-column justify-content-center align-items-center ms-auto me-auto">
                     <div class="my-3" style="width: 150px; height: 150px; overflow:hidden;">
-                    <img src=<?= "user_img/" . $row["img"] ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src=<?= "user_img/" . $row["img"] ?> class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                     </div>
                     <h3><?= $row["username"] ?></h3>
                     <span class="my-1"><?= $row["name"] ?></span>

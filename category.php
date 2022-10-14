@@ -6,8 +6,22 @@
 	}
 </script>
 <?php
+
+$current_active_list = "cpp";
 session_start();
-$current_active_list = 'cpp';
+if ($_SESSION['isAdmin']) {
+	include_once 'deleteStuff.php';
+	if (isset($_POST['delete'])) {
+		if (isset($_POST['deletePost'])) {
+			deletePost($_POST['deletePost']);
+			//echo $_POST['deletePost'];
+		}
+		if (isset($_POST['deleteComment'])) {
+			deleteComment($_POST['deleteComment']);
+			//echo $_POST['deleteComment'];
+		}
+	}
+}
 $C_list_A = array(
 	'sql',
 	'php',
@@ -41,14 +55,12 @@ if (isset($_GET['list'])) {
 		$current_active_list = strtolower($_GET['list']);
 	}
 }
-
-require_once 'NeedLogin.php';
 require_once 'security.php';
 $sql = "SELECT *,
 (
     SELECT username from user
     where id = user_id
-) AS 'username',
+) AS username,
 (
     SELECT img from user
     where id = user_id
@@ -59,7 +71,8 @@ $sql = "SELECT *,
 ) AS 'category'
 FROM post ";
 if (isset($_GET['keyword'])) {
-	$sql .= "WHERE title like '%{$_GET['keyword']}%' ";
+	$sql .= "WHERE title like '%{$_GET['keyword']}%' 
+	OR body like '%{$_GET['keyword']}%'";
 }
 $sql .= "ORDER BY time_created DESC";
 
@@ -85,19 +98,19 @@ function getTotalLikes($_post_id)
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($row)
+	if ($row)
 		return $row["total_likes"];
 	return 0;
 }
-function isLikePost($_post_id){
+function isLikePost($_post_id)
+{
 	global $db;
 	$sql = "select * from likes where user_id = ? AND post_id = ? AND like_bool = 1;";
 	$stmt = $db->prepare($sql);
-	$stmt->execute([$_SESSION['id'],$_post_id]);
+	$stmt->execute([$_SESSION['id'], $_post_id]);
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($row) return 'font-size:1.25rem; color:blue';
+	if ($row) return 'font-size:1.25rem; color:blue';
 	return 'font-size:1.25rem; color:grey';
-	
 }
 ?>
 <!DOCTYPE html>
@@ -140,12 +153,12 @@ function isLikePost($_post_id){
 				<li <?php CheckActive("php"); ?> onclick="List('php')"><img src="img/php.svg"> PHP</li>
 			</ul>
 		</div>
-		<form action="?keyword=" method="get">
-				<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 35px; height: 35px;" type="submit">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</button>
-			<?php if(isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
-			<input type="text" name="keyword" class="jumbotron-search w-25 text-center" <?php if(isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'";?>>
+		<form class="text-center" action="?keyword=" method="get">
+			<button class="btn btn-danger rounded-circle mx-2 my-4" style="width: 40px; height: 40px;" type="submit">
+				<i class="fa-solid fa-magnifying-glass text-center"></i>
+			</button>
+			<?php if (isset($_GET['list'])) echo "<input type='text' name='list' class='jumbotron-search w-25 text-center' value='{$_GET['list']}' hidden>" ?>
+			<input type="text" name="keyword" class="jumbotron-search w-25 text-center" placeholder="search post Title here.." <?php if (isset($_GET['keyword'])) echo "value='{$_GET['keyword']}'"; ?>>
 		</form>
 		<?php while ($row = $hasil->fetch(PDO::FETCH_ASSOC)) { ?>
 			<?php if ($row['forum_id'] == $C_list_B[$current_active_list]) { ?>
@@ -207,6 +220,12 @@ function isLikePost($_post_id){
 										<span class="mx-auto my-auto total_comment total-comment" id="total_comment-<?= $row["id"] ?>" style="font-weight: bold; color: rgba(0, 0, 0, 0.75)"><?= get_comment_total($row["id"]) ?> comments</span>
 									</button>
 								</div>
+								<?php if (!empty($_SESSION['isAdmin'])) { ?>
+									<form action="category.php" method='post'>
+										<input type="text" name='deletePost' value=<?= $row["id"] ?> hidden>
+										<button class="btn btn-danger px-4 py-2" name='delete'>Delete Post</button>
+									</form>
+								<?php } ?>
 								<div id="test-<?= $row["id"] ?>">
 									<?php while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) { ?>
 										<?php $flag = 1; ?>
@@ -224,6 +243,12 @@ function isLikePost($_post_id){
 
 														<i class="fa-solid fa-circle mx-1" style="font-size: 5px;"></i>
 														<span class="post-date ms-1 text-muted" style="font-size: 15px;"><?= $row2['date_created'] ?></span>
+														<?php if (!empty($_SESSION['isAdmin'])) { ?>
+															<form action="category.php" method='post'>
+																<input type="text" name='deleteComment' value=<?= $row2["id"] ?> hidden>
+																<button class="btn btn-danger px-1 py-1" name='delete'>Delete Comment</button>
+															</form>
+														<?php } ?>
 													</div>
 												</div>
 												<div class="content-container d-flex flex-column">
@@ -242,10 +267,12 @@ function isLikePost($_post_id){
 								</div>
 								<form action="#" method="post" enctype="multipart/form-data">
 									<div class="input-group mb-3 mt-3">
-										<input type="text" class="form-control me-2 rounded" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
-										<div class="input-group-prepend">
-											<button class="btn-add btn btn-outline-danger" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
-										</div>
+										<?php if (!empty($_SESSION["id"])) { ?>
+											<input type="text" class="form-control comment-reply" id="comment_body-<?= $row["id"] ?>" placeholder="add your reply" aria-label="" aria-describedby="basic-addon1">
+											<div class="input-group-prepend">
+												<button class="btn-add btn btn-outline-danger ms-2" type="button" id="add-<?= $row["id"] ?>-<?= $row["user_id"] ?>">Add</button>
+											</div>
+										<?php } ?>
 									</div>
 								</form>
 							</div>
