@@ -17,8 +17,6 @@ if ($body != "") {
     echo "<div class='text-left' style='color:red'> <b> Your comment cannot be empty! </b> </div>";
 }
 
-
-
 function initialize_comment($_user_id, $_post_id, $_body, $_time_created, $_date_created, $_id)
 {
     global $db;
@@ -57,7 +55,8 @@ $flag = 0; ?>
                     <div class="user-container d-flex align-items-center mb-2 text-nowrap col-lg-12">
                         <div style="min-width: 50px; min-height: 40px; overflow:hidden;">
                             <a href="user_profile.php?id=<?= $row2['user_id'] ?>">
-                                <img src=<?= "user_img/" . $row2['img'] ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;"></a>
+                                <img src=<?= "user_img/" . $row2['user_id'].".jpg" ?> alt="user img" class="p-0 rounded-circle" style="width: 40px; height: 40px; object-fit:cover;">
+                            </a>
                         </div>
                         <a style="text-decoration: none; color: black;" class="detail-user-profile" href="user_profile.php?id=<?= $row2['user_id'] ?>">
                             <span class="post-username me-1"><?= $row2['username'] ?></span>

@@ -63,15 +63,13 @@ if (!empty($_FILES['img']["name"])) {
     $stmt->execute([$_SESSION["id"]]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if (check_img_type($file_ext, 'edit_profile.php')) {
-        if (file_exists("user_img/" . $row['img'])) unlink("user_img/" . $row['img']);
-        move_uploaded_file($img_temp, "user_img/{$_SESSION["id"]}.{$file_ext}");
+        if (file_exists("user_img/" . $row['id'] .".jpg")) unlink("user_img/" . $_SESSION['id'].".jpg");
+        move_uploaded_file($img_temp, "user_img/{$_SESSION['id']}.jpg");
         $sql = "UPDATE user 
         SET img = ?
         WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $data = ["{$_SESSION["id"]}.{$file_ext}", $_SESSION["id"]];
-        $_SESSION['img'] = "";
-        $_SESSION['img'] = "." . $file_ext;
+        $data = ["{$row["id"]}.jpg", $row["id"]];
         $stmt->execute($data);
     }
 }
